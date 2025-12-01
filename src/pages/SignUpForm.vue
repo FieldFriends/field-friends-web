@@ -74,7 +74,8 @@
         <FriendTextarea
           v-model="form.lore"
           class="mb-4"
-          label="Lore - what are some cool projects you've worked on, or topics you know a lot about?"
+          label="Lore"
+          description="What are some cool projects you've worked on, or topics you know a lot about?"
           placeholder="Optional: Tell us your story..."
         />
 
@@ -82,7 +83,7 @@
           v-model="form.pledge"
           class="mb-6"
           label="Community Pledge"
-          description="<b>Community pledge</b>: Something something be a good person, whatever."
+          description="Something something be a good person, whatever."
           checkbox-label="I agree to abide by the community pledge"
           :rules="[FriendRules.required]"
         />

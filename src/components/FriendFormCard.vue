@@ -4,6 +4,7 @@
     :style="cardStyles"
   >
     <VChip
+      v-if="!props.required"
       :color="badgeColor"
       size="small"
       variant="tonal"
@@ -62,12 +63,14 @@ const props = withDefaults(defineProps<Props>(), {
   cornerRadius: 8
 });
 
+// FriendDev: Kinda useless now since I added the v-if, but whatevs.
+//            I found it too visually noisy to have 'Required' on each card.
 const badgeText = computed(() => {
   return props.required ? "Required" : "Optional";
 })
 
 const badgeColor = computed(() => {
-  return props.required ? "error" : "info";
+  return props.required ? "badge-required" : "badge-optional";
 })
 
 const toUnit = (val: string | number) => {
@@ -85,7 +88,7 @@ const cardStyles = computed(() => {
   if (props.error) {
     // @FriendDev: Consider making these props.
     activeBorderColor = 'error';
-    activeBorderWidth = 2;
+    activeBorderWidth = 4;
   } else {
     activeBorderColor = props.borderColor;
     activeBorderWidth = props.borderWidth;
@@ -94,7 +97,7 @@ const cardStyles = computed(() => {
   return {
     backgroundColor: resolveColor(props.fillColor),
     borderColor: resolveColor(activeBorderColor),
-    borderWidth: toUnit(props.borderWidth),
+    borderWidth: toUnit(activeBorderWidth),
     borderRadius: toUnit(props.cornerRadius),
     borderStyle: 'solid',
     transition: 'border-color 0.2s ease'

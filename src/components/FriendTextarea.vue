@@ -11,7 +11,7 @@
       v-bind="$attrs"
       :rules="rules"
       :placeholder="placeholder"
-      variant="underlined"
+      variant="outlined"
       color="primary"
       auto-grow
       rows="3"
