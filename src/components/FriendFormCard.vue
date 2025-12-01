@@ -4,7 +4,7 @@
     :style="cardStyles"
   >
     <VChip
-      color="primary"
+      :color="badgeColor"
       size="small"
       variant="tonal"
       class="position-absolute top-0 right-0 ma-4 font-weight-bold"
@@ -64,6 +64,10 @@ const props = withDefaults(defineProps<Props>(), {
 
 const badgeText = computed(() => {
   return props.required ? "Required" : "Optional";
+})
+
+const badgeColor = computed(() => {
+  return props.required ? "error" : "info";
 })
 
 const toUnit = (val: string | number) => {
