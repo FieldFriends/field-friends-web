@@ -109,5 +109,6 @@ const cardStyles = computed(() => {
 .friend-form-card {
   display: block;
   box-sizing: border-box;
+  margin-bottom: 12px;
 }
 </style>

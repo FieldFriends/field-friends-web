@@ -4,7 +4,7 @@
       Sign-up Form
     </h1>
     
-    <VContainer style="max-width: 50rem;">
+    <VContainer style="max-width: 38rem;">
       <VForm @submit.prevent="submitForm" validate-on="submit lazy">
         
         <FriendTextField
