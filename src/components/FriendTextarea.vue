@@ -5,7 +5,7 @@
     :required="isRequired"
     :error="isError"
   >
-    <VTextField
+    <VTextarea
       v-model="model"
       v-model:error="isError"
       v-bind="$attrs"
@@ -13,6 +13,8 @@
       :placeholder="placeholder"
       variant="underlined"
       color="primary"
+      auto-grow
+      rows="3"
       hide-details="auto"
     />
   </FriendFormCard>
@@ -24,8 +26,7 @@ import FriendFormCard from './FriendFormCard.vue';
 
 defineOptions({ inheritAttrs: false });
 
-const model = defineModel<string | number | null>();
-
+const model = defineModel<string>();
 const isError = ref(false);
 
 type Props = {

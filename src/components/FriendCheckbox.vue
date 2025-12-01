@@ -5,13 +5,12 @@
     :required="isRequired"
     :error="isError"
   >
-    <VTextField
+    <VCheckbox
       v-model="model"
       v-model:error="isError"
       v-bind="$attrs"
       :rules="rules"
-      :placeholder="placeholder"
-      variant="underlined"
+      :label="checkboxLabel"
       color="primary"
       hide-details="auto"
     />
@@ -24,14 +23,13 @@ import FriendFormCard from './FriendFormCard.vue';
 
 defineOptions({ inheritAttrs: false });
 
-const model = defineModel<string | number | null>();
-
+const model = defineModel<boolean>();
 const isError = ref(false);
 
 type Props = {
-  label: string
+  label?: string
   description?: string
-  placeholder?: string
+  checkboxLabel: string // The text next to the checkmark
   rules?: any[]
 };
 

@@ -1,12 +1,3 @@
-<!-- <template>
-  <div
-    class="friend-form-card"
-    v-bind="$attrs"
-    :style="cardStyles"
-  >
-    <slot />
-  </div>
-</template> -->
 <template>
   <div
     class="friend-form-card position-relative"
@@ -56,7 +47,7 @@ type Props = {
   label?: string
   description?: string
   required: boolean
-  error?: string
+  error?: boolean
   fillColor?: string
   borderColor?: string
   borderWidth?: string | number
