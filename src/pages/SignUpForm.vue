@@ -4,7 +4,7 @@
       Sign-up Form
     </h1>
     
-    <VContainer style="max-width: 38rem;">
+    <VContainer style="max-width: 40rem;" class="px-6">
       <VForm @submit.prevent="submitForm" validate-on="submit lazy">
         
         <FriendTextField
@@ -83,14 +83,14 @@
           v-model="form.pledge"
           class="mb-6"
           label="Community Pledge"
-          description="Something something be a good person, whatever."
-          checkbox-label="I agree to abide by the community pledge"
+          checkbox-label="I'm at least 18 years old, and agree to be respectful to my group."
           :rules="[FriendRules.required]"
         />
 
-        <div class="d-flex justify-end">
+        <div class="d-flex justify-start pt-3 pb-10">
           <VBtn
             size="large"
+            color="primary"
             rounded
             variant="flat"
             type="submit"

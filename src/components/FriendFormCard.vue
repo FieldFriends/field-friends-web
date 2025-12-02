@@ -9,23 +9,21 @@
       size="small"
       variant="tonal"
       class="position-absolute top-0 right-0 ma-4 font-weight-bold"
-      style="z-index: 1;"
     >
       {{ badgeText }}
     </VChip>
 
-    <div class="px-6 pt-5 pb-2">
+    <div class="px-6 pt-5 pb-4">
       <VLabel
         v-if="props.label"
-        class="opacity-100 mb-1 d-block"
+        class="opacity-100 mb-1 d-block friend-form-card__label"
       >
         {{  props.label }}
       </VLabel>
 
       <div
         v-if="props.description"
-        class="mb-2 text-medium-emphasis"
-        style="font-size: 0.925rem; line-height: 1.5;"
+        class="mb-2 friend-form-card__description"
         v-html="props.description"
       />
 
@@ -33,6 +31,18 @@
     </div>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.friend-form-card__label {
+  font-size: 1.25rem;
+}
+
+.friend-form-card__description {
+  font-size: 0.975rem;
+  line-height: 1.3;
+  opacity: 80%;
+}
+</style>
 
 <script setup lang="ts">
 import { computed } from 'vue';
@@ -60,7 +70,7 @@ const props = withDefaults(defineProps<Props>(), {
   fillColor: 'white',
   borderColor: 'rgba(var(--v-border-color), var(--v-border-opacity))',
   borderWidth: 1,
-  cornerRadius: 8
+  cornerRadius: 10
 });
 
 // FriendDev: Kinda useless now since I added the v-if, but whatevs.
