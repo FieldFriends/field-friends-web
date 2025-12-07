@@ -8,7 +8,7 @@
       <VForm @submit.prevent="submitForm" validate-on="submit lazy">
         
         <FriendTextField
-          v-model="form.firstName"
+          v-model="form.name"
           class="mb-4"
           label="Preferred Name"
           description="<b>First</b> name or nickname only!"
@@ -22,7 +22,7 @@
           label="Age"
           type="number"
           placeholder="Your age in years"
-          :rules="[FriendRules.required]"
+          :rules="[FriendRules.required, FriendRules.age]"
         />
 
         <FriendRadioGroup
@@ -31,9 +31,12 @@
           label="Gender Identity"
           :rules="[FriendRules.required]"
         >
-          <VRadio label="Male" value="male" />
-          <VRadio label="Female" value="female" />
-          <VRadio label="Non-binary" value="nonbinary" />
+          <VRadio 
+            v-for="opt in GENDER_OPTIONS" 
+            :key="opt.value" 
+            :label="opt.label" 
+            :value="opt.value" 
+          />
         </FriendRadioGroup>
 
         <FriendRadioGroup
@@ -42,9 +45,12 @@
           label="University Affiliation"
           :rules="[FriendRules.required]"
         >
-          <VRadio label="Underclassman (Freshman or Sophomore)" value="Underclassman" />
-          <VRadio label="Upperclassman (Junior or Senior)" value="Upperclassman" />
-          <VRadio label="Graduate or Professional (Ph.D, Staff, etc)" value="GradsAndPros" />
+          <VRadio 
+            v-for="opt in AFFILIATION_OPTIONS" 
+            :key="opt.value" 
+            :label="opt.label" 
+            :value="opt.value"
+          />
         </FriendRadioGroup>
 
         <FriendTextarea
@@ -56,7 +62,7 @@
         />
 
         <FriendTextarea
-          v-model="form.activities"
+          v-model="form.hangout_style"
           class="mb-4"
           label="Friend groups often do different things. Describe 2 or 3 diverse ways you'd like to spend time with this group."
           description="Give us some range, like 'Grinding at the library, going to the ARC, or making cool projects together.'"
@@ -72,12 +78,22 @@
         />
 
         <FriendCheckbox
-          v-model="form.pledge"
+          v-model="pledge"
           class="mb-6"
           label="Community Pledge"
           checkbox-label="I'm at least 18 years old, and agree to be respectful to my group."
           :rules="[FriendRules.required]"
         />
+
+        <VAlert
+          v-if="store.error"
+          type="error"
+          variant="tonal"
+          class="mb-6"
+          closable
+        >
+          {{ store.error }}
+        </VAlert>
 
         <div class="d-flex justify-start pt-3 pb-10">
           <VBtn
@@ -86,7 +102,6 @@
             rounded
             variant="flat"
             type="submit"
-            :loading="loading"
             text="Submit" 
           />
         </div>
@@ -103,21 +118,35 @@ import FriendTextField from '@/components/FriendTextField.vue';
 import FriendTextarea from '@/components/FriendTextarea.vue';
 import FriendRadioGroup from '@/components/FriendRadioGroup.vue';
 import FriendCheckbox from '@/components/FriendCheckbox.vue';
+import { AFFILIATION_OPTIONS, GENDER_OPTIONS } from '@/config/FriendConfig';
+import { useAppStore } from '@/stores/app';
+import type { ProfileSubmission } from '@/types/schema';
 
-const loading = ref(false);
+const store = useAppStore();
+const formRef = ref<any>(null);
+const pledge = ref(false);
 
-const form = reactive({
-  firstName: '',
-  age: null,
-  gender: null,
-  affiliation: null,
+const form = reactive<Partial<ProfileSubmission>>({
+  name: '',
+  age: undefined,
+  gender: undefined,
+  affiliation: undefined,
   interests: '',
-  activities: '',
+  hangout_style: '',
   lore: '',
-  pledge: false
 });
 
-const submitForm = async (e: SubmitEvent) => {
+const submitForm = async () => {
+  const { valid } = await formRef.value.validate();
   
+  if (!valid) {
+    return;
+  }
+
+  const success = await store.submitSurvey(form as ProfileSubmission);
+  
+  if (success) {
+    alert("Success! We'll be in touch.");
+  }
 };
 </script>
