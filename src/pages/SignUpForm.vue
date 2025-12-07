@@ -17,14 +17,6 @@
         />
 
         <FriendTextField
-          v-model="form.email"
-          class="mb-4"
-          label="University Email"
-          placeholder="netid@illinois.edu"
-          :rules="[FriendRules.required, FriendRules.email]"
-        />
-
-        <FriendTextField
           v-model="form.age"
           class="mb-4"
           label="Age"
@@ -116,7 +108,6 @@ const loading = ref(false);
 
 const form = reactive({
   firstName: '',
-  email: '',
   age: null,
   gender: null,
   affiliation: null,
