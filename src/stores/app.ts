@@ -22,6 +22,7 @@ export const useAppStore = defineStore('app', {
       });
     },
 
+    //! TODO: Make this force refresh the access token before submit in case the user was idle/stale token.
     async submitSurvey(formData: ProfileSubmission) {
       if (!this.session) {
         this.error = 'You must have an active session to submit.';
