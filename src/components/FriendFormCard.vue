@@ -35,6 +35,8 @@
 <style lang="scss" scoped>
 .friend-form-card__label {
   font-size: 1.25rem;
+  white-space: normal;
+  height: auto;
 }
 
 .friend-form-card__description {

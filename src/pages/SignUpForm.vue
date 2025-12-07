@@ -1,5 +1,5 @@
 <template>
-  <div style="background-color: #FFE8DE; min-height: 100vh;" class="d-flex flex-column align-center pt-10">
+  <div style="background-color: #ffbeacff; min-height: 100vh;" class="d-flex flex-column align-center pt-10">
     <h1 class="mb-6">
       Sign-up Form
     </h1>
