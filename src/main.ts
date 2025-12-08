@@ -16,11 +16,6 @@ import { createApp } from 'vue'
 // Styles
 import 'unfonts.css'
 
-import { useAppStore } from '@/stores/app';
-
-const store = useAppStore();
-
-await store.initAuth();
 
 const app = createApp(App)
 
