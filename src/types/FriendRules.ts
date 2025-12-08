@@ -1,10 +1,10 @@
-import { AGE_LIMITS } from '@/config/FriendConfig';
+import { AGE_LIMITS, EMAIL_REGEX } from '@/config/FriendConfig';
 
 export const FriendRules = {
   required: (v: any) => !!v || 'Field is required',
 
   email: (v: string) => {
-    return !v || /^[A-Za-z0-9._%+-]+@illinois\.edu$/i.test(v) || 'Must be a valid @illinois.edu email';
+    return !v || EMAIL_REGEX.test(v) || 'Must be a valid @illinois.edu email';
   },
 
   age: (v: number | string) => {

@@ -3,6 +3,9 @@ export const AGE_LIMITS = {
   max: 29,
 } as const;
 
+// FriendDev: some_email@illinois.edu
+export const EMAIL_REGEX = /^[A-Za-z0-9._%+-]+@illinois\.edu$/i;
+
 export const AFFILIATION_OPTIONS = [
   { label: 'Underclassman (Freshman or Sophomore)', value: 'Underclassman' },
   { label: 'Upperclassman (Junior or Senior)', value: 'Upperclassman' },
