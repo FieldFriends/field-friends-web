@@ -17,8 +17,6 @@
     >
       <slot />
     </VRadioGroup>
-
-    <slot />
   </FriendFormCard>
 </template>
 

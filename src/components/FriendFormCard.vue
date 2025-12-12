@@ -50,9 +50,7 @@
                   variant="tonal"
                   class="font-weight-bold"
                 >
-                  <VIcon
-                    icon="mdi-lock-outline"
-                  />
+                  Not shared
                 </VChip>
               </template>
             </VTooltip>

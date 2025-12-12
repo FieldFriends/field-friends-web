@@ -7,6 +7,7 @@
     <VContainer style="max-width: 40rem;" class="px-6">
       <VForm @submit.prevent="submitForm" validate-on="blur">
         
+        <!-- TODO! Add char limit -->
         <FriendTextField
           v-model="form.name"
           class="mb-4"
@@ -17,6 +18,7 @@
           :rules="[FriendRules.required]"
         />
 
+        <!-- TODO!!!!! Change to select dropdown -->
         <FriendNumberInput
           v-model="form.age"
           class="mb-4"
@@ -44,6 +46,7 @@
           />
         </FriendRadioGroup>
 
+        <!-- TODO: Consider age separation instead of affiliation -->
         <FriendRadioGroup
           v-model="form.affiliation"
           class="mb-4"
@@ -59,6 +62,7 @@
           />
         </FriendRadioGroup>
 
+        <!-- TODO break up into smaller text inputs -->
         <FriendTextarea
           v-model="form.interests"
           class="mb-4"
@@ -71,12 +75,13 @@
         <FriendTextarea
           v-model="form.hangout_style"
           class="mb-4"
-          label="Friend groups often do different things. Describe 2 or 3 diverse ways you'd like to spend time with this group."
+          label="How would you like to spend time with this group?"
           description="Give us some range, like &quot;<i>Grinding at the library, going to the ARC, or making cool projects together.</i>&quot;"
           :shared="false"
           :rules="[FriendRules.required]"
         />
 
+        <!-- TODO: Remove? OR make more general for personality. -->
         <FriendTextarea
           v-model="form.lore"
           class="mb-4"
@@ -91,8 +96,10 @@
           label="What would you like your group to know about you?"
           shared
         >
-          <VBtn>
-            Copy from previous responses
+          <VBtn
+            color="secondary"
+          >
+            Copy from previous fields
           </VBtn>
         </FriendTextarea>
         
