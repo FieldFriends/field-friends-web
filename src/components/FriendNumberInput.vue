@@ -16,6 +16,8 @@
       color="primary"
       hide-details="auto"
     />
+
+    <slot />
   </FriendFormCard>
 </template>
 

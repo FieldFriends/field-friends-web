@@ -18,6 +18,8 @@
       rows="3"
       hide-details="auto"
     />
+    
+    <slot />
   </FriendFormCard>
 </template>
 

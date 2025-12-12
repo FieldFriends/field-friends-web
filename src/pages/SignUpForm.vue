@@ -90,12 +90,17 @@
           class="mb-4"
           label="What would you like your group to know about you?"
           shared
-        />
+        >
+          <VBtn>
+            Copy from previous responses
+          </VBtn>
+        </FriendTextarea>
+        
 
         <FriendCheckbox
           v-model="pledge"
           class="mb-6"
-          label="Community Pledge"
+          label="Just to confirm&hellip;"
           checkbox-label="I'm at least 18 years old, and agree to be respectful to my group."
           :rules="[FriendRules.required]"
         />
