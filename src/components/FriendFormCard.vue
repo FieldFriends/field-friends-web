@@ -25,7 +25,7 @@
             Optional
           </VChip>
           
-          <template v-if="props.shared">
+          <template v-if="props.shared === true">
             <VTooltip text="Shared with your group" location="top">
               <template #activator="{ props: tooltipProps }">
                 <VChip
@@ -40,7 +40,7 @@
               </template>
             </VTooltip>
           </template>
-          <template v-else>
+          <template v-if="props.shared === false">
             <VTooltip text="Not shared with your group" location="top">
               <template #activator="{ props: tooltipProps }">
                 <VChip
@@ -105,7 +105,7 @@ type Props = {
   borderColor?: string;
   borderWidth?: string | number;
   cornerRadius?: string | number;
-  shared?: boolean;
+  shared?: boolean | undefined;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -114,7 +114,7 @@ const props = withDefaults(defineProps<Props>(), {
   borderColor: 'rgba(var(--v-border-color), var(--v-border-opacity))',
   borderWidth: 1,
   cornerRadius: 10,
-  shared: false
+  shared: undefined
 });
 
 const toUnit = (val: string | number) => {

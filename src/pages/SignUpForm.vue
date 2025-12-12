@@ -24,6 +24,7 @@
           type="number"
           placeholder="Your age in years"
           control-variant="stacked"
+          :shared="false"
           :rules="[FriendRules.required, FriendRules.age]"
           
         />
@@ -32,6 +33,7 @@
           v-model="form.gender"
           class="mb-4"
           label="Gender Identity"
+          :shared="false"
           :rules="[FriendRules.required]"
         >
           <VRadio 
@@ -46,6 +48,7 @@
           v-model="form.affiliation"
           class="mb-4"
           label="University Affiliation"
+          :shared="false"
           :rules="[FriendRules.required]"
         >
           <VRadio 
@@ -61,6 +64,7 @@
           class="mb-4"
           label="List 3 to 5 of your top interests, hobbies, or passions."
           description="Include anything you'd enjoy connecting over. A new hobby, a long-time passion, or just a topic you like talking about."
+          :shared="false"
           :rules="[FriendRules.required]"
         />
 
@@ -69,6 +73,7 @@
           class="mb-4"
           label="Friend groups often do different things. Describe 2 or 3 diverse ways you'd like to spend time with this group."
           description="Give us some range, like &quot;<i>Grinding at the library, going to the ARC, or making cool projects together.</i>&quot;"
+          :shared="false"
           :rules="[FriendRules.required]"
         />
 
@@ -77,6 +82,7 @@
           class="mb-4"
           label="Lore"
           description="What are some cool projects you've worked on, or topics you know a lot about?"
+          :shared="false"
         />
         
         <FriendTextarea

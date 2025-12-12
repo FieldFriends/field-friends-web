@@ -35,7 +35,7 @@ type Props = {
   description?: string;
   placeholder?: string;
   rules?: any[];
-  shared?: boolean;
+  shared?: boolean | undefined;
 };
 
 const props = withDefaults(defineProps<Props>(), {

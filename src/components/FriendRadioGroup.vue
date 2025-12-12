@@ -33,11 +33,12 @@ type Props = {
   label: string;
   description?: string;
   rules?: any[];
-  shared?: boolean;
+  shared?: boolean | undefined;
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  rules: () => []
+  rules: () => [],
+  shared: undefined
 });
 
 const isRequired = computed(() => {
