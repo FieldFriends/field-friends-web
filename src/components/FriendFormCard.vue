@@ -3,23 +3,57 @@
     class="friend-form-card position-relative"
     :style="cardStyles"
   >
-    <VChip
-      v-if="!props.required"
-      :color="badgeColor"
-      size="small"
-      variant="tonal"
-      class="position-absolute top-0 right-0 ma-4 font-weight-bold"
-    >
-      {{ badgeText }}
-    </VChip>
-
     <div class="px-6 pt-5 pb-4">
-      <VLabel
-        v-if="props.label"
-        class="opacity-100 mb-1 d-block friend-form-card__label"
-      >
-        {{  props.label }}
-      </VLabel>
+      
+      <div class="d-flex justify-space-between align-start mb-1 gap-4">
+        
+        <VLabel
+          v-if="props.label"
+          class="opacity-100 d-block friend-form-card__label flex-grow-1 mr-4"
+        >
+          {{  props.label }}
+        </VLabel>
+
+        <div class="d-flex ga-2 flex-shrink-0">
+          <VChip
+            v-if="!props.required"
+            color="badge-optional"
+            size="small"
+            variant="tonal"
+            class="font-weight-bold"
+          >
+            Optional
+          </VChip>
+          
+          <template v-if="props.shared">
+            <VChip
+              color="badge-shared"
+              size="small"
+              variant="tonal"
+              class="font-weight-bold"
+            >
+              Shared
+            </VChip>
+          </template>
+          <template v-else>
+            <VChip
+              color="badge-optional"
+              size="small"
+              variant="tonal"
+              class="font-weight-bold"
+            >
+              <VTooltip text="Not shared with your group" location="top">
+                <template #activator="{ props }">
+                  <VIcon
+                    v-bind="props"
+                    icon="mdi-lock-outline"
+                  />
+                </template>
+              </VTooltip>
+            </VChip>
+          </template>
+        </div>
+      </div>
 
       <div
         v-if="props.description"
@@ -37,6 +71,7 @@
   font-size: 1.25rem;
   white-space: normal;
   height: auto;
+  word-break: break-word; 
 }
 
 .friend-form-card__description {
@@ -57,14 +92,15 @@ defineOptions({
 });
 
 type Props = {
-  label?: string
-  description?: string
-  required: boolean
-  error?: boolean
-  fillColor?: string
-  borderColor?: string
-  borderWidth?: string | number
-  cornerRadius?: string | number
+  label?: string;
+  description?: string;
+  required: boolean;
+  error?: boolean;
+  fillColor?: string;
+  borderColor?: string;
+  borderWidth?: string | number;
+  cornerRadius?: string | number;
+  shared?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -72,18 +108,9 @@ const props = withDefaults(defineProps<Props>(), {
   fillColor: 'white',
   borderColor: 'rgba(var(--v-border-color), var(--v-border-opacity))',
   borderWidth: 1,
-  cornerRadius: 10
+  cornerRadius: 10,
+  shared: false
 });
-
-// FriendDev: Kinda useless now since I added the v-if, but whatevs.
-//            I found it too visually noisy to have 'Required' on each card.
-const badgeText = computed(() => {
-  return props.required ? "Required" : "Optional";
-})
-
-const badgeColor = computed(() => {
-  return props.required ? "badge-required" : "badge-optional";
-})
 
 const toUnit = (val: string | number) => {
   if (val === undefined || val === null) {

@@ -4,6 +4,7 @@
     :description="props.description"
     :required="isRequired"
     :error="isError"
+    :shared="props.shared"
   >
     <VRadioGroup
       v-model="model"
@@ -29,9 +30,10 @@ const model = defineModel<any>();
 const isError = ref(false);
 
 type Props = {
-  label: string
-  description?: string
-  rules?: any[]
+  label: string;
+  description?: string;
+  rules?: any[];
+  shared?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {

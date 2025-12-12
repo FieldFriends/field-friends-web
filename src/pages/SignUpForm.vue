@@ -5,7 +5,7 @@
     </h1>
     
     <VContainer style="max-width: 40rem;" class="px-6">
-      <VForm @submit.prevent="submitForm" validate-on="submit lazy">
+      <VForm @submit.prevent="submitForm" validate-on="blur">
         
         <FriendTextField
           v-model="form.name"
@@ -13,16 +13,19 @@
           label="Preferred Name"
           description="<b>First</b> name or nickname only!"
           placeholder="Your name"
+          shared
           :rules="[FriendRules.required]"
         />
 
-        <FriendTextField
+        <FriendNumberInput
           v-model="form.age"
           class="mb-4"
           label="Age"
           type="number"
           placeholder="Your age in years"
+          control-variant="stacked"
           :rules="[FriendRules.required, FriendRules.age]"
+          
         />
 
         <FriendRadioGroup
@@ -74,7 +77,14 @@
           class="mb-4"
           label="Lore"
           description="What are some cool projects you've worked on, or topics you know a lot about?"
-          placeholder="Optional: Tell us your story..."
+        />
+        
+        <FriendTextarea
+          v-model="form.introduction"
+          class="mb-4"
+          label="What would you like your group to know about you?"
+          description="This will be shared with your group."
+          shared
         />
 
         <FriendCheckbox
@@ -134,6 +144,7 @@ const form = reactive<Partial<ProfileSubmission>>({
   interests: '',
   hangout_style: '',
   lore: '',
+  introduction: '',
 });
 
 const submitForm = async () => {
@@ -146,6 +157,7 @@ const submitForm = async () => {
   const success = await store.submitSurvey(form as ProfileSubmission);
   
   if (success) {
+    // TODO
     alert("Success! We'll be in touch.");
   }
 };

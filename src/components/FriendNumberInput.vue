@@ -6,16 +6,14 @@
     :error="isError"
     :shared="props.shared"
   >
-    <VTextarea
+    <VNumberInput
       v-model="model"
       v-model:error="isError"
       v-bind="$attrs"
       :rules="rules"
       :placeholder="placeholder"
-      variant="outlined"
+      variant="underlined"
       color="primary"
-      auto-grow
-      rows="3"
       hide-details="auto"
     />
   </FriendFormCard>
@@ -27,7 +25,8 @@ import FriendFormCard from './FriendFormCard.vue';
 
 defineOptions({ inheritAttrs: false });
 
-const model = defineModel<string>();
+const model = defineModel<number | null>();
+
 const isError = ref(false);
 
 type Props = {

@@ -4,6 +4,7 @@
     :description="props.description"
     :required="isRequired"
     :error="isError"
+    :shared="props.shared"
   >
     <VCheckbox
       v-model="model"
@@ -27,10 +28,11 @@ const model = defineModel<boolean>();
 const isError = ref(false);
 
 type Props = {
-  label?: string
-  description?: string
-  checkboxLabel: string // The text next to the checkmark
-  rules?: any[]
+  label?: string;
+  description?: string;
+  checkboxLabel: string;
+  rules?: any[];
+  shared?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {

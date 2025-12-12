@@ -20,6 +20,7 @@ export const ProfileSchema = z.object({
   interests: z.string().min(10, { message: 'Please tell us a bit more about your interests.' }),
   hangout_style: z.string().min(10, { message: 'Please share your hangout style.' }),
   lore: z.string().optional(),
+  introduction: z.string().optional(),
 });
 
 export type ProfileSubmission = z.infer<typeof ProfileSchema>;

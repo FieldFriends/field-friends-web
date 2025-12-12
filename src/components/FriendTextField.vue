@@ -4,6 +4,7 @@
     :description="props.description"
     :required="isRequired"
     :error="isError"
+    :shared="props.shared"
   >
     <VTextField
       v-model="model"
@@ -29,10 +30,11 @@ const model = defineModel<string | number | null>();
 const isError = ref(false);
 
 type Props = {
-  label: string
-  description?: string
-  placeholder?: string
-  rules?: any[]
+  label: string;
+  description?: string;
+  placeholder?: string;
+  rules?: any[];
+  shared?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {

@@ -20,6 +20,7 @@ export default createVuetify({
         colors: {
           'badge-required': '#e07b8cff',
           'badge-optional': '#7c8ea3ff',
+          'badge-shared': '#1bc236ff',
           'primary': '#ff5f05',
           'secondary': '#2f115fff',
           'tertiary': '#ffbeacff',
