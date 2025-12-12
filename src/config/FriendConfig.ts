@@ -15,7 +15,7 @@ export const AFFILIATION_OPTIONS = [
 export const GENDER_OPTIONS = [
   { label: 'Man', value: 'M' },
   { label: 'Woman', value: 'W' },
-  { label: 'Non-Binary', value: 'NB' },
+  { label: 'Non-binary', value: 'NB' },
 
   // FriendDev: "U" for "Unknown"
   { label: 'Prefer not to say', value: 'U' },

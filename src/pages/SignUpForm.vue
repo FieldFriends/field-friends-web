@@ -68,7 +68,7 @@
           v-model="form.hangout_style"
           class="mb-4"
           label="Friend groups often do different things. Describe 2 or 3 diverse ways you'd like to spend time with this group."
-          description="Give us some range, like 'Grinding at the library, going to the ARC, or making cool projects together.'"
+          description="Give us some range, like &quot;<i>Grinding at the library, going to the ARC, or making cool projects together.</i>&quot;"
           :rules="[FriendRules.required]"
         />
 
@@ -83,7 +83,6 @@
           v-model="form.introduction"
           class="mb-4"
           label="What would you like your group to know about you?"
-          description="This will be shared with your group."
           shared
         />
 

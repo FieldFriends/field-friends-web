@@ -26,31 +26,36 @@
           </VChip>
           
           <template v-if="props.shared">
-            <VChip
-              color="badge-shared"
-              size="small"
-              variant="tonal"
-              class="font-weight-bold"
-            >
-              Shared
-            </VChip>
+            <VTooltip text="Shared with your group" location="top">
+              <template #activator="{ props: tooltipProps }">
+                <VChip
+                  v-bind="tooltipProps"
+                  color="badge-shared"
+                  size="small"
+                  variant="tonal"
+                  class="font-weight-bold"
+                >
+                  Shared
+                </VChip>
+              </template>
+            </VTooltip>
           </template>
           <template v-else>
-            <VChip
-              color="badge-optional"
-              size="small"
-              variant="tonal"
-              class="font-weight-bold"
-            >
-              <VTooltip text="Not shared with your group" location="top">
-                <template #activator="{ props }">
+            <VTooltip text="Not shared with your group" location="top">
+              <template #activator="{ props: tooltipProps }">
+                <VChip
+                  v-bind="tooltipProps"
+                  color="badge-optional"
+                  size="small"
+                  variant="tonal"
+                  class="font-weight-bold"
+                >
                   <VIcon
-                    v-bind="props"
                     icon="mdi-lock-outline"
                   />
-                </template>
-              </VTooltip>
-            </VChip>
+                </VChip>
+              </template>
+            </VTooltip>
           </template>
         </div>
       </div>
