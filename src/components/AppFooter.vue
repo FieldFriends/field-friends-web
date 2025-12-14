@@ -6,7 +6,8 @@
     <div
       class="text-caption text-disabled"
     >
-      UIUC Friend Project - <i>Not affiliated with the University of Illinois at Urbana-Champaign</i>
+      Field Friends - <i>Not affiliated with the University of Illinois at Urbana-Champaign</i>
+      // TODO: Remove footer?
     </div>
   </v-footer>
 </template>
