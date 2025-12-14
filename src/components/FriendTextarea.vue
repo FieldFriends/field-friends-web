@@ -6,17 +6,19 @@
     :error="isError"
     :shared="props.shared"
   >
-    <VTextField
+    <VTextarea
       v-model="model"
       v-model:error="isError"
       v-bind="$attrs"
       :rules="rules"
       :placeholder="placeholder"
-      variant="underlined"
+      variant="outlined"
       color="primary"
+      auto-grow
+      rows="3"
       hide-details="auto"
     />
-
+    
     <slot />
   </FriendFormCard>
 </template>
@@ -27,8 +29,7 @@ import FriendFormCard from './FriendFormCard.vue';
 
 defineOptions({ inheritAttrs: false });
 
-const model = defineModel<string | number | null>();
-
+const model = defineModel<string>();
 const isError = ref(false);
 
 type Props = {
@@ -40,8 +41,7 @@ type Props = {
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  rules: () => [],
-  shared: undefined
+  rules: () => []
 });
 
 const isRequired = computed(() => {

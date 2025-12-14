@@ -12,9 +12,12 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AppFooter: typeof import('./components/AppFooter.vue')['default']
+    FriendCheckbox: typeof import('./components/FriendCheckbox.vue')['default']
     FriendFormCard: typeof import('./components/FriendFormCard.vue')['default']
+    FriendNumberInput: typeof import('./components/FriendNumberInput.vue')['default']
+    FriendRadioGroup: typeof import('./components/FriendRadioGroup.vue')['default']
+    FriendTextarea: typeof import('./components/FriendTextarea.vue')['default']
     FriendTextField: typeof import('./components/FriendTextField.vue')['default']
-    HelloWorld: typeof import('./components/HelloWorld.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }

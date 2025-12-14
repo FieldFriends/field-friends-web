@@ -6,7 +6,7 @@
     :error="isError"
     :shared="props.shared"
   >
-    <VTextField
+    <VNumberInput
       v-model="model"
       v-model:error="isError"
       v-bind="$attrs"
@@ -27,7 +27,7 @@ import FriendFormCard from './FriendFormCard.vue';
 
 defineOptions({ inheritAttrs: false });
 
-const model = defineModel<string | number | null>();
+const model = defineModel<number | null>();
 
 const isError = ref(false);
 

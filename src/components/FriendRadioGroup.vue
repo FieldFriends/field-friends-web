@@ -6,18 +6,17 @@
     :error="isError"
     :shared="props.shared"
   >
-    <VTextField
+    <VRadioGroup
       v-model="model"
       v-model:error="isError"
       v-bind="$attrs"
       :rules="rules"
-      :placeholder="placeholder"
-      variant="underlined"
       color="primary"
       hide-details="auto"
-    />
-
-    <slot />
+      class="mt-2"
+    >
+      <slot />
+    </VRadioGroup>
   </FriendFormCard>
 </template>
 
@@ -27,14 +26,12 @@ import FriendFormCard from './FriendFormCard.vue';
 
 defineOptions({ inheritAttrs: false });
 
-const model = defineModel<string | number | null>();
-
+const model = defineModel<any>();
 const isError = ref(false);
 
 type Props = {
   label: string;
   description?: string;
-  placeholder?: string;
   rules?: any[];
   shared?: boolean | undefined;
 };

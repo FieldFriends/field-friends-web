@@ -1,12 +1,88 @@
 <template>
   <div
-    class="friend-form-card"
-    v-bind="$attrs"
+    class="friend-form-card position-relative"
     :style="cardStyles"
   >
-    <slot />
+    <div class="px-6 pt-5 pb-4">
+      
+      <div class="d-flex justify-space-between align-start mb-1 gap-4">
+        
+        <VLabel
+          v-if="props.label"
+          class="opacity-100 d-block friend-form-card__label flex-grow-1 mr-4"
+        >
+          {{  props.label }}
+        </VLabel>
+
+        <div class="d-flex ga-2 flex-shrink-0">
+          <VChip
+            v-if="!props.required"
+            color="badge-optional"
+            size="small"
+            variant="tonal"
+            class="font-weight-bold"
+          >
+            Optional
+          </VChip>
+          
+          <template v-if="props.shared === true">
+            <VTooltip text="Shared with your group" location="top">
+              <template #activator="{ props: tooltipProps }">
+                <VChip
+                  v-bind="tooltipProps"
+                  color="badge-shared"
+                  size="small"
+                  variant="tonal"
+                  class="font-weight-bold"
+                >
+                  Shared
+                </VChip>
+              </template>
+            </VTooltip>
+          </template>
+          <template v-if="props.shared === false">
+            <VTooltip text="Not shared with your group" location="top">
+              <template #activator="{ props: tooltipProps }">
+                <VChip
+                  v-bind="tooltipProps"
+                  color="badge-optional"
+                  size="small"
+                  variant="tonal"
+                  class="font-weight-bold"
+                >
+                  Not shared
+                </VChip>
+              </template>
+            </VTooltip>
+          </template>
+        </div>
+      </div>
+
+      <div
+        v-if="props.description"
+        class="mb-2 friend-form-card__description"
+        v-html="props.description"
+      />
+
+      <slot />
+    </div>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.friend-form-card__label {
+  font-size: 1.25rem;
+  white-space: normal;
+  height: auto;
+  word-break: break-word; 
+}
+
+.friend-form-card__description {
+  font-size: 0.975rem;
+  line-height: 1.3;
+  opacity: 80%;
+}
+</style>
 
 <script setup lang="ts">
 import { computed } from 'vue';
@@ -19,19 +95,25 @@ defineOptions({
 });
 
 type Props = {
-  fillColor?: string
-  borderColor?: string
-  borderWidth?: string | number
-  cornerRadius?: string | number
+  label?: string;
+  description?: string;
+  required: boolean;
+  error?: boolean;
+  fillColor?: string;
+  borderColor?: string;
+  borderWidth?: string | number;
+  cornerRadius?: string | number;
+  shared?: boolean | undefined;
 };
 
 const props = withDefaults(defineProps<Props>(), {
+  required: true,
   fillColor: 'white',
   borderColor: 'rgba(var(--v-border-color), var(--v-border-opacity))',
   borderWidth: 1,
-  cornerRadius: 8
+  cornerRadius: 10,
+  shared: undefined
 });
-
 
 const toUnit = (val: string | number) => {
   if (val === undefined || val === null) {
@@ -41,14 +123,26 @@ const toUnit = (val: string | number) => {
   return typeof val === 'number' ? `${val}px` : val;
 };
 
-
 const cardStyles = computed(() => {
+  let activeBorderColor;
+  let activeBorderWidth;
+
+  if (props.error) {
+    // @FriendDev: Consider making these props.
+    activeBorderColor = 'error';
+    activeBorderWidth = 4;
+  } else {
+    activeBorderColor = props.borderColor;
+    activeBorderWidth = props.borderWidth;
+  }
+
   return {
     backgroundColor: resolveColor(props.fillColor),
-    borderColor: resolveColor(props.borderColor),
-    borderWidth: toUnit(props.borderWidth),
+    borderColor: resolveColor(activeBorderColor),
+    borderWidth: toUnit(activeBorderWidth),
     borderRadius: toUnit(props.cornerRadius),
-    borderStyle: 'solid'
+    borderStyle: 'solid',
+    transition: 'border-color 0.2s ease'
   };
 });
 </script>
@@ -57,5 +151,6 @@ const cardStyles = computed(() => {
 .friend-form-card {
   display: block;
   box-sizing: border-box;
+  margin-bottom: 12px;
 }
 </style>

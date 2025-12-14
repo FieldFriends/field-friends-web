@@ -18,8 +18,12 @@ export default createVuetify({
     themes: {
       light: {
         colors: {
-          // Add your custom color here
-          'form-text': '#000000',
+          'badge-required': '#e07b8cff',
+          'badge-optional': '#7c8ea3ff',
+          'badge-shared': '#1bc236ff',
+          'primary': '#ff5f05',
+          'secondary': '#4b2c7cff',
+          'tertiary': '#ffbeacff',
         },
       },
     },
