@@ -22,5 +22,28 @@ export const GENDER_OPTIONS = [
   { label: 'Prefer not to say', value: 'U' },
 ] as const;
 
+export const GROUP_ROLE_OPTIONS = [
+  {
+    label: "I'm usually the one making the plans",
+    value: 'Planner'
+  },
+  {
+    label: "I suggest the wild ideas",
+    value: 'Instigator'
+  },
+  {
+    label: "I make sure everyone's having a good time",
+    value: 'Glue'
+  },
+  {
+    label: "Drop a pin I'll pull up",
+    value: 'Adventurous'
+  },
+  {
+    label: "I'm just happy to be there :)",
+    value: 'Passenger'
+  },
+] as const;
+
 export const AFFILIATION_VALUES = AFFILIATION_OPTIONS.map(o => o.value) as [string, ...string[]];
 export const GENDER_VALUES = GENDER_OPTIONS.map(o => o.value) as [string, ...string[]];

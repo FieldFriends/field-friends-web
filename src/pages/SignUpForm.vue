@@ -62,32 +62,20 @@
           />
         </FriendRadioGroup>
 
-        <!-- TODO break up into smaller text inputs -->
         <FriendTextarea
-          v-model="form.interests"
           class="mb-4"
-          label="List 3 to 5 of your top interests, hobbies, or passions."
+          label=""
           description="Include anything you'd enjoy connecting over. A new hobby, a long-time passion, or just a topic you like talking about."
           :shared="false"
           :rules="[FriendRules.required]"
         />
 
         <FriendTextarea
-          v-model="form.hangout_style"
           class="mb-4"
-          label="How would you like to spend time with this group?"
-          description="Give us some range, like &quot;<i>Grinding at the library, going to the ARC, or making cool projects together.</i>&quot;"
+          label="How do you recharge over the weekend?"
+          description="Include anything you'd enjoy connecting over. A new hobby, a long-time passion, or just a topic you like talking about."
           :shared="false"
           :rules="[FriendRules.required]"
-        />
-
-        <!-- TODO: Remove? OR make more general for personality. -->
-        <FriendTextarea
-          v-model="form.lore"
-          class="mb-4"
-          label="Lore"
-          description="What are some cool projects you've worked on, or topics you know a lot about?"
-          :shared="false"
         />
         
         <FriendTextarea
