@@ -41,7 +41,26 @@ export const GROUP_ROLE_OPTIONS = [
   },
   {
     label: "I'm just happy to be there :)",
-    value: 'Passenger'
+    value: 'Friend'
+  },
+] as const;
+
+export const SOCIAL_ENERGY_OPTIONS = [
+  {
+    label: "Doing things alone, like gaming, reading, cooking, etc.",
+    value: 'Low'
+  },
+  {
+    label: "Gettin' a few friends together and hanging out",
+    value: 'Medium'
+  },
+  {
+    label: "Doing things in larger groups with more lively environments or activites",
+    value: 'High'
+  },
+  {
+    label: "Going to parties and meeting new people",
+    value: 'Energetic'
   },
 ] as const;
 
