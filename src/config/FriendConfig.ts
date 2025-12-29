@@ -55,7 +55,7 @@ export const SOCIAL_ENERGY_OPTIONS = [
     value: 'Medium'
   },
   {
-    label: "Doing things in larger groups with more lively environments or activites",
+    label: "Doing things with larger groups in more lively environments",
     value: 'High'
   },
   {
@@ -64,5 +64,8 @@ export const SOCIAL_ENERGY_OPTIONS = [
   },
 ] as const;
 
+
 export const AFFILIATION_VALUES = AFFILIATION_OPTIONS.map(o => o.value) as [string, ...string[]];
 export const GENDER_VALUES = GENDER_OPTIONS.map(o => o.value) as [string, ...string[]];
+export const GROUP_ROLE_VALUES = GROUP_ROLE_OPTIONS.map(o => o.value) as [string, ...string[]];
+export const SOCIAL_ENERGY_VALUES = SOCIAL_ENERGY_OPTIONS.map(o => o.value) as [string, ...string[]];
