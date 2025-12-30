@@ -26,7 +26,7 @@
           </VChip>
           
           <template v-if="props.shared === true">
-            <VTooltip text="Shared with your group" location="top">
+            <VTooltip text="What you enter will be shared with your group" location="top">
               <template #activator="{ props: tooltipProps }">
                 <VChip
                   v-bind="tooltipProps"
@@ -41,7 +41,7 @@
             </VTooltip>
           </template>
           <template v-if="props.shared === false">
-            <VTooltip text="Not shared with your group" location="top">
+            <VTooltip text="What you enter will not be shared with your group" location="top">
               <template #activator="{ props: tooltipProps }">
                 <VChip
                   v-bind="tooltipProps"

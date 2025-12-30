@@ -28,7 +28,7 @@ export const GROUP_ROLE_OPTIONS = [
     value: 'Planner'
   },
   {
-    label: "I suggest the wild ideas",
+    label: "I come up with the wild ideas",
     value: 'Instigator'
   },
   {
@@ -51,7 +51,7 @@ export const SOCIAL_ENERGY_OPTIONS = [
     value: 'Low'
   },
   {
-    label: "Gettin' a few friends together and hanging out",
+    label: "Hanging out with a small group of friends",
     value: 'Medium'
   },
   {
