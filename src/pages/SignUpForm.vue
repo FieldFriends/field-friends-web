@@ -25,6 +25,7 @@
           placeholder="Select your age"
           variant="underlined"
           bg-color="white"
+          :shared="false"
           :rules="[FriendRules.required]"
         />
 
@@ -59,22 +60,6 @@
         </FriendRadioGroup>
 
         <FriendRadioGroup
-          v-model="form.group_role"
-          class="mb-4"
-          label="In a group of friends, which role do you usually fall into?"
-          :shared="false"
-          :rules="[FriendRules.required]"
-        >
-          <VRadio 
-            v-for="opt in GROUP_ROLE_OPTIONS" 
-            :key="opt.value" 
-            :label="opt.label" 
-            :value="opt.value"
-            class="mb-2"
-          />
-        </FriendRadioGroup>
-
-        <FriendRadioGroup
           v-model="form.social_energy"
           class="mb-4"
           label="How do you recharge over the weekend?"
@@ -102,8 +87,8 @@
         <FriendTextarea
           v-model="form.lore"
           class="mb-4"
-          label="If you had to give a 10-minute TED Talk with no preparation, what would it be about?"
-          description="This can be about literally anything (a video game, a history fact, knitting, basketball, etc.)."
+          label="If you met up with this group, what would you do together?"
+          description="Feel free to enter a range of activites (e.g., <i>Watching movies at home, going to the bars, and playing basketball</i>)."
           :shared="false"
           :rules="[FriendRules.required]"
         />
@@ -123,11 +108,13 @@
         </FriendTextarea>
         
 
+        <!-- TODO! Rework into a modal or something better. Not now, eventually. It's not going in the DB so idc yet. -->
         <FriendCheckbox
           v-model="pledge"
           class="mb-6"
           label="Just to confirm&hellip;"
-          checkbox-label="I certify I am 18+ years old. I acknowledge that Field Friends is an independent project and does not conduct background checks. I agree to meet my group only in public places and assume all risks."
+          checkbox-label="I am 18+ years old. I acknowledge that Field Friends is an independent project and doesn't fully vet users."
+          description="Be smart and meet in public places!"
           :rules="[FriendRules.required]"
         />
 
@@ -170,7 +157,6 @@ import FriendCheckbox from '@/components/FriendCheckbox.vue';
 import { 
   AFFILIATION_OPTIONS, 
   GENDER_OPTIONS,
-  GROUP_ROLE_OPTIONS,
   SOCIAL_ENERGY_OPTIONS,
   AGE_LIMITS 
 } from '@/config/FriendConfig';
@@ -194,8 +180,7 @@ const form = reactive<Partial<ProfileSubmission>>({
   age: undefined,
   gender: undefined,
   affiliation: undefined,
-  group_role: undefined,
-  social_battery: undefined,
+  social_energy: undefined,
   interests: '',
   hangout_style: '',
   lore: '',
@@ -213,7 +198,7 @@ const submitForm = async () => {
   
   if (success) {
     // TODO
-    alert("Success! We'll be in touch.");
+    alert("implement");
   }
 };
 </script>

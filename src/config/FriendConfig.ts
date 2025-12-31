@@ -22,29 +22,6 @@ export const GENDER_OPTIONS = [
   { label: 'Prefer not to say', value: 'U' },
 ] as const;
 
-export const GROUP_ROLE_OPTIONS = [
-  {
-    label: "I'm usually the one making the plans",
-    value: 'Planner'
-  },
-  {
-    label: "I come up with the wild ideas",
-    value: 'Instigator'
-  },
-  {
-    label: "I make sure everyone's having a good time",
-    value: 'Glue'
-  },
-  {
-    label: "Drop a pin I'll pull up",
-    value: 'Adventurous'
-  },
-  {
-    label: "I'm just happy to be there :)",
-    value: 'Friend'
-  },
-] as const;
-
 export const SOCIAL_ENERGY_OPTIONS = [
   {
     label: "Doing things alone, like gaming, reading, cooking, etc.",
@@ -67,5 +44,4 @@ export const SOCIAL_ENERGY_OPTIONS = [
 
 export const AFFILIATION_VALUES = AFFILIATION_OPTIONS.map(o => o.value) as [string, ...string[]];
 export const GENDER_VALUES = GENDER_OPTIONS.map(o => o.value) as [string, ...string[]];
-export const GROUP_ROLE_VALUES = GROUP_ROLE_OPTIONS.map(o => o.value) as [string, ...string[]];
 export const SOCIAL_ENERGY_VALUES = SOCIAL_ENERGY_OPTIONS.map(o => o.value) as [string, ...string[]];
