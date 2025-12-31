@@ -85,7 +85,7 @@
         />
 
         <FriendTextarea
-          v-model="form.lore"
+          v-model="form.activities"
           class="mb-4"
           label="If you met up with this group, what would you do together?"
           description="Feel free to enter a range of activites (e.g., <i>Watching movies at home, going to the bars, and playing basketball</i>)."
@@ -182,8 +182,7 @@ const form = reactive<Partial<ProfileSubmission>>({
   affiliation: undefined,
   social_energy: undefined,
   interests: '',
-  hangout_style: '',
-  lore: '',
+  activities: '',
   introduction: '',
 });
 

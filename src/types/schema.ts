@@ -1,5 +1,10 @@
 import { z } from 'zod';
-import { AGE_LIMITS, AFFILIATION_VALUES, GENDER_VALUES } from '@/config/FriendConfig';
+import {
+  AGE_LIMITS,
+  AFFILIATION_VALUES,
+  GENDER_VALUES,
+  SOCIAL_ENERGY_VALUES
+} from '@/config/FriendConfig';
 
 export const ProfileSchema = z.object({
   name: z.string().min(1, { message: 'Name is required' }).max(50),
@@ -17,9 +22,14 @@ export const ProfileSchema = z.object({
     message: 'Please select your affiliation'
   }),
 
-  interests: z.string().min(10, { message: 'Please tell us a bit more about your interests.' }),
-  hangout_style: z.string().min(10, { message: 'Please share your hangout style.' }),
-  lore: z.string().optional(),
+  social_energy: z.enum(SOCIAL_ENERGY_VALUES, {
+    message: 'Please select how you recharge'
+  }),
+
+  interests: z.string().min(10, { message: 'Please write a bit more about your interests.' }),
+
+  activities: z.string().min(10, { message: 'Please write a bit more.' }),
+
   introduction: z.string().optional(),
 });
 
