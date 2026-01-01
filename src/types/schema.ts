@@ -39,7 +39,10 @@ export const ProfileSchema = z.object({
     .min(10, { message: 'Must be at least 10 characters' })
     .max(1200, { message: 'Response must be 1200 characters or fewer' }),
 
-  introduction: z.string().optional(),
+  introduction: z.string()
+    .trim()
+    .max(1200, { message: 'Response must be 1200 characters or fewer' })
+    .optional(),
 });
 
 export type ProfileSubmission = z.infer<typeof ProfileSchema>;
