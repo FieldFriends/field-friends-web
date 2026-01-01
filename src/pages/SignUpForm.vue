@@ -14,7 +14,7 @@
           description="<b>First</b> name or nickname only!"
           placeholder="Your name"
           shared
-          :rules="[FriendRules.required]"
+          :rules="rule('name')"
         />
 
         <FriendSelect
@@ -26,7 +26,7 @@
           variant="underlined"
           bg-color="white"
           :shared="false"
-          :rules="[FriendRules.required]"
+          :rules="rule('age')"
         />
 
         <FriendRadioGroup
@@ -34,7 +34,7 @@
           class="mb-4"
           label="Gender Identity"
           :shared="false"
-          :rules="[FriendRules.required]"
+          :rules="rule('gender')"
         >
           <VRadio 
             v-for="opt in GENDER_OPTIONS" 
@@ -49,7 +49,7 @@
           class="mb-4"
           label="University Affiliation"
           :shared="false"
-          :rules="[FriendRules.required]"
+          :rules="rule('affiliation')"
         >
           <VRadio 
             v-for="opt in AFFILIATION_OPTIONS" 
@@ -64,7 +64,7 @@
           class="mb-4"
           label="How do you recharge over the weekend?"
           :shared="false"
-          :rules="[FriendRules.required]"
+          :rules="rule('social_energy')"
         >
           <VRadio 
             v-for="opt in SOCIAL_ENERGY_OPTIONS" 
@@ -81,7 +81,7 @@
           label="What is a hobby, topic, or activity you are currently really into?"
           description="Tell us <b>why</b> you enjoy it (e.g., <i>I enjoy bouldering because it feels like solving a puzzle while exercising</i>)."
           :shared="false"
-          :rules="[FriendRules.required]"
+          :rules="rule('interests')"
         />
 
         <FriendTextarea
@@ -90,7 +90,7 @@
           label="If you met up with this group, what would you do together?"
           description="Feel free to enter a range of activites (e.g., <i>Watching movies at home, going to the bars, and playing basketball</i>)."
           :shared="false"
-          :rules="[FriendRules.required]"
+          :rules="rule('activities')"
         />
         
         <FriendTextarea
@@ -99,6 +99,7 @@
           label="How do you want to be introduced to your group?"
           description="This will be shared with your group."
           shared
+          :rules="rule('introduction')"
         >
           <VBtn
             color="secondary"
@@ -115,7 +116,7 @@
           label="Just to confirm&hellip;"
           checkbox-label="I am 18+ years old. I acknowledge that Field Friends is an independent project and doesn't fully vet users."
           description="Be smart and meet in public places!"
-          :rules="[FriendRules.required]"
+          :rules="[(v: any) => !!v || 'You must agree to submit your response']"
         />
 
         <VAlert
@@ -148,7 +149,6 @@
 
 <script setup lang="ts">
 import { ref, reactive, computed } from 'vue';
-import { FriendRules } from '@/types/FriendRules';
 import FriendTextField from '@/components/FriendTextField.vue';
 import FriendTextarea from '@/components/FriendTextarea.vue';
 import FriendRadioGroup from '@/components/FriendRadioGroup.vue';
@@ -161,11 +161,14 @@ import {
   AGE_LIMITS 
 } from '@/config/FriendConfig';
 import { useAppStore } from '@/stores/app';
-import type { ProfileSubmission } from '@/types/schema';
+import { ProfileSchema, type ProfileSubmission } from '@/types/schema';
+import { useZodRules } from '@/composables/useZodRules';
 
 const store = useAppStore();
 const formRef = ref<any>(null);
 const pledge = ref(false);
+
+const { rule } = useZodRules(ProfileSchema);
 
 const ageOptions = computed(() => {
   const range = [];
@@ -190,6 +193,10 @@ const submitForm = async () => {
   const { valid } = await formRef.value.validate();
   
   if (!valid) {
+    return;
+  }
+
+  if (!pledge.value) {
     return;
   }
 
