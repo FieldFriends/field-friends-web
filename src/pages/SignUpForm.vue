@@ -82,6 +82,7 @@
           description="Tell us <b>why</b> you enjoy it (e.g., <i>I enjoy bouldering because it feels like solving a puzzle while exercising</i>)."
           :shared="false"
           :rules="rule('interests')"
+          :max-rows="10"
         />
 
         <FriendTextarea
@@ -91,6 +92,7 @@
           description="Feel free to enter a range of activites (e.g., <i>Watching movies at home, going to the bars, and playing basketball</i>)."
           :shared="false"
           :rules="rule('activities')"
+          :max-rows="10"
         />
         
         <FriendTextarea
@@ -100,6 +102,7 @@
           description="This will be shared with your group."
           shared
           :rules="rule('introduction')"
+          :max-rows="10"
         >
           <VBtn
             color="secondary"
