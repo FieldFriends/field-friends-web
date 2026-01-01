@@ -7,7 +7,10 @@ import {
 } from '@/config/FriendConfig';
 
 export const ProfileSchema = z.object({
-  name: z.string().min(1, { message: 'Name is required' }).max(50),
+  name: z.string()
+    .trim()
+    .min(1, { message: 'Preferred name is required' })
+    .max(50, { message: 'Name must be 50 characters or fewer' }),
 
   age: z.coerce.number()
     .int()
@@ -15,20 +18,26 @@ export const ProfileSchema = z.object({
     .max(AGE_LIMITS.max, { message: `Must be under ${AGE_LIMITS.max}` }),
 
   gender: z.enum(GENDER_VALUES, {
-    message: 'Please select a gender option'
+    error: () => ({ message: 'Gender identity is required' })
   }),
 
   affiliation: z.enum(AFFILIATION_VALUES, {
-    message: 'Please select your affiliation'
+    error: () => ({ message: 'University affiliation is required' })
   }),
 
   social_energy: z.enum(SOCIAL_ENERGY_VALUES, {
-    message: 'Please select how you recharge'
+    error: () => ({ message: 'Selection is required' })
   }),
 
-  interests: z.string().min(10, { message: 'Please write a bit more about your interests.' }),
+  interests: z.string()
+    .trim()
+    .min(10, { message: 'Must be at least 10 characters' })
+    .max(1200, { message: 'Response must be 1200 characters or fewer' }),
 
-  activities: z.string().min(10, { message: 'Please write a bit more.' }),
+  activities: z.string()
+    .trim()
+    .min(10, { message: 'Must be at least 10 characters' })
+    .max(1200, { message: 'Response must be 1200 characters or fewer' }),
 
   introduction: z.string().optional(),
 });
