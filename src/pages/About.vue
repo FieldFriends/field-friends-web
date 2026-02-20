@@ -1,7 +1,7 @@
 <template>
   <v-container class="fill-height d-flex flex-column justify-center align-center text-center">
     <h1 class="text-h2 font-weight-bold mb-6 text-primary">
-      About Us
+      About
     </h1>
 
     <v-icon
