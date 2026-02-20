@@ -87,6 +87,7 @@ const handleSubmit = async () => {
     emit('next');
     
   } catch (err: any) {
+    // TODO @FriendDev change error handling.
     console.error('Login error:', err);
     
     emit('error',  err.message || 'Failed to send login code.');
