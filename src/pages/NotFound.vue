@@ -9,7 +9,7 @@
       Page not found
     </h2>
 
-    <p class="text-body-1 mb-8">
+    <p class="text-body-1 text-primary mb-8">
       We looked, but we couldn't find the page you were looking for.
     </p>
 
