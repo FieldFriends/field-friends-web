@@ -38,7 +38,6 @@ import FriendTextField from '@/components/FriendTextField.vue';
 import { EMAIL_REGEX } from '#shared/friendConfig';
 import { login } from '@/services/endpoints/login';
 
-// TODO @FriendDev CRITICAL, if valid session, maybe just send to form?
 
 const userEmail = defineModel<string>({ required: true });
 
@@ -86,10 +85,7 @@ const handleSubmit = async () => {
     // FriendDev: Login succeeded, proceed.
     emit('next');
     
-  } catch (err: any) {
-    // TODO @FriendDev change error handling.
-    console.error('Login error:', err);
-    
+  } catch (err: any) {    
     emit('error',  err.message || 'Failed to send login code.');
   } finally {
     loading.value = false;

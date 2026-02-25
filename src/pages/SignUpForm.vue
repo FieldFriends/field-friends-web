@@ -371,8 +371,7 @@ const submitForm = async () => {
   const result = ProfileSchema.safeParse(form);
 
   if (!result.success) {
-    // TODO handle better.
-    console.error("Error on form submission.");
+    showSnackbar('Failed to parse form responses.', 'error');
 
     return;
   }
