@@ -25,6 +25,9 @@ export default createVuetify({
     VTooltip: {
       contentClass: 'bg-primary text-white rounded-lg',
     },
+    VSnackbar: {
+      variant: 'elevated',
+    },
   },
   theme: {
     defaultTheme: 'light',

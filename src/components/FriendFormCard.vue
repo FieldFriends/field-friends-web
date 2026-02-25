@@ -28,7 +28,7 @@
           </v-chip>
           
           <template v-if="props.shared === true">
-            <v-tooltip text="What you enter will be shared with your group" :opacity="100" location="top">
+            <v-tooltip text="What you enter will be shared with your group" location="top">
               <template #activator="{ props: tooltipProps }">
                 <v-chip
                   v-bind="tooltipProps"
