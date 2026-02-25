@@ -24,6 +24,12 @@
         title="FAQ"
         @click="drawer = false"
       />
+      <v-list-item
+        :to="AppRoutes.Legal.path"
+        prepend-icon="mdi-scale-balance"
+        title="Legal"
+        @click="drawer = false"
+      />
     </v-list>
   </v-navigation-drawer>
 
@@ -50,6 +56,7 @@
       <v-btn variant="text" :to="AppRoutes.Home.path" class="text-none">Home</v-btn>
       <v-btn variant="text" :to="AppRoutes.About.path" class="text-none">About</v-btn>
       <v-btn variant="text" :to="AppRoutes.FAQ.path" class="text-none">FAQ</v-btn>
+      <v-btn variant="text" :to="AppRoutes.Legal.path" class="text-none">Legal</v-btn>
     </div>
 
     <v-divider

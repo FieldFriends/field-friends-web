@@ -62,6 +62,12 @@ const routes = [
     meta: { requiresAuth: false },
   },
   {
+    path: AppRoutes.Legal.path,
+    name: AppRoutes.Legal.name,
+    component: () => import('@/pages/Legal.vue'),
+    meta: { requiresAuth: false },
+  },
+  {
     path: AppRoutes.Login.path,
     name: AppRoutes.Login.name,
     // FriendDev: Lazy load the login page so it doesn't slow down the homepage load

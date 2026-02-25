@@ -1,26 +1,68 @@
 <template>
-  <v-container class="fill-height d-flex flex-column justify-center align-center text-center">
-    <h1 class="text-h2 font-weight-bold mb-6 text-primary">
-      About
-    </h1>
+  <div class="about-page bg-background text-primary d-flex flex-column">
+    <v-container class="flex-grow-1 pt-12 pb-16 about-page__content">
+      <h1 class="text-h2 font-weight-bold mb-8 text-primary mt-md-8 text-center" id="about-heading" tabindex="-1">
+        About Us
+      </h1>
 
-    <v-icon
-      icon="mdi-hammer-wrench"
-      size="96"
-      color="secondary"
-      class="mb-8 opacity-50"
-    />
+      <section class="mb-12" aria-labelledby="mission-heading">
+        <h2 id="mission-heading" class="text-h4 font-weight-bold mb-4 text-primary">Our Mission</h2>
+        <p class="text-body-1 text-secondary mb-4 page-text">
+          Our goal is simple: <strong class="text-primary font-italic font-eb-garamond">&OpenCurlyDoubleQuote;To help people in the university community make friends by matching people into small groups based on shared interests.&CloseCurlyDoubleQuote;</strong>
+        </p>
+      </section>
 
-    <p class="text-h5 text-secondary font-dm-sans font-weight-regular mb-12">
-      Under construction. Check back soon!
-    </p>
+      <v-divider class="mb-12 border-opacity-25" color="secondary" aria-hidden="true" />
 
-    <v-btn
-      size="large"
-      to="/"
-      prepend-icon="mdi-home"
-    >
-      Go Back Home
-    </v-btn>
-  </v-container>
+      <section class="mb-12" aria-labelledby="story-heading">
+        <h2 id="story-heading" class="text-h4 font-weight-bold mb-4 text-primary">The Story</h2>
+        <p class="text-body-1 text-secondary mb-4 page-text">
+          Finding genuine friends on a massive campus can be challenging. Often, we meet people based purely on proximity—who sits next to us in class, or who lives on our dorm floor. While these connections are valuable, they don't always translate into shared passions.
+        </p>
+        <p class="text-body-1 text-secondary mb-4 page-text">
+          Field Friends was created to help combat loneliness and foster connections that are rooted in mutual interests. By moving beyond just physical proximity, we aim to help you find your people.
+        </p>
+      </section>
+
+      <v-divider class="mb-12 border-opacity-25" color="secondary" aria-hidden="true" />
+
+      <section class="mb-12" aria-labelledby="process-heading">
+        <h2 id="process-heading" class="text-h4 font-weight-bold mb-4 text-primary">The Process</h2>
+        <p class="text-body-1 text-secondary mb-4 page-text">
+          1. <strong>Sign Up:</strong> You fill out a short survey detailing your hobbies, interests, and social preferences.
+        </p>
+        <p class="text-body-1 text-secondary mb-4 page-text">
+          2. <strong>The Math:</strong> Once a month, our system uses natural language processing (NLP) to analyze the semantic meaning of your responses. It finds 2-3 other people whose interests align with yours while balancing social energy.
+        </p>
+        <p class="text-body-1 text-secondary mb-4 page-text">
+          3. <strong>The Group Reveal:</strong> You’ll receive an email introducing you to your new small group. From there, it's up to you to plan a meetup!
+        </p>
+      </section>
+
+      <v-divider class="mb-12 border-opacity-25" color="secondary" aria-hidden="true" />
+
+      <section class="mb-8" aria-labelledby="disclaimer-heading">
+        <h2 id="disclaimer-heading" class="text-h4 font-weight-bold mb-4 text-primary">Not Affiliated</h2>
+        <p class="text-body-1 text-secondary page-text">
+          Field Friends is an independent project run by private individuals. We are <strong class="text-primary">not</strong> affiliated with, endorsed by, or sponsored by the University of Illinois Urbana-Champaign (UIUC) or any of its departments.
+        </p>
+      </section>
+
+    </v-container>
+  </div>
 </template>
+
+<style scoped lang="scss">
+.about-page {
+  min-height: 100vh;
+  
+  &__content {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .page-text {
+    line-height: 1.8;
+  }
+}
+</style>
