@@ -136,6 +136,40 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: setupLayouts(routes),
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition;
+    }
+    if (to.hash) {
+      return new Promise((resolve) => {
+        // FriendDev: Set a maximum loading time to avoid infinite loops.
+        const startTime = Date.now();
+        const maxWaitTime = 3000;
+
+        const checkAndScroll = () => {
+          // FriendDev: Get the element to scroll to.
+          const el = document.getElementById(to.hash.substring(1));
+
+          if (el) {
+            // FriendDev: Scroll to the element.
+            resolve({ el, behavior: 'smooth' });
+          } else if (Date.now() - startTime < maxWaitTime) {
+            // FriendDev: Wait for next frame and check again.
+            requestAnimationFrame(checkAndScroll);
+          } else {
+            // FriendDev: Give up after maxWaitTime to avoid infinite loop.
+            resolve({ top: 0 });
+          }
+        };
+
+        // FriendDev: Start checking for the element.
+        requestAnimationFrame(checkAndScroll);
+      });
+    }
+
+    // FriendDev: Default to top of the page.
+    return { top: 0 };
+  },
 });
 
 // FriendDev: Frontend route guard.
