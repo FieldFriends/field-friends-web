@@ -22,6 +22,9 @@ export default createVuetify({
       rounded: 'lg',
       class: 'font-weight-bold text-body-1',
     },
+    VTooltip: {
+      contentClass: 'bg-primary text-white rounded-lg',
+    },
   },
   theme: {
     defaultTheme: 'light',
