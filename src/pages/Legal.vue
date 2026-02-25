@@ -31,6 +31,31 @@
         <p class="text-body-1 text-secondary mb-4 page-text">
           We reserve the right to ban or remove users who violate the spirit of the project, act maliciously, or are reported for harmful behavior, at our sole discretion.
         </p>
+
+        <h3 class="text-h6 font-weight-bold mb-2 text-primary font-playfair">Intellectual Property</h3>
+        <p class="text-body-1 text-secondary mb-4 page-text">
+          Field Friends, including its design, text, graphics, and other content, is the intellectual property of its creators. You agree not to copy, scrape, modify, or distribute any part of the service without explicit permission.
+        </p>
+
+        <h3 class="text-h6 font-weight-bold mb-2 text-primary font-playfair">Third-Party Links</h3>
+        <p class="text-body-1 text-secondary mb-4 page-text">
+          Our service may contain links to third-party web sites or services that are not owned or controlled by Field Friends. We have no control over, and assume no responsibility for, the content, privacy policies, or practices of any third-party web sites or services.
+        </p>
+
+        <h3 class="text-h6 font-weight-bold mb-2 text-primary font-playfair">Changes to Terms</h3>
+        <p class="text-body-1 text-secondary mb-4 page-text">
+          We reserve the right to modify or replace these Terms at any time. By continuing to access or use our service after those revisions become effective, you agree to be bound by the revised terms.
+        </p>
+
+        <h3 class="text-h6 font-weight-bold mb-2 text-primary font-playfair">Severability</h3>
+        <p class="text-body-1 text-secondary mb-4 page-text">
+          If any provision of these Terms is held to be unenforceable or invalid, such provision will be changed and interpreted to accomplish the objectives of such provision to the greatest extent possible under applicable law and the remaining provisions will continue in full force and effect.
+        </p>
+
+        <h3 class="text-h6 font-weight-bold mb-2 text-primary font-playfair">Governing Law</h3>
+        <p class="text-body-1 text-secondary mb-4 page-text">
+          These Terms shall be governed and construed in accordance with the laws of the State of Illinois, United States, without regard to its conflict of law provisions.
+        </p>
       </section>
 
       <v-divider class="mb-12 border-opacity-25" color="secondary" aria-hidden="true" />
@@ -82,6 +107,11 @@
         <h3 class="text-h6 font-weight-bold mb-2 text-primary font-playfair">Reporting</h3>
         <p class="text-body-1 text-secondary mb-4 page-text">
           Because we do not have an investigative capacity, we ask that users report any serious incidents or immediate threats directly to local authorities or the university's Title IX office. You may inform us at <strong>fieldfriends.team@gmail.com</strong> so we can take immediate action to ban the offending individual from future use of the service.
+        </p>
+
+        <h3 class="text-h6 font-weight-bold mb-2 text-primary font-playfair">Indemnification</h3>
+        <p class="text-body-1 text-secondary mb-4 page-text">
+          You agree to defend, indemnify, and hold harmless Field Friends and its creators from and against any and all claims, damages, obligations, losses, liabilities, costs or debt, and expenses arising from your use of and access to the service or your violation of these Terms.
         </p>
       </section>
 

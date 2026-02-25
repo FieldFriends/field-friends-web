@@ -41,7 +41,7 @@ const faqs = [
   },
   {
     question: "Is my data safe?",
-    answerHtml: "Yes. All your information is encrypted before it's saved. Once matches are sent out for a round, that round's data is permanently deleted. You can read the specific details of our local encryption and data handling on our <a href='/legal' class='text-primary font-weight-bold text-decoration-none'>Legal page</a>."
+    answerHtml: "Yes. All your information is encrypted before it's saved. Once matches are sent out for a round, that round's data is permanently deleted. You can read the specific details of our local encryption and data handling in our <a href='/legal#privacy-heading' class='text-primary font-weight-bold text-decoration-none'>Privacy Policy</a>."
   },
   {
     question: "How will I be contacted?",

@@ -145,8 +145,8 @@
         />
 
         <friend-form-card
-          label="Terms & Safety"
-          description="Please review and agree to the following terms."
+          label="Quick Terms & Safety"
+          description="A <strong>quick summary</strong> of our most important safety points."
           :required="true"
           :input-id="termsCheckboxId"
         >
@@ -171,19 +171,38 @@
 
             <v-divider class="my-4" />
 
-            <p class="mb-4 text-secondary text-body-2">
-              We recommend meeting in public spaces to get to know your group!
+            <p class="mb-4 text-secondary font-weight-bold text-body-2">
+              By checking the box below, you acknowledge that you have read and agree to our full 
+              <router-link to="/legal#tos-heading" class="text-primary text-decoration-none d-inline-flex align-center" target="_blank">
+                Terms of Service<v-icon icon="mdi-open-in-new" size="x-small" class="ms-1" />
+              </router-link> 
+              and 
+              <router-link to="/legal#privacy-heading" class="text-primary text-decoration-none d-inline-flex align-center" target="_blank">
+                Privacy Policy<v-icon icon="mdi-open-in-new" size="x-small" class="ms-1" />
+              </router-link>. 
+              Remember to always meet in public spaces!
             </p>
 
             <v-checkbox
               :id="termsCheckboxId"
               v-model="agreeTerms"
-              label="I agree to the terms above"
               color="primary"
               hide-details="auto"
               :rules="[(v: any) => !!v || 'You must agree to the terms to proceed']"
               :aria-describedby="`${descriptionId} ${termsListId}`"
-            />
+            >
+              <template v-slot:label>
+                I agree to the 
+                <router-link to="/legal#tos-heading" class="ms-1 text-primary text-decoration-none font-weight-bold d-inline-flex align-center" target="_blank">
+                  full Terms of Service
+                  <v-icon
+                    icon="mdi-open-in-new"
+                    size="x-small"
+                    class="ms-1"
+                  />
+                </router-link>
+              </template>
+            </v-checkbox>
           </template>
         </friend-form-card>
 
