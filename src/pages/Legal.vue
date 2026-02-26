@@ -1,12 +1,12 @@
 <template>
   <div class="legal-page bg-background text-primary d-flex flex-column">
     <v-container class="flex-grow-1 pt-12 pb-16 legal-page__content">
-      <h1 class="text-h2 font-weight-bold mb-8 text-primary mt-md-8 text-center" id="legal-heading" tabindex="-1">
+      <h1 class="text-h2 font-weight-bold mb-6 text-primary mt-md-8 text-center" id="legal-heading" tabindex="-1">
         Legal & Privacy
       </h1>
 
       <p class="text-body-1 text-secondary mb-12 page-text text-center font-italic">
-        Last Updated: February 24th, 2026
+        Last Updated: February 25th, 2026
       </p>
 
       <section class="mb-12" aria-labelledby="tos-heading">
@@ -19,12 +19,21 @@
 
         <h3 class="text-h6 font-weight-bold mb-2 text-primary font-playfair">User Conduct</h3>
         <p class="text-body-1 text-secondary mb-4 page-text">
-          Field Friends was created with the goal of helping people make friends in a safe, respectful environment. We expect all participants to act with kindness and respect toward their matches. While we aren't the dating police, predatory, harassing, or threatening behavior of any kind is strictly prohibited and will not be tolerated.
+          Field Friends was created with the goal of helping people make friends in a safe, respectful environment.
+          We expect all participants to act with kindness and respect toward their matches.
+          Predatory, harrassment, or threatening behavior of any kind is strictly prohibited and will not be tolerated.
         </p>
 
         <h3 class="text-h6 font-weight-bold mb-2 text-primary font-playfair">Service Description</h3>
         <p class="text-body-1 text-secondary mb-4 page-text">
           Field Friends provides automated group matching based on survey responses. That is the sole extent of our service. We do not mediate disputes, facilitate formal events, or monitor group interactions. 
+        </p>
+
+        <h3 class="text-h6 font-weight-bold mb-2 text-primary font-playfair">User Content License</h3>
+        <p class="text-body-1 text-secondary mb-4 page-text">
+          By submitting your survey responses, you grant Field Friends a non-exclusive, worldwide, royalty-free license to use, process, store, 
+          and share your provided text and information <strong>solely</strong> for the purpose of 
+          operating the matching service and introducing you to your group.
         </p>
 
         <h3 class="text-h6 font-weight-bold mb-2 text-primary font-playfair">Termination</h3>
@@ -44,7 +53,9 @@
 
         <h3 class="text-h6 font-weight-bold mb-2 text-primary font-playfair">Changes to Terms</h3>
         <p class="text-body-1 text-secondary mb-4 page-text">
-          We reserve the right to modify or replace these Terms at any time. By continuing to access or use our service after those revisions become effective, you agree to be bound by the revised terms.
+          We reserve the right to modify these Terms at any time. If we make material changes, we will notify you
+          by updating the <strong><i>Last Updated</i></strong> date at the top of this page.
+          By continuing to access or use our service after those revisions become effective, you agree to be bound by the revised terms.
         </p>
 
         <h3 class="text-h6 font-weight-bold mb-2 text-primary font-playfair">Severability</h3>
@@ -55,6 +66,13 @@
         <h3 class="text-h6 font-weight-bold mb-2 text-primary font-playfair">Governing Law</h3>
         <p class="text-body-1 text-secondary mb-4 page-text">
           These Terms shall be governed and construed in accordance with the laws of the State of Illinois, United States, without regard to its conflict of law provisions.
+        </p>
+
+        <h3 class="text-h6 font-weight-bold mb-2 text-primary font-playfair">Dispute Resolution</h3>
+        <p class="text-body-1 text-secondary mb-4 page-text">
+          Any dispute arising from or relating to the subject matter of these Terms shall be
+          finally settled by binding arbitration in Illinois, rather than in court.
+          By using this service, you agree to waive any right to participate in a class action lawsuit or class-wide arbitration.
         </p>
       </section>
 
@@ -113,6 +131,14 @@
         <p class="text-body-1 text-secondary mb-4 page-text">
           You agree to defend, indemnify, and hold harmless Field Friends and its creators from and against any and all claims, damages, obligations, losses, liabilities, costs or debt, and expenses arising from your use of and access to the service or your violation of these Terms.
         </p>
+
+        <h3 class="text-h6 font-weight-bold mb-2 text-primary font-playfair">Limitation of Liability</h3>
+        <p class="text-body-1 text-secondary mb-4 page-text">
+          To the maximum extent permitted by applicable law, in no event shall Field Friends,
+          its creators, or volunteers be liable for any indirect,
+          incidental, special, consequential, or punitive damages.
+          Our total liability for any claims arising from or relating to the service shall not exceed zero dollars ($0.00).
+        </p>
       </section>
 
     </v-container>
@@ -130,14 +156,6 @@
 
   .page-text {
     line-height: 1.8;
-  }
-
-  code {
-    background-color: rgba(var(--v-theme-surface-variant), 0.3);
-    padding: 0.1em 0.3em;
-    border-radius: 4px;
-    font-family: monospace;
-    color: rgb(var(--v-theme-primary));
   }
 }
 </style>
