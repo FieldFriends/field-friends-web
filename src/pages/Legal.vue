@@ -23,7 +23,7 @@
         <p class="text-body-1 text-secondary mb-4 page-text">
           Field Friends was created with the goal of helping people make friends in a safe, respectful environment.
           We expect all participants to act with kindness and respect toward their matches.
-          Predatory, harrassment, or threatening behavior of any kind is strictly prohibited and will not be tolerated.
+          Predatory, harassing, or threatening behavior of any kind is strictly prohibited and will not be tolerated.
         </p>
 
         <h3 class="text-h6 font-weight-bold mb-2 text-primary font-playfair">Service Description</h3>
@@ -106,9 +106,9 @@
         <h3 class="text-h6 font-weight-bold mb-2 text-primary font-playfair">Data Usage & Email Communications</h3>
         <p class="text-body-1 text-secondary mb-4 page-text">
           We use the collected information exclusively to facilitate the matching process.
-          <strong class="text-primary">We will use your email address solely for sending
-          matching results and critical administrative notices (such as secure login codes).</strong>
-          We do not sell, rent, or trade your data to third parties. We do not use your
+          We will use your email address <strong>solely</strong> for sending
+          matching results and critical administrative notices (such as secure login codes).
+          <strong class="text-primary font-italic">We do not sell, rent, or trade your data to third parties.</strong> We do not use your
           email for marketing. 
         </p>
 
@@ -144,7 +144,7 @@
         <h3 class="text-h6 font-weight-bold mb-2 text-primary font-playfair">Passive Conduit & Assumption of Risk</h3>
         <p class="text-body-1 text-secondary mb-4 page-text">
           Field Friends functions strictly as a data processor and a passive conduit for introductions.
-          <strong class="text-primary">We do not perform background checks, vet users, or guarantee
+          <strong>We do not perform background checks, vet users, or guarantee
           the safety of any individual.</strong> Users assume all risks associated with meeting their matches.
           We strongly advise using common sense: meet in public places, trust your instincts,
           and prioritize your safety.
