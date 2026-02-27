@@ -48,7 +48,7 @@ export default createVuetify({
           card: '#FFFFFF',
           'badge-optional': '#795548',
           'badge-shared': '#558B2F',
-          link: '#456739',
+          link: '#385722',
         },
       },
     },
