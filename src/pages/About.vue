@@ -49,9 +49,8 @@
         <div class="pl-4">
           <p class="text-body-1 text-secondary mb-4 page-text">
             <strong>1. Verification:</strong>
-            You sign in and verify your identity using a one-time passcode sent to your
-            <strong>@illinois.edu</strong> email address.
-            This keeps the platform exclusive to our university community.
+            You sign in using a one-time passcode sent to your
+            <strong>@illinois.edu</strong> email, keeping the platform exclusive to our community.
           </p>
 
           <p class="text-body-1 text-secondary mb-4 page-text">
@@ -64,6 +63,17 @@
             <strong>3. Security & Encryption:</strong>
             The moment you hit "Submit", your data is secured using strong, end-to-end encryption.
             It is stored safely in an encrypted state, inaccessible to anyone—even us—while it sits in the database.
+            <a
+              href="#security-heading"
+              class="text-decoration-none font-weight-bold text-primary d-inline-flex align-center"
+            >
+              Read technical details
+              <v-icon
+                icon="mdi-arrow-down"
+                size="x-small"
+                class="ms-1 pt-1"
+              />
+            </a>
           </p>
 
           <div class="text-body-1 text-secondary page-text">
