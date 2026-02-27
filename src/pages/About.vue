@@ -24,7 +24,7 @@
         </h2>
         <p class="text-body-1 text-secondary mb-4 page-text">
           Finding genuine friends on a massive campus can be challenging.
-          Often, we meet people based purely on proximity—who we sit next to in class or work, or who lives in our building.
+          Often, we meet people by proximity—who we sit next to in class or at work, who lives in our building, etc.
           These connections are valuable, but they often lack shared interests and are becoming increasingly difficult to come by.
         </p>
         <p class="text-body-1 text-secondary mb-4 page-text">
@@ -41,8 +41,9 @@
         </h2>
 
         <p class="text-body-1 text-secondary mb-4 page-text">
-          Field Friends operates in structured <strong>monthly rounds</strong>. To participate in a given month, 
-          you must sign up for that specific round. Once the matching window closes, the process begins:
+          Field Friends runs in  <strong>monthly rounds</strong>.
+          To participate in a given month, you must sign up for that specific round.
+          Once the matching window closes, the process begins:
         </p>
 
         <div class="pl-4">
@@ -50,7 +51,7 @@
             <strong>1. Verification:</strong>
             You sign in and verify your identity using a one-time passcode sent to your
             <strong>@illinois.edu</strong> email address.
-            This prevents keeps the platform exclusive to our university community.
+            This keeps the platform exclusive to our university community.
           </p>
 
           <p class="text-body-1 text-secondary mb-4 page-text">
@@ -99,6 +100,43 @@
             not affiliated
           </strong>
           with, endorsed by, or sponsored by the University of Illinois at Urbana-Champaign (UIUC).
+        </p>
+      </section>
+
+      <v-divider class="mb-12 border-opacity-25" color="secondary" aria-hidden="true" />
+
+      <section class="mb-8" aria-labelledby="security-heading">
+        <h2 id="security-heading" class="text-h4 font-weight-bold mb-4 text-primary">
+          Security Architecture
+        </h2>
+        <p class="text-body-1 text-secondary page-text mb-4">
+          To mitigate the risk of a cloud environment compromise, we use an <strong>Application-Level Hybrid Envelope Encryption</strong> strategy (AES-256 + RSA-4096).
+        </p>
+        <p class="text-body-1 text-secondary page-text mb-4">
+          When you submit your survey, the server generates a unique, ephemeral AES-256 key for your specific request.
+          Your data fields are encrypted with this AES key using AES-256-GCM.
+          Then, that AES key itself is encrypted using our public RSA-4096 key.
+          Only the encrypted data and the encrypted session key are ever committed to the database.
+        </p>
+        <p class="text-body-1 text-secondary page-text mb-4">
+          The private RSA key required to decrypt the data is stored strictly on our local offline machine.
+          It never touches the cloud.
+        </p>
+        <p class="text-body-1 text-secondary page-text">
+          We believe in transparency. You can independently verify our backend encryption logic by reading the source code
+          <a
+            href="https://github.com/FieldFriends/field-friends-web/tree/main/api"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-decoration-none font-weight-bold text-primary d-inline-flex align-center"
+          >
+            available on GitHub
+            <v-icon
+              icon="mdi-open-in-new"
+              size="x-small"
+              class="ms-1 pt-1"
+            />
+          </a>.
         </p>
       </section>
 
