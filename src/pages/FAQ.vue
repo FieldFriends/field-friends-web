@@ -33,23 +33,23 @@
 const faqs = [
   {
     question: "Who can use Field Friends?",
-    answerHtml: "Undergraduates, graduate Students, and professionals in the UIUC community with a valid <strong>@illinois.edu</strong> email address. Not currently intended for faculty."
+    answerHtml: "Undergraduates, graduate students, and professionals in the UIUC community with a valid <strong>@illinois.edu</strong> email address. Not currently intended for faculty."
   },
   {
     question: "How does the matching algorithm work?",
-    answerHtml: "We use natural language processing (NLP) to understand the meaning of your interests, activities, and intro to find people with similar vibes. We also group by undergrad/grad status and balance \"social energy\" so everyone feels comfortable."
+    answerHtml: "We use natural language processing to understand the meaning of your interests, and group activities to find people with similar vibes. We also group by undergrad/grad status and balance out social pace so everyone feels comfortable. You can learn more on our <a href='/about#process-heading' class='text-primary font-weight-bold text-decoration-none'>About</a> page."
   },
   {
-    question: "Is my data safe?",
+    question: "How is my data handled?",
     answerHtml: "Yes. All your information is encrypted before it's saved. Once matches are sent out for a round, that round's data is permanently deleted. You can read the specific details of our local encryption and data handling in our <a href='/legal#privacy-heading' class='text-primary font-weight-bold text-decoration-none'>Privacy Policy</a>."
   },
   {
     question: "How will I be contacted?",
-    answerHtml: "You will receive an automated email from <strong>noreply@fieldfriends.org</strong> when you've been placed in a group. We don't spam."
+    answerHtml: "You will receive an automated email from <strong>noreply@fieldfriends.org</strong> when you've been placed in a group."
   },
   {
-    question: "Can I block certain people?",
-    answerHtml: "Yep! If there's someone you'd rather not be matched with, just drop their email in the form. We'll make sure you don't cross paths, and they won't be notified."
+    question: "What if I don't want to get matched with someone?",
+    answerHtml: "If there's someone you'd rather not be matched with, just add their email to the \"blocked email\" section on the form. Our algorithm ensures you don't get matched, and they won't be notified."
   },
   {
     question: "I didn't get matched this round. Why?",
