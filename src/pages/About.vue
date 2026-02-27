@@ -1,9 +1,11 @@
 <template>
-  <div class="about-page bg-background text-primary d-flex flex-column">
-    <v-container class="flex-grow-1 pt-12 pb-16 about-page__content">
-      <h1 class="text-h2 font-weight-bold mb-8 text-primary mt-md-8 text-center" id="about-heading" tabindex="-1">
-        About Us
-      </h1>
+  <div class="bg-background text-primary d-flex flex-column min-vh-100">
+    <v-container class="flex-grow-1 pt-12 pb-16">
+      <v-row justify="center">
+        <v-col cols="12" md="10" lg="8">
+          <h1 class="text-h2 font-weight-bold mb-8 text-primary mt-md-8 text-center" id="about-heading" tabindex="-1">
+            About Us
+          </h1>
 
       <section class="mb-12" aria-labelledby="mission-heading">
         <h2 id="mission-heading" class="text-h4 font-weight-bold mb-4 text-primary">
@@ -150,21 +152,8 @@
         </p>
       </section>
 
+        </v-col>
+      </v-row>
     </v-container>
   </div>
 </template>
-
-<style scoped lang="scss">
-.about-page {
-  min-height: 100vh;
-  
-  &__content {
-    max-width: 800px;
-    margin: 0 auto;
-  }
-
-  .page-text {
-    line-height: 1.8;
-  }
-}
-</style>

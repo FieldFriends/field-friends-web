@@ -1,9 +1,11 @@
 <template>
-  <div class="faq-page bg-background text-primary d-flex flex-column">
-    <v-container class="flex-grow-1 pt-12 pb-16 faq-page__content">
-      <h1 class="text-h2 font-weight-bold mb-8 text-primary mt-md-8 text-center" id="faq-heading" tabindex="-1">
-        Frequently Asked Questions
-      </h1>
+  <div class="bg-background text-primary d-flex flex-column min-vh-100">
+    <v-container class="flex-grow-1 pt-12 pb-16">
+      <v-row justify="center">
+        <v-col cols="12" md="10" lg="8">
+          <h1 class="text-h2 font-weight-bold mb-8 text-primary mt-md-8 text-center" id="faq-heading" tabindex="-1">
+            Frequently Asked Questions
+          </h1>
 
       <v-expansion-panels multiple class="mb-12">
         <v-expansion-panel
@@ -25,6 +27,8 @@
         </p>
       </div>
 
+        </v-col>
+      </v-row>
     </v-container>
   </div>
 </template>
@@ -59,30 +63,17 @@ const faqs = [
 </script>
 
 <style scoped lang="scss">
-.faq-page {
-  min-height: 100vh;
-  
-  &__content {
-    max-width: 800px;
-    margin: 0 auto;
-  }
+:deep(.v-expansion-panel-title) {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: rgb(var(--v-theme-primary));
+}
 
-  :deep(.v-expansion-panel-title) {
-    font-weight: 600;
-    font-size: 1.1rem;
-    color: rgb(var(--v-theme-primary));
-  }
-
-  .page-text {
-    line-height: 1.6;
-  }
-
-  :deep(code) {
-    background-color: rgba(var(--v-theme-surface-variant), 0.3);
-    padding: 0.1em 0.3em;
-    border-radius: 4px;
-    font-family: monospace;
-    color: rgb(var(--v-theme-primary));
-  }
+:deep(code) {
+  background-color: rgba(var(--v-theme-surface-variant), 0.3);
+  padding: 0.1em 0.3em;
+  border-radius: 4px;
+  font-family: monospace;
+  color: rgb(var(--v-theme-primary));
 }
 </style>
