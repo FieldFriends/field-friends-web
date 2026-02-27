@@ -65,7 +65,7 @@
             It is stored safely in an encrypted state, inaccessible to anyone—even us—while it sits in the database.
             <a
               href="#security-heading"
-              class="text-decoration-none font-weight-bold text-primary d-inline-flex align-center"
+              class="text-decoration-none font-weight-bold text-link d-inline-flex align-center"
             >
               Read technical details
               <v-icon
@@ -138,7 +138,7 @@
             href="https://github.com/FieldFriends/field-friends-web/tree/main/api"
             target="_blank"
             rel="noopener noreferrer"
-            class="text-decoration-none font-weight-bold text-primary d-inline-flex align-center"
+            class="text-decoration-none font-weight-bold text-link d-inline-flex align-center"
           >
             available on GitHub
             <v-icon

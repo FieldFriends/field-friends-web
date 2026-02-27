@@ -28,3 +28,12 @@
 html {
   scroll-behavior: smooth;
 }
+
+.text-link {
+  color: rgb(var(--v-theme-link)) !important;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}

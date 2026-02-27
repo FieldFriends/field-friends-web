@@ -95,7 +95,7 @@
 
         <router-link
           :to="{ path: AppRoutes.About.path, hash: '#process-heading' }"
-          class="text-decoration-none font-weight-bold text-primary d-inline-flex align-center"
+          class="text-decoration-none font-weight-bold text-link d-inline-flex align-center"
         >
           Learn more about our algorithm, encryption, and privacy measures
           <v-icon
@@ -124,7 +124,7 @@
             href="https://github.com/FieldFriends/field-friends-web"
             target="_blank"
             rel="noopener noreferrer"
-            class="text-decoration-none font-weight-bold text-primary d-inline-flex align-center"
+            class="text-decoration-none font-weight-bold text-link d-inline-flex align-center"
           >
             code for this site
             <v-icon
