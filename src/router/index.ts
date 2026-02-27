@@ -152,7 +152,8 @@ const router = createRouter({
 
           if (el) {
             // FriendDev: Scroll to the element.
-            resolve({ el, behavior: 'smooth' });
+            //            Add top offset to account for navbar.
+            resolve({ el, top: 80, behavior: 'smooth' });
           } else if (Date.now() - startTime < maxWaitTime) {
             // FriendDev: Wait for next frame and check again.
             requestAnimationFrame(checkAndScroll);
@@ -168,7 +169,7 @@ const router = createRouter({
     }
 
     // FriendDev: Default to top of the page.
-    return { top: 0 };
+    return { top: 0, behavior: 'instant' };
   },
 });
 
