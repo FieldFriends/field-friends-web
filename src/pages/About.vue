@@ -3,7 +3,7 @@
     <v-container class="flex-grow-1 pt-12 pb-16">
       <v-row justify="center">
         <v-col cols="12" md="10" lg="8">
-          <h1 class="text-h2 font-weight-bold mb-8 text-primary mt-md-8 text-center" id="about-heading" tabindex="-1">
+          <h1 class="text-h4 text-md-h2 font-weight-bold mb-8 text-primary mt-md-8 text-center" id="about-heading" tabindex="-1">
             About Us
           </h1>
 

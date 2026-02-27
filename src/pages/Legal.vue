@@ -1,9 +1,11 @@
 <template>
-  <div class="legal-page bg-background text-primary d-flex flex-column">
-    <v-container class="flex-grow-1 pt-12 pb-16 legal-page__content">
-      <h1 class="text-h2 font-weight-bold mb-6 text-primary mt-md-8 text-center" id="legal-heading" tabindex="-1">
-        Legal & Privacy
-      </h1>
+  <div class="bg-background text-primary d-flex flex-column min-vh-100">
+    <v-container class="flex-grow-1 pt-12 pb-16">
+      <v-row justify="center">
+        <v-col cols="12" md="10" lg="8">
+          <h1 class="text-h4 text-md-h2 font-weight-bold mb-6 text-primary mt-md-8 text-center" id="legal-heading" tabindex="-1">
+            Legal & Privacy
+          </h1>
 
       <p class="text-body-1 text-secondary mb-12 page-text text-center font-italic">
         Last Updated: February 25th, 2026
@@ -182,21 +184,8 @@
         </p>
       </section>
 
+        </v-col>
+      </v-row>
     </v-container>
   </div>
 </template>
-
-<style scoped lang="scss">
-.legal-page {
-  min-height: 100vh;
-  
-  &__content {
-    max-width: 800px;
-    margin: 0 auto;
-  }
-
-  .page-text {
-    line-height: 1.8;
-  }
-}
-</style>
