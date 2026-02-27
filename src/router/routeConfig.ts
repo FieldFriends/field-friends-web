@@ -6,6 +6,7 @@ export const AppRoutes = {
   About: { name: 'About', path: '/about' },
   FAQ: { name: 'FAQ', path: '/faq' },
   Legal: { name: 'Legal', path: '/legal' },
+  Contact: { name: 'Contact', path: '/contact' },
   NotFound: { name: 'NotFound', path: '/:pathMatch(.*)*' },
 } as const;
 

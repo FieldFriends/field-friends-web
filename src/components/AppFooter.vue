@@ -8,6 +8,7 @@
       <div class="d-flex ga-4 my-2">
         <router-link to="/about" class="text-secondary text-decoration-none font-weight-bold">About</router-link>
         <router-link to="/faq" class="text-secondary text-decoration-none font-weight-bold">FAQ</router-link>
+        <router-link to="/contact" class="text-secondary text-decoration-none font-weight-bold">Contact</router-link>
         <router-link to="/legal" class="text-secondary text-decoration-none font-weight-bold">Legal</router-link>
       </div>
       
