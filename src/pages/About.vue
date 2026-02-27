@@ -39,36 +39,66 @@
         <h2 id="process-heading" class="text-h4 font-weight-bold mb-4 text-primary">
           How it Works
         </h2>
-        <p class="text-body-1 text-secondary mb-4">
-          Field Friends runs in monthly rounds.
-          To participate:
-        </p>
-        <p class="text-body-1 text-secondary mb-4 page-text">
-          1. <strong>Sign Up:</strong>
-          You fill out a short survey detailing your hobbies, interests, and social preferences.
-        </p>
-        <p class="text-body-1 text-secondary mb-4 page-text">
-          2. <strong>The Algorithm:</strong>
-          Once the matching window closes, 
 
-          Once a month, our system uses natural language processing (NLP) to analyze the semantic meaning of your responses.
-          It finds 2-3 other people whose interests align with yours while balancing social energy.
-        </p>
         <p class="text-body-1 text-secondary mb-4 page-text">
-          3. <strong>The Group Reveal:</strong>
-          You'll receive an email introducing you to your new small group. From there, it's up to you to plan a meetup!
+          Field Friends operates in structured <strong>monthly rounds</strong>. To participate in a given month, 
+          you must sign up for that specific round. Once the matching window closes, the process begins:
         </p>
+
+        <div class="pl-4">
+          <p class="text-body-1 text-secondary mb-4 page-text">
+            <strong>1. Verification:</strong>
+            You sign in and verify your identity using a one-time passcode sent to your
+            <strong>@illinois.edu</strong> email address.
+            This prevents keeps the platform exclusive to our university community.
+          </p>
+
+          <p class="text-body-1 text-secondary mb-4 page-text">
+            <strong>2. Survey:</strong>
+            You fill out a brief survey detailing your social pace, hobbies, and how you'd like to spend time with your group.
+            We ask for short explanations, because nuanced data leads to much better connections.
+          </p>
+
+          <p class="text-body-1 text-secondary mb-4 page-text">
+            <strong>3. Security & Encryption:</strong>
+            The moment you hit "Submit", your data is secured using strong, end-to-end encryption.
+            It is stored safely in an encrypted state, inaccessible to anyone—even us—while it sits in the database.
+          </p>
+
+          <div class="text-body-1 text-secondary page-text">
+            <p>
+              <strong>4. The Matching Process:</strong>
+              After the deadline, your encrypted data is downloaded to an offline, local machine and decrypted just long enough to process.
+              We use natural language processing to read the semantic meaning behind your survey answers,
+              grouping you with 2-3 other people who have genuine alignment in interests.
+            </p>
+            <p class="mb-4">
+              Our algorithm also enforces strict demographic rules to ensure safe, balanced gender representation within every group.
+              You won't be matched with people outside of your university status (underclassmen, grad student, etc.).
+            </p>
+          </div>
+
+          <p class="text-body-1 text-secondary mb-6 page-text">
+            <strong>5. Delivery & Deletion:</strong>
+            Once groups of 3-4 are formed, introduction emails are automatically sent out.
+            Immediately afterward, all local data and the cloud database are securely deleted.
+            From there, it's up to you to reach out to your group!
+          </p>
+        </div>
       </section>
 
       <v-divider class="mb-12 border-opacity-25" color="secondary" aria-hidden="true" />
 
       <section class="mb-8" aria-labelledby="disclaimer-heading">
         <h2 id="disclaimer-heading" class="text-h4 font-weight-bold mb-4 text-primary">
-          Not Affiliated
+          Independent
         </h2>
         <p class="text-body-1 text-secondary page-text">
-          Field Friends is an independent project run by private individuals. We are <strong class="text-primary">not</strong>
-          affiliated with, endorsed by, or sponsored by the University of Illinois Urbana-Champaign (UIUC) or any of its departments.
+          Field Friends is an independent project. We are
+          <strong class="text-primary">
+            not affiliated
+          </strong>
+          with, endorsed by, or sponsored by the University of Illinois at Urbana-Champaign (UIUC).
         </p>
       </section>
 

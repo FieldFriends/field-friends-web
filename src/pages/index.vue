@@ -97,11 +97,11 @@
           :to="{ path: AppRoutes.About.path, hash: '#process-heading' }"
           class="text-decoration-none font-weight-bold text-primary d-inline-flex align-center"
         >
-          Learn more about the process
+          Learn more about our algorithm, encryption, and privacy measures
           <v-icon
             icon="mdi-arrow-right"
             size="x-small"
-            class="ms-1 pt-1"
+            class="ms-1"
           />
         </router-link>
       </div>
@@ -118,7 +118,7 @@
           All of your information, including the connection to your email, is <strong>permanently deleted</strong> after you're matched.
         </p>
         <p class="landing-page__privacy-details text-body-1 mt-8 font-weight-regular text-secondary">
-          Our algorithm is run locally; your data is never processed online for matching.
+          Field Friends is a free service. Our algorithm is run locally, and your data is never processed online for matching.
           The
           <a
             href="https://github.com/FieldFriends/field-friends-web"
