@@ -84,7 +84,6 @@ export default async function handler(request: VercelRequest, response: VercelRe
     return httpOk(response);
 
   } catch (error) {
-    // FriendDev: Safely log internally.
     console.error("API->ERROR:", error);
 
     return httpInternalServerError(response);
