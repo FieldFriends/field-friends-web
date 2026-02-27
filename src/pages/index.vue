@@ -37,10 +37,18 @@
 
     </v-container>
 
-    <v-container class="landing-page__content pb-16">
+    <v-container class="landing-page__content pb-8">
       <v-divider class="mb-12 border-opacity-25" color="secondary"></v-divider>
       
-      <h2 class="text-h4 text-center mb-12 font-weight-bold text-primary">How it works</h2>
+      <h2 class="text-h4 text-center mb-5 font-weight-bold text-primary">
+        How it works
+      </h2>
+
+      <div class="text-body-1 text-center mb-3 text-secondary">
+        <p>
+          Field Friends runs in monthly rounds.
+        </p>
+      </div>
 
       <v-row>
         <v-col cols="12" md="4" class="text-center px-6 mb-8 mb-md-0">
@@ -79,6 +87,24 @@
           </p>
         </v-col>
       </v-row>
+
+      <div class="text-center mt-9">
+        <p class="text-secondary mb-2">
+          Your data is deleted after matches are sent out.
+        </p>
+
+        <router-link
+          :to="{ path: AppRoutes.About.path, hash: '#process-heading' }"
+          class="text-decoration-none font-weight-bold text-primary d-inline-flex align-center"
+        >
+          Learn more about the process
+          <v-icon
+            icon="mdi-arrow-right"
+            size="x-small"
+            class="ms-1 pt-1"
+          />
+        </router-link>
+      </div>
     </v-container>
 
     <v-container class="landing-page__content py-8 text-center">
