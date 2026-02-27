@@ -33,7 +33,7 @@
 const faqs = [
   {
     question: "Who can use Field Friends?",
-    answerHtml: "Undergraduates, Graduate Students, and Professionals in the UIUC community with a valid <strong>@illinois.edu</strong> email address."
+    answerHtml: "Undergraduates, graduate Students, and professionals in the UIUC community with a valid <strong>@illinois.edu</strong> email address. Not currently intended for faculty."
   },
   {
     question: "How does the matching algorithm work?",
@@ -45,7 +45,7 @@ const faqs = [
   },
   {
     question: "How will I be contacted?",
-    answerHtml: "You will receive an automated email from <strong>TODO: final_email_here</strong> when you've been placed in a group. We don't spam."
+    answerHtml: "You will receive an automated email from <strong>noreply@fieldfriends.org</strong> when you've been placed in a group. We don't spam."
   },
   {
     question: "Can I block certain people?",
