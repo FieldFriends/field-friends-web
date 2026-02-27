@@ -1,9 +1,8 @@
 <template>
   <div class="landing-page bg-background text-primary d-flex flex-column">
     
-    <!-- Hero / Header -->
     <v-container class="flex-grow-1 d-flex flex-column justify-center align-center text-center pt-16 pb-16">
-      <h1 class="text-h1 font-weight-bold mb-6 text-primary">
+      <h1 class="landing-page__title text-h1 font-weight-bold mb-6 text-primary">
         Field Friends
       </h1>
       
@@ -150,9 +149,13 @@ import { AppRoutes } from '@/router/routeConfig';
 .landing-page {
   min-height: 100vh;
 
+  &__title {
+    font-size: clamp(3rem, 8vw, 6rem) !important;
+  }
+
   &__subtitle {
     max-width: 690px;
-    font-size: 1.92rem !important;
+    font-size: clamp(1.2rem, 4vw, 1.92rem) !important;
     line-height: 1.3 !important;
   }
 
