@@ -33,27 +33,27 @@
 const faqs = [
   {
     question: "Who can use Field Friends?",
-    answerHtml: "Undergraduates, graduate students, and professionals in the UIUC community with a valid <strong>@illinois.edu</strong> email address. Not currently intended for faculty."
+    answerHtml: "Anyone in the UIUC community with a valid <strong>@illinois.edu</strong> email address, including undergraduates, graduate students, and university staff/professionals. It is not currently intended for faculty."
   },
   {
     question: "How does the matching algorithm work?",
-    answerHtml: "We use natural language processing to understand the meaning of your interests, and group activities to find people with similar vibes. We also group by undergrad/grad status and balance out social pace so everyone feels comfortable. You can learn more on our <a href='/about#process-heading' class='text-primary font-weight-bold text-decoration-none'>About</a> page."
+    answerHtml: "We use natural language processing to understand your survey answers and group you with 2-3 other people who share similar interests and social preferences. We also group by university status (undergrad/grad) to ensure balanced connections. For step-by-step details, check out the <a href='/about#process-heading' class='text-primary font-weight-bold text-decoration-none'>How it Works</a> section on our About page."
   },
   {
     question: "How is my data handled?",
-    answerHtml: "Yes. All your information is encrypted before it's saved. Once matches are sent out for a round, that round's data is permanently deleted. You can read the specific details of our local encryption and data handling in our <a href='/legal#privacy-heading' class='text-primary font-weight-bold text-decoration-none'>Privacy Policy</a>."
+    answerHtml: "Your data is secured using end-to-end encryption the moment you submit your survey, and it is permanently deleted immediately after matches are sent out. You can read more about our <a href='/about#security-heading' class='text-primary font-weight-bold text-decoration-none'>Security Architecture</a> on the About page, or review our full <a href='/legal#privacy-heading' class='text-primary font-weight-bold text-decoration-none'>Privacy Policy</a>."
   },
   {
     question: "How will I be contacted?",
-    answerHtml: "You will receive an automated email from <strong>noreply@fieldfriends.org</strong> when you've been placed in a group."
+    answerHtml: "Once a monthly round closes and matches are finalized, you will receive an automated introduction email from <strong>noreply@fieldfriends.org</strong> connecting you with your group."
   },
   {
     question: "What if I don't want to get matched with someone?",
-    answerHtml: "If there's someone you'd rather not be matched with, just add their email to the \"blocked email\" section on the form. Our algorithm ensures you don't get matched, and they won't be notified."
+    answerHtml: "If there's someone you'd rather not be matched with, just add their email to the \"blocked email\" section on the survey. Our algorithm ensures you aren't grouped together, and they will not be notified."
   },
   {
     question: "I didn't get matched this round. Why?",
-    answerHtml: "Sometimes the math leaves a few people out to avoid awkwardly sized groups or bad matches. If you want to try again, you'll need to submit the form again for the next round."
+    answerHtml: "Sometimes the matching algorithm leaves a few people out to avoid awkwardly sized groups or forced matches without genuine overlapping interests. You're always welcome to try again by signing up for the next monthly round!"
   }
 ];
 </script>
