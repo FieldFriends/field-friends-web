@@ -3,37 +3,52 @@
     v-model="drawer"
     temporary
     location="left"
-    class="d-sm-none"
+    class="d-sm-none bg-background"
   >
-    <v-list nav>
+    <div class="px-4 py-4 d-flex align-center border-b">
+      <span class="text-h6 font-weight-bold font-playfair text-primary">Field Friends</span>
+    </div>
+
+    <v-list nav class="pt-4">
       <v-list-item
         :to="AppRoutes.Home.path"
-        prepend-icon="mdi-home"
+        prepend-icon="mdi-home-outline"
         title="Home"
+        class="font-dm-sans font-weight-bold text-primary mb-1"
+        active-color="primary"
         @click="drawer = false"
       />
       <v-list-item
         :to="AppRoutes.About.path"
-        prepend-icon="mdi-information"
+        prepend-icon="mdi-information-outline"
         title="About"
+        class="font-dm-sans font-weight-bold text-primary mb-1"
+        active-color="primary"
         @click="drawer = false"
       />
       <v-list-item
         :to="AppRoutes.FAQ.path"
-        prepend-icon="mdi-frequently-asked-questions"
+        prepend-icon="mdi-help-circle-outline"
         title="FAQ"
+        class="font-dm-sans font-weight-bold text-primary mb-1"
+        active-color="primary"
         @click="drawer = false"
       />
+      <v-divider class="my-2 mx-6" />
       <v-list-item
         :to="AppRoutes.Contact.path"
-        prepend-icon="mdi-email"
+        prepend-icon="mdi-email-outline"
         title="Contact"
+        class="font-dm-sans font-weight-bold text-primary mb-1"
+        active-color="primary"
         @click="drawer = false"
       />
       <v-list-item
         :to="AppRoutes.Legal.path"
         prepend-icon="mdi-scale-balance"
         title="Legal"
+        class="font-dm-sans font-weight-bold text-primary mb-1"
+        active-color="primary"
         @click="drawer = false"
       />
     </v-list>
