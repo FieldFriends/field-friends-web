@@ -6,12 +6,11 @@
       color="error"
       location="top"
       timeout="7000"
-      variant="tonal"
     >
       {{ errorMessage }}
       
       <template #actions>
-        <v-btn icon="mdi-close" variant="text" @click="showError = false" />
+        <v-btn icon="mdi-close" variant="text" color="white" @click="showError = false" />
       </template>
     </v-snackbar>
 

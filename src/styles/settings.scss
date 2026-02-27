@@ -7,4 +7,7 @@
 @use 'vuetify/settings' with ($body-font-family: ('DM Sans', sans-serif),
     $heading-font-family: ('Playfair Display', serif),
     $font-size-root: 1.125rem,
-    $line-height-root: 1.5);
+    $line-height-root: 1.5,
+    $snackbar-background: rgb(var(--v-theme-primary)),
+    $snackbar-color: #ffffff,
+    $snackbar-plain-opacity: 1);

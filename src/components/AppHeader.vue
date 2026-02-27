@@ -3,25 +3,52 @@
     v-model="drawer"
     temporary
     location="left"
-    class="d-sm-none"
+    class="d-sm-none bg-background"
   >
-    <v-list nav>
+    <div class="px-4 py-4 d-flex align-center border-b">
+      <span class="text-h6 font-weight-bold font-playfair text-primary">Field Friends</span>
+    </div>
+
+    <v-list nav class="pt-4">
       <v-list-item
         :to="AppRoutes.Home.path"
-        prepend-icon="mdi-home"
+        prepend-icon="mdi-home-outline"
         title="Home"
+        class="font-dm-sans font-weight-bold text-primary mb-1"
+        active-color="primary"
         @click="drawer = false"
       />
       <v-list-item
         :to="AppRoutes.About.path"
-        prepend-icon="mdi-information"
+        prepend-icon="mdi-information-outline"
         title="About"
+        class="font-dm-sans font-weight-bold text-primary mb-1"
+        active-color="primary"
         @click="drawer = false"
       />
       <v-list-item
         :to="AppRoutes.FAQ.path"
-        prepend-icon="mdi-frequently-asked-questions"
+        prepend-icon="mdi-help-circle-outline"
         title="FAQ"
+        class="font-dm-sans font-weight-bold text-primary mb-1"
+        active-color="primary"
+        @click="drawer = false"
+      />
+      <v-divider class="my-2 mx-6" />
+      <v-list-item
+        :to="AppRoutes.Contact.path"
+        prepend-icon="mdi-email-outline"
+        title="Contact"
+        class="font-dm-sans font-weight-bold text-primary mb-1"
+        active-color="primary"
+        @click="drawer = false"
+      />
+      <v-list-item
+        :to="AppRoutes.Legal.path"
+        prepend-icon="mdi-scale-balance"
+        title="Legal"
+        class="font-dm-sans font-weight-bold text-primary mb-1"
+        active-color="primary"
         @click="drawer = false"
       />
     </v-list>
@@ -50,6 +77,14 @@
       <v-btn variant="text" :to="AppRoutes.Home.path" class="text-none">Home</v-btn>
       <v-btn variant="text" :to="AppRoutes.About.path" class="text-none">About</v-btn>
       <v-btn variant="text" :to="AppRoutes.FAQ.path" class="text-none">FAQ</v-btn>
+      <v-divider
+        vertical
+        inset
+        class="mx-2 d-none d-sm-flex"
+        style="height: 16px; margin-top: auto; margin-bottom: auto;"
+      />
+      <v-btn variant="text" :to="AppRoutes.Contact.path" class="text-none">Contact</v-btn>
+      <v-btn variant="text" :to="AppRoutes.Legal.path" class="text-none">Legal</v-btn>
     </div>
 
     <v-divider

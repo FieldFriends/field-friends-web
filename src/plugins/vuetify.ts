@@ -22,6 +22,12 @@ export default createVuetify({
       rounded: 'lg',
       class: 'font-weight-bold text-body-1',
     },
+    VTooltip: {
+      contentClass: 'bg-primary text-white rounded-lg',
+    },
+    VSnackbar: {
+      variant: 'elevated',
+    },
   },
   theme: {
     defaultTheme: 'light',
@@ -42,6 +48,7 @@ export default createVuetify({
           card: '#FFFFFF',
           'badge-optional': '#795548',
           'badge-shared': '#558B2F',
+          link: '#385722',
         },
       },
     },

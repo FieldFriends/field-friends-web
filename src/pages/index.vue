@@ -1,13 +1,12 @@
 <template>
-  <div class="landing-page bg-background text-primary d-flex flex-column">
+  <div class="bg-background text-primary d-flex flex-column min-vh-100">
     
-    <!-- Hero / Header -->
     <v-container class="flex-grow-1 d-flex flex-column justify-center align-center text-center pt-16 pb-16">
-      <h1 class="text-h1 font-weight-bold mb-6 text-primary">
+      <h1 class="text-h3 text-md-h2 text-lg-h1 font-weight-bold mb-6 text-primary">
         Field Friends
       </h1>
       
-      <p class="landing-page__subtitle text-h4 text-secondary mb-12 font-dm-sans font-weight-regular">
+      <p class="text-h6 text-sm-h5 text-md-h4 text-secondary mb-12 font-dm-sans font-weight-regular" style="max-width: 690px;">
         Get matched with friends at UIUC without having to swipe.
       </p>
 
@@ -18,9 +17,11 @@
         Sign up
       </v-btn>
 
-      <div class="landing-page__content w-100 mb-12">
-        <v-divider :thickness="2" />
-      </div>
+      <v-row justify="center" class="w-100 mb-12">
+        <v-col cols="12" md="10" lg="8">
+          <v-divider :thickness="2" />
+        </v-col>
+      </v-row>
 
       <div class="landing-page__goal mb-1">
         <h2 class="font-playfair">
@@ -37,10 +38,20 @@
 
     </v-container>
 
-    <v-container class="landing-page__content pb-16">
-      <v-divider class="mb-12 border-opacity-25" color="secondary"></v-divider>
+    <v-container class="pb-8">
+      <v-row justify="center">
+        <v-col cols="12" md="10" lg="8">
+          <v-divider class="mb-12 border-opacity-25" color="secondary"></v-divider>
       
-      <h2 class="text-h4 text-center mb-12 font-weight-bold text-primary">How it works</h2>
+          <h2 class="text-h4 text-center mb-5 font-weight-bold text-primary">
+            How it works
+          </h2>
+
+      <div class="text-body-1 text-center mb-3 text-secondary">
+        <p>
+          Field Friends runs in monthly rounds.
+        </p>
+      </div>
 
       <v-row>
         <v-col cols="12" md="4" class="text-center px-6 mb-8 mb-md-0">
@@ -79,36 +90,60 @@
           </p>
         </v-col>
       </v-row>
+
+      <div class="text-center mt-9">
+        <p class="text-secondary mb-2">
+          Your data is deleted after matches are sent out.
+        </p>
+
+        <router-link
+          :to="{ path: AppRoutes.About.path, hash: '#process-heading' }"
+          class="text-decoration-none font-weight-bold text-link d-inline-flex align-center"
+        >
+          Learn more about our algorithm, encryption, and privacy measures
+          <v-icon
+            icon="mdi-arrow-right"
+            size="x-small"
+            class="ms-1"
+          />
+        </router-link>
+      </div>
+        </v-col>
+      </v-row>
     </v-container>
 
-    <v-container class="landing-page__content py-8 text-center">
-      <v-divider class="mb-12 border-opacity-25" color="secondary"></v-divider>
-        <h3 class="text-h4 text-primary mb-4 font-weight-bold">
-          Privacy First
-        </h3>
-        
-        <p class="text-body-1 font-weight-regular text-secondary">
-          Your data is encrypted before it's ever stored on our database.
-          All of your information, including the connection to your email, is <strong>permanently deleted</strong> after you're matched.
-        </p>
-        <p class="landing-page__privacy-details text-body-1 mt-8 font-weight-regular text-secondary">
-          Our algorithm is run locally; your data is never processed online for matching.
-          The
-          <a
-            href="https://github.com/FieldFriends/field-friends-web"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-decoration-none font-weight-bold text-primary d-inline-flex align-center"
-          >
-            code for this site
-            <v-icon
-              icon="mdi-open-in-new"
-              size="x-small"
-              class="ms-1"
-            />
-          </a>
-          is also publicly available, so you can see exactly how your data is handled.
-        </p>
+    <v-container class="py-8 text-center">
+      <v-row justify="center">
+        <v-col cols="12" md="10" lg="8">
+          <v-divider class="mb-12 border-opacity-25" color="secondary"></v-divider>
+          <h3 class="text-h4 text-primary mb-4 font-weight-bold">
+            Privacy First
+          </h3>
+          
+          <p class="text-body-1 font-weight-regular text-secondary">
+            Your data is encrypted before it's ever stored on our database.
+            All of your information, including the connection to your email, is <strong>permanently deleted</strong> after you're matched.
+          </p>
+          <p class="landing-page__privacy-details text-body-1 mt-8 font-weight-regular text-secondary">
+            Field Friends is a free service. Our algorithm is run locally, and your data is never processed online for matching.
+            The
+            <a
+              href="https://github.com/FieldFriends/field-friends-web"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-decoration-none font-weight-bold text-link d-inline-flex align-center"
+            >
+              code for this site
+              <v-icon
+                icon="mdi-open-in-new"
+                size="x-small"
+                class="ms-1"
+              />
+            </a>
+            is also publicly available, so you can see exactly how your data is handled.
+          </p>
+        </v-col>
+      </v-row>
     </v-container>
 
   </div>
@@ -121,25 +156,7 @@ import { AppRoutes } from '@/router/routeConfig';
 </script>
 
 <style scoped lang="scss">
-.landing-page {
-  min-height: 100vh;
-
-  &__subtitle {
-    max-width: 690px;
-    font-size: 1.92rem !important;
-    line-height: 1.3 !important;
-  }
-
-  &__goal {
-    max-width: 700px;
-  }
-
-  &__content {
-    max-width: 800px;
-  }
-
-  &__privacy-details {
-    line-height: 1.6 !important;
-  }
+.landing-page__goal {
+  max-width: 700px;
 }
 </style>
