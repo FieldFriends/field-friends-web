@@ -57,7 +57,7 @@ const faqs = [
   },
   {
     question: "I didn't get matched this round. Why?",
-    answerHtml: "Sometimes the matching algorithm leaves a few people out to avoid awkwardly sized groups or forced matches without genuine overlapping interests. You're always welcome to try again by signing up for the next monthly round!"
+    answerHtml: "Sometimes the matching algorithm leaves a few people out to avoid awkwardly sized groups or matches without genuine overlapping interests. You're always welcome to try again by signing up for the next round!"
   }
 ];
 </script>
