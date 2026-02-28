@@ -7,28 +7,43 @@
             Contact Us
           </h1>
 
-      <div class="mb-12 d-flex flex-column ga-8">
-        <div>
-          <p class="text-body-1 text-secondary page-text">
-            For questions, feedback, or assistance, please reach out to:
-            <a href="mailto:fieldfriends.team@gmail.com" class="text-primary font-weight-bold text-decoration-none">fieldfriends.team@gmail.com</a>
-          </p>
-        </div>
+          <div class="mb-12 d-flex flex-column ga-8">
+            <div>
+              <p class="text-body-1 text-secondary page-text">
+                For questions, feedback, or assistance, please reach out to:
+                <a
+                  href="mailto:fieldfriends.team@gmail.com"
+                  class="text-primary font-weight-bold text-decoration-none"
+                >
+                  fieldfriends.team@gmail.com
+                </a>
+              </p>
+            </div>
 
-        <div>
-          <p class="text-body-1 text-secondary page-text">
-            Automated messages, such as login codes and match introductions, will be sent from:
-            <a href="mailto:noreply@fieldfriends.org" class="text-primary font-weight-bold text-decoration-none" tabindex="-1" style="pointer-events: none;">noreply@fieldfriends.org</a>
-          </p>
-        </div>
-      </div>
+            <div>
+              <p class="text-body-1 text-secondary page-text">
+                Automated messages, such as login codes and match introductions, will be sent from:
+                <strong>noreply@fieldfriends.org</strong>
+              </p>
+            </div>
 
-      <div class="mt-8">
-        <p class="text-body-1 text-secondary page-text">
-          We will never contact you from any other email addresses. Additionally, because Field Friends operates in distinct monthly rounds, you will only receive automated emails during a round you have actively signed up for.
-        </p>
-      </div>
+            <div>
+              <p class="text-body-1 text-secondary page-text">
+                Our official Reddit account is <strong>u/FieldFriendsTeam</strong>.
+              </p>
+            </div>
+          </div>
 
+          <div class="mt-8">
+            <p class="text-body-1 text-secondary page-text">
+              We will never contact you from any other email addresses.
+              Additionally, because Field Friends operates in distinct monthly rounds,
+              <strong>you will only receive automated emails during a round you have actively signed up for.</strong>
+            </p>
+            <p class="text-body-1 text-secondary page-text mt-4">
+              We don't currently have any other social media accounts.
+            </p>
+          </div>
         </v-col>
       </v-row>
     </v-container>
