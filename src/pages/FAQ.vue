@@ -37,11 +37,11 @@
 const faqs = [
   {
     question: "Who can use Field Friends?",
-    answerHtml: "Anyone in the UIUC community with a valid <strong>@illinois.edu</strong> email address, including undergraduates, graduate students, and university staff/professionals. This is currently limited to ages 18&ndash;29 and is not intended for faculty."
+    answerHtml: "Anyone in the UIUC community with a valid <strong>@illinois.edu</strong> email address, including undergrads, graduate students, and university staff/professionals. This is currently limited to ages 18&ndash;29 and is not intended for faculty."
   },
   {
     question: "How does the matching algorithm work?",
-    answerHtml: "We use natural language processing to understand your survey answers and group you with 2-3 other people who share similar interests and social preferences. We also group by university status (undergrad/grad) to ensure balanced connections. For step-by-step details, check out the <a href='/about#process-heading' class='text-link font-weight-bold text-decoration-none'>How it Works</a> section on our <a href='/about' class='text-link font-weight-bold text-decoration-none'>About page</a>."
+    answerHtml: "We use natural language processing to understand your survey responses and group you with 2-3 other people who share similar interests and social preferences. We also group by university status (undergrad/grad) to ensure balanced connections. For more details, check out the <a href='/about#process-heading' class='text-link font-weight-bold text-decoration-none'>How it Works</a> section on our <a href='/about' class='text-link font-weight-bold text-decoration-none'>About page</a>."
   },
   {
     question: "How is my data handled?",
