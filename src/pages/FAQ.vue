@@ -68,12 +68,4 @@ const faqs = [
   font-size: 1.1rem;
   color: rgb(var(--v-theme-primary));
 }
-
-:deep(code) {
-  background-color: rgba(var(--v-theme-surface-variant), 0.3);
-  padding: 0.1em 0.3em;
-  border-radius: 4px;
-  font-family: monospace;
-  color: rgb(var(--v-theme-primary));
-}
 </style>
