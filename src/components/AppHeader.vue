@@ -1,0 +1,164 @@
+<template>
+  <v-navigation-drawer
+    v-model="drawer"
+    temporary
+    location="left"
+    class="d-sm-none bg-background"
+  >
+    <div class="px-4 py-4 d-flex align-center border-b">
+      <span class="text-h6 font-weight-bold font-playfair text-primary">Field Friends</span>
+    </div>
+
+    <v-list nav class="pt-4">
+      <v-list-item
+        :to="AppRoutes.Home.path"
+        prepend-icon="mdi-home-outline"
+        title="Home"
+        class="font-dm-sans font-weight-bold text-primary mb-1"
+        active-color="primary"
+        @click="drawer = false"
+      />
+      <v-list-item
+        :to="AppRoutes.About.path"
+        prepend-icon="mdi-information-outline"
+        title="About"
+        class="font-dm-sans font-weight-bold text-primary mb-1"
+        active-color="primary"
+        @click="drawer = false"
+      />
+      <v-list-item
+        :to="AppRoutes.FAQ.path"
+        prepend-icon="mdi-help-circle-outline"
+        title="FAQ"
+        class="font-dm-sans font-weight-bold text-primary mb-1"
+        active-color="primary"
+        @click="drawer = false"
+      />
+      <v-divider class="my-2 mx-6" />
+      <v-list-item
+        :to="AppRoutes.Contact.path"
+        prepend-icon="mdi-email-outline"
+        title="Contact"
+        class="font-dm-sans font-weight-bold text-primary mb-1"
+        active-color="primary"
+        @click="drawer = false"
+      />
+      <v-list-item
+        :to="AppRoutes.Legal.path"
+        prepend-icon="mdi-scale-balance"
+        title="Legal"
+        class="font-dm-sans font-weight-bold text-primary mb-1"
+        active-color="primary"
+        @click="drawer = false"
+      />
+    </v-list>
+  </v-navigation-drawer>
+
+  <v-app-bar flat border class="px-2 px-md-4 bg-background">
+    <v-app-bar-nav-icon
+      variant="text"
+      class="d-sm-none mr-2"
+      @click.stop="drawer = !drawer"
+    />
+
+    <v-btn
+      variant="text"
+      :ripple="false"
+      class="text-none font-weight-bold font-playfair px-0"
+      color="primary"
+      @click="router.push(AppRoutes.Home.path)"
+    >
+      Field Friends
+    </v-btn>
+
+    <v-spacer />
+
+    <div class="d-none d-sm-flex align-center">
+      <v-btn variant="text" :to="AppRoutes.Home.path" class="text-none">Home</v-btn>
+      <v-btn variant="text" :to="AppRoutes.About.path" class="text-none">About</v-btn>
+      <v-btn variant="text" :to="AppRoutes.FAQ.path" class="text-none">FAQ</v-btn>
+      <v-divider
+        vertical
+        inset
+        class="mx-2 d-none d-sm-flex"
+        style="height: 16px; margin-top: auto; margin-bottom: auto;"
+      />
+      <v-btn variant="text" :to="AppRoutes.Contact.path" class="text-none">Contact</v-btn>
+      <v-btn variant="text" :to="AppRoutes.Legal.path" class="text-none">Legal</v-btn>
+    </div>
+
+    <v-divider
+      vertical
+      inset
+      class="mx-4 d-none d-sm-flex"
+      style="height: 20px; margin-top: auto; margin-bottom: auto;"
+    />
+
+    <div v-if="isLoggedIn" class="d-flex align-center">
+      <span class="text-caption text-medium-emphasis mr-3 d-none d-md-block">
+        {{ userEmail }}
+      </span>
+      
+      <v-btn
+        variant="text"
+        size="small"
+        class="text-none"
+        @click="handleLogout"
+      >
+        Logout
+      </v-btn>
+    </div>
+
+    <div v-else>
+      <v-btn
+        color="primary"
+        variant="flat"
+        :to="AppRoutes.Login.path"
+        class="text-none"
+      >
+        Sign up
+      </v-btn>
+    </div>
+  </v-app-bar>
+</template>
+
+<script setup lang="ts">
+import { ref, computed } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+import { useAppStore } from '@/stores/app';
+import { AppRoutes } from '@/router/routeConfig';
+
+
+const router = useRouter();
+const route = useRoute();
+const store = useAppStore();
+
+const drawer = ref(false);
+
+const isLoggedIn = computed(() => !!store.session);
+const userEmail = computed(() => store.session?.user?.email || '');
+
+async function handleLogout() {
+  await store.signOut();
+  router.push(AppRoutes.Home.path);
+}
+</script>
+
+<style scoped>
+/*
+  By changing the active-class to 'unused-active-class', we prevent Vuetify
+  from applying its default active styles (background overlay).
+  We then manually apply 'nav-active-link' based on the route path.
+*/
+
+/* Target the content for the underline */
+.nav-active-link :deep(.v-btn__content) {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* Ensure no background overlay is shown even if the unused class triggers something */
+.unused-active-class :deep(.v-btn__overlay) {
+  opacity: 0 !important;
+}
+</style>

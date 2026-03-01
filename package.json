@@ -1,0 +1,57 @@
+{
+  "name": "field-friends-web",
+  "private": true,
+  "type": "module",
+  "version": "0.0.0",
+  "imports": {
+    "#shared/*": "./shared/*.js",
+    "#api/*": "./api/*.js"
+  },
+  "scripts": {
+    "dev:clientserv": "run-p dev:client dev:server",
+    "dev:client": "vite",
+    "dev:server": "vercel dev --listen 3001",
+    "build": "run-p type-check \"build-only {@}\" test:once --",
+    "test:once": "vitest run",
+    "test": "vitest",
+    "preview": "vite preview",
+    "build-only": "vite build",
+    "type-check": "vue-tsc --build --force",
+    "lint": "eslint . --fix"
+  },
+  "dependencies": {
+    "@fontsource/dm-sans": "^5.2.8",
+    "@fontsource/eb-garamond": "^5.2.7",
+    "@fontsource/playfair-display": "^5.2.8",
+    "@fontsource/roboto": "^5.2.9",
+    "@mdi/font": "7.4.47",
+    "@supabase/supabase-js": "^2.84.0",
+    "pinia": "^3.0.3",
+    "vue": "^3.5.21",
+    "vue-router": "^4.5.1",
+    "vuetify": "^3.10.1",
+    "zod": "^4.1.13"
+  },
+  "devDependencies": {
+    "@tsconfig/node22": "^22.0.0",
+    "@types/node": "^22.9.0",
+    "@vercel/node": "^5.6.6",
+    "@vitejs/plugin-vue": "^6.0.1",
+    "@vue/tsconfig": "^0.8.1",
+    "eslint": "^9.23.0",
+    "eslint-config-vuetify": "^3.0.3",
+    "npm-run-all2": "^8.0.4",
+    "sass-embedded": "^1.92.1",
+    "typescript": "~5.9.2",
+    "unplugin-auto-import": "^20.1.0",
+    "unplugin-fonts": "^1.4.0",
+    "unplugin-vue-components": "^29.0.0",
+    "unplugin-vue-router": "^0.15.0",
+    "vercel": "^50.22.0",
+    "vite": "^7.1.5",
+    "vite-plugin-vue-layouts-next": "^1.0.0",
+    "vite-plugin-vuetify": "^2.1.2",
+    "vitest": "^4.0.16",
+    "vue-tsc": "^3.0.7"
+  }
+}
