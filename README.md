@@ -14,7 +14,3 @@ It is **not** affiliated with, endorsed by, or sponsored by the University of Il
 - **Backend:** Vercel Serverless Functions & Node.js.
 - **Database:** Supabase.
 - **Encryption:** Hybrid AES-256-GCM + RSA-4096.
-
-### Security Note
-Sensitive data is encrypted before leaving the Vercel API.
-Decryption keys are held offline on a local machine and never touch the cloud infrastructure.
