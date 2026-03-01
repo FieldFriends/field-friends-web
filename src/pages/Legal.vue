@@ -8,7 +8,7 @@
           </h1>
 
       <p class="text-body-1 text-secondary mb-12 page-text text-center font-italic">
-        Last Updated: February 25th, 2026
+        Last Updated: March, 2026
       </p>
 
       <section class="mb-12" aria-labelledby="tos-heading">
@@ -37,8 +37,7 @@
 
         <h3 class="text-h6 font-weight-bold mb-2 text-primary font-playfair">User Content License</h3>
         <p class="text-body-1 text-secondary mb-4 page-text">
-          By submitting your survey responses, you grant Field Friends a non-exclusive, worldwide, royalty-free license to use, process, store, 
-          and share your provided text and information <strong>solely</strong> for the purpose of 
+          By submitting your survey responses, you grant Field Friends a non-exclusive, worldwide, royalty-free license to use, process, store, and share your provided text and information <strong>solely</strong> for the purpose of 
           operating the matching service and introducing you to your group.
         </p>
 
@@ -66,16 +65,13 @@
         <h3 class="text-h6 font-weight-bold mb-2 text-primary font-playfair">Changes to Terms</h3>
         <p class="text-body-1 text-secondary mb-4 page-text">
           We reserve the right to modify these Terms at any time. If we make material changes, we will notify you
-          by updating the <strong><i>Last Updated</i></strong> date at the top of this page.
+          by updating the "Last Updated" date at the top of this page.
           By continuing to access or use our service after those revisions become effective, you agree to be bound by the revised terms.
         </p>
 
         <h3 class="text-h6 font-weight-bold mb-2 text-primary font-playfair">Severability</h3>
         <p class="text-body-1 text-secondary mb-4 page-text">
-          If any provision of these Terms is held to be unenforceable or invalid, such
-          provision will be changed and interpreted to accomplish the objectives of such
-          provision to the greatest extent possible under applicable law and the
-          remaining provisions will continue in full force and effect.
+          If any part of these Terms is found to be invalid or unenforceable, that part will be modified to reflect our original intent as closely as permitted by law. The rest of the Terms will remain in full effect.
         </p>
 
         <h3 class="text-h6 font-weight-bold mb-2 text-primary font-playfair">Governing Law</h3>

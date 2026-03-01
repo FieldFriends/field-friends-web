@@ -37,7 +37,7 @@
 const faqs = [
   {
     question: "Who can use Field Friends?",
-    answerHtml: "Anyone in the UIUC community with a valid <strong>@illinois.edu</strong> email address, including undergrads, graduate students, and university staff/professionals. This is currently limited to ages 18&ndash;29 and is not intended for faculty."
+    answerHtml: "Anyone in the UIUC community with a valid <strong>@illinois.edu</strong> email address, including undergraduates, graduate students, and university staff/professionals. Field Friends is currently limited to ages 18&ndash;29 and is not intended for faculty."
   },
   {
     question: "How does the matching algorithm work?",
