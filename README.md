@@ -11,7 +11,7 @@ It is **not** affiliated with, endorsed by, or sponsored by the University of Il
 
 ### Technology Stack
 - **Frontend:** Vue 3 + Vuetify 3.
-- **Backend:** Vercel Serverless Functions (Node.js + Zod Validation).
+- **Backend:** Vercel Serverless Functions & Node.js.
 - **Database:** Supabase.
 - **Encryption:** Hybrid AES-256-GCM + RSA-4096.
 
