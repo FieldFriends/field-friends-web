@@ -206,6 +206,10 @@
           </template>
         </friend-form-card>
 
+        <div class="mt-2 mb-6 d-flex align-center text-caption text-secondary font-italic">
+          <span class="opacity-80">Tip: You can use the <v-icon icon="mdi-content-save" size="small" class="mx-1 pb-1" /> button at the bottom-right to save your responses for next time.</span>
+        </div>
+
         <v-snackbar
           v-model="snackbar.isVisible"
           timeout="3000"
@@ -245,7 +249,6 @@
       </v-form>
 
       <div class="d-flex justify-center ga-4 pt-4 pb-12">
-        <!-- Hidden file input for import logic. -->
         <input
           ref="fileInput"
           type="file"
