@@ -1,11 +1,11 @@
 <template>
-  <div class="d-flex flex-column align-center py-12 bg-surface-variant min-h-screen border-b-lg">
+  <div class="d-flex flex-column align-center py-10 min-h-screen">
     <h1 class="text-h3 font-weight-bold text-primary text-center">
       Sign up for Field Friends
     </h1>
   </div>
 
-  <div class="d-flex mt-8 flex-column align-center bg-background">
+  <div class="d-flex mt-2 flex-column align-center bg-background">
     <v-container style="max-width: 40rem;" class="px-6">
       <v-form ref="formRef" @submit.prevent="submitForm" validate-on="blur">
         
