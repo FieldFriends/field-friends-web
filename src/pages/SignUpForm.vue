@@ -6,7 +6,7 @@
   </div>
 
   <div class="d-flex mt-8 flex-column align-center bg-background">
-    <v-container style="max-width: 40rem;" class="px-6 font-roboto">
+    <v-container style="max-width: 40rem;" class="px-6">
       <v-form ref="formRef" @submit.prevent="submitForm" validate-on="blur">
         
         <friend-text-field

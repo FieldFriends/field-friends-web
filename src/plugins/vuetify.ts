@@ -28,6 +28,16 @@ export default createVuetify({
     VSnackbar: {
       variant: 'elevated',
     },
+    VSelect: {
+      color: 'primary',
+      itemColor: 'primary',
+    },
+    VCheckbox: {
+      color: 'primary',
+    },
+    VRadio: {
+      color: 'primary',
+    },
   },
   theme: {
     defaultTheme: 'light',
