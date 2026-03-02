@@ -28,6 +28,16 @@ export default createVuetify({
     VSnackbar: {
       variant: 'elevated',
     },
+    VSelect: {
+      color: 'primary',
+      itemColor: 'primary',
+    },
+    VCheckbox: {
+      color: 'primary',
+    },
+    VRadio: {
+      color: 'primary',
+    },
   },
   theme: {
     defaultTheme: 'light',
@@ -45,7 +55,7 @@ export default createVuetify({
           info: '#4E342E',
           success: '#558B2F',
           warning: '#795548',
-          card: '#FFFFFF',
+          card: '#fdfaf6',
           'badge-optional': '#795548',
           'badge-shared': '#558B2F',
           link: '#385722',

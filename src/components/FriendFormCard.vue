@@ -1,6 +1,6 @@
 <template>
   <div
-    class="friend-form-card position-relative font-roboto"
+    class="friend-form-card position-relative font-roboto text-primary"
     :style="cardStyles"
   >
     <div class="px-6 pt-5 pb-4">
@@ -11,7 +11,7 @@
           v-if="props.label"
           :id="labelId"
           :for="props.inputId"
-          class="opacity-100 d-block friend-form-card__label flex-grow-1 mr-4"
+          class="opacity-100 d-block friend-form-card__label text-primary font-weight-medium flex-grow-1 mr-4"
         >
           {{  props.label }}
         </v-label>
@@ -52,7 +52,7 @@
                   variant="tonal"
                   class="font-weight-bold"
                 >
-                  Not shared
+                  Not shared with group
                 </v-chip>
               </template>
             </v-tooltip>
@@ -63,7 +63,7 @@
       <div
         v-if="props.description"
         :id="descriptionId"
-        class="mb-2 friend-form-card__description"
+        class="mb-2 friend-form-card__description text-secondary"
         v-html="props.description"
       />
 
@@ -82,8 +82,7 @@
 
 .friend-form-card__description {
   font-size: 0.975rem;
-  line-height: 1.3;
-  opacity: 80%;
+  line-height: 1.4;
 }
 </style>
 
@@ -145,5 +144,10 @@ const cardStyles = computed(() => {
   display: block;
   box-sizing: border-box;
   margin-bottom: 12px;
+  transition: box-shadow 0.2s ease;
+}
+
+.friend-form-card:focus-within {
+  box-shadow: 0 4px 12px rgba(var(--v-theme-primary), 0.08);
 }
 </style>

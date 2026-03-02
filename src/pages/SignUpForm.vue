@@ -1,12 +1,12 @@
 <template>
-  <div class="d-flex flex-column align-center py-12 bg-surface-variant min-h-screen border-b-lg">
+  <div class="d-flex flex-column align-center py-10 min-h-screen">
     <h1 class="text-h3 font-weight-bold text-primary text-center">
       Sign up for Field Friends
     </h1>
   </div>
 
-  <div class="d-flex mt-8 flex-column align-center bg-background">
-    <v-container style="max-width: 40rem;" class="px-6 font-roboto">
+  <div class="d-flex mt-2 flex-column align-center bg-background">
+    <v-container style="max-width: 40rem;" class="px-6">
       <v-form ref="formRef" @submit.prevent="submitForm" validate-on="blur">
         
         <friend-text-field
@@ -23,6 +23,7 @@
           v-model="form.age"
           class="mb-4"
           label="Age"
+          description="Must be between ages 18&ndash;29 to participate"
           :items="ageOptions"
           placeholder="Select your age"
           variant="underlined"
@@ -146,7 +147,7 @@
 
         <friend-form-card
           label="Quick Terms & Safety"
-          description="A <strong>quick summary</strong> of our most important safety points."
+          description="A quick summary of our most important safety points."
           :required="true"
           :input-id="termsCheckboxId"
         >
@@ -206,6 +207,10 @@
           </template>
         </friend-form-card>
 
+        <div class="mt-2 mb-6 d-flex align-center text-caption text-secondary font-italic">
+          <span class="opacity-80">Tip: You can use the <v-icon icon="mdi-content-save" size="small" class="mx-1 pb-1" /> button at the bottom-right to save your responses for next time.</span>
+        </div>
+
         <v-snackbar
           v-model="snackbar.isVisible"
           timeout="3000"
@@ -245,7 +250,6 @@
       </v-form>
 
       <div class="d-flex justify-center ga-4 pt-4 pb-12">
-        <!-- Hidden file input for import logic. -->
         <input
           ref="fileInput"
           type="file"
