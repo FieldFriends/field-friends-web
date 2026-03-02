@@ -1,6 +1,6 @@
 <template>
   <div
-    class="friend-form-card position-relative font-roboto"
+    class="friend-form-card position-relative font-roboto text-primary"
     :style="cardStyles"
   >
     <div class="px-6 pt-5 pb-4">

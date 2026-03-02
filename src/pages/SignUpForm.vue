@@ -146,7 +146,7 @@
 
         <friend-form-card
           label="Quick Terms & Safety"
-          description="A <strong>quick summary</strong> of our most important safety points."
+          description="A quick summary of our most important safety points."
           :required="true"
           :input-id="termsCheckboxId"
         >
