@@ -52,7 +52,7 @@
                   variant="tonal"
                   class="font-weight-bold"
                 >
-                  Not shared
+                  Not shared with group
                 </v-chip>
               </template>
             </v-tooltip>
