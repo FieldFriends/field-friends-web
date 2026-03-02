@@ -23,6 +23,7 @@
           v-model="form.age"
           class="mb-4"
           label="Age"
+          description="Must be between ages 18&ndash;29 to participate"
           :items="ageOptions"
           placeholder="Select your age"
           variant="underlined"
