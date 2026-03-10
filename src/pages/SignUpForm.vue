@@ -167,6 +167,12 @@
                   I understand that while emails are <strong>@illinois.edu</strong> verified,
                   Field Friends does not screen participants.
                 </li>
+                <li class="mb-2">
+                  <strong>
+                    Matching:
+                  </strong>
+                  I understand that, when matched, my email address will be shared with the group I'm matched into.
+                </li>
               </ul>
             </div>
 

@@ -23,7 +23,7 @@
       <div class="text-center mt-8">
         <p class="text-body-1 text-secondary">
           Still have questions? Reach out to us at 
-          <a href="mailto:fieldfriends.team@gmail.com" class="text-primary font-weight-bold text-decoration-none">fieldfriends.team@gmail.com</a>.
+          <a href="mailto:support@fieldfriends.org" class="text-primary font-weight-bold text-decoration-none">support@fieldfriends.org</a>.
         </p>
       </div>
 
