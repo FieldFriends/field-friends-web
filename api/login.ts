@@ -35,17 +35,24 @@ async function verifyTurnstileToken(token: string): Promise<TurnstileVerifyRespo
     }
   );
 
-  const data = await verifyResponse.json();
-  const parsed = TurnstileVerifyResponseSchema.safeParse(data);
+  const turnstileResponse = await verifyResponse.json();
+  const parsedTurnstileResponse = TurnstileVerifyResponseSchema.safeParse(turnstileResponse);
 
-  if (!parsed.success) {
-    console.error('API->TURNSTILE_PARSE_ERROR:', parsed.error);
-    throw new Error('Failed to parse Turnstile response');
+  if (!parsedTurnstileResponse.success) {
+    console.error('API->TURNSTILE_PARSE_ERROR:', parsedTurnstileResponse.error);
+
+    throw new Error('Failed to parse turnstile response');
   }
 
-  return parsed.data;
+  return parsedTurnstileResponse.data;
 }
 
+/**
+ * Handle the sign-in process.
+ * @param email - The email to sign in.
+ * @param response - The response to send.
+ * @returns The HTTP response.
+ */
 async function handleSignIn(email: string, response: VercelResponse) {
   const cleanEmail = email.trim().toLowerCase();
 
@@ -64,6 +71,12 @@ async function handleSignIn(email: string, response: VercelResponse) {
   return httpOk(response);
 }
 
+/**
+ * Handle the login API request.
+ * @param request - The HTTP request from the client.
+ * @param response - The HTTP response to send.
+ * @returns The HTTP response.
+ */
 export default async function handler(request: VercelRequest, response: VercelResponse) {
   if (request.method !== HttpMethods.Post) {
     return httpMethodNotAllowed(response);
