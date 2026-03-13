@@ -1,16 +1,19 @@
-import { HttpMethods } from "#shared/constants";
+import { ContentTypes, HttpMethods } from "#shared/constants";
 import { VercelRequest, VercelResponse } from "@vercel/node";
 import { httpBadRequest, httpInternalServerError, httpMethodNotAllowed, httpOk } from "#api/_utils/http";
 import { LoginSchema } from "#shared/schemas/loginSchema";
 import { TurnstileVerifyResponse, TurnstileVerifyResponseSchema } from "#shared/schemas/turnstileVerifyResponseSchema";
 import { supabaseAdmin } from "#api/_utils/supabase-admin";
 import z from "zod";
+import { HeaderKeys } from "#shared/constants";
 
 const TURNSTILE_SECRET_KEY = process.env.TURNSTILE_SECRET_KEY;
 
 if (!TURNSTILE_SECRET_KEY) {
   throw new Error('TURNSTILE_SECRET_KEY is not defined');
 }
+
+const TURNSTILE_VERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
 
 /**
  * Verify the turnstile token.
@@ -19,8 +22,7 @@ if (!TURNSTILE_SECRET_KEY) {
  * @returns The turnstile token verification response.
  */
 async function verifyTurnstileToken(token: string): Promise<TurnstileVerifyResponse> {
-  const verifyResponse = await fetch(
-    'https://challenges.cloudflare.com/turnstile/v0/siteverify',
+  const verifyResponse = await fetch(TURNSTILE_VERIFY_URL,
     {
       method: HttpMethods.Post,
       body: JSON.stringify({
@@ -28,7 +30,7 @@ async function verifyTurnstileToken(token: string): Promise<TurnstileVerifyRespo
         response: token,
       }),
       headers: {
-        'Content-Type': 'application/json',
+        [HeaderKeys.ContentType]: ContentTypes.Json,
       },
     }
   );
@@ -42,6 +44,24 @@ async function verifyTurnstileToken(token: string): Promise<TurnstileVerifyRespo
   }
 
   return parsed.data;
+}
+
+async function handleSignIn(email: string, response: VercelResponse) {
+  const cleanEmail = email.trim().toLowerCase();
+
+  const { error: authError } = await supabaseAdmin.auth.signInWithOtp({
+    email: cleanEmail,
+    options: {
+      shouldCreateUser: true,
+    }
+  });
+
+  if (authError) {
+    console.error('API->AUTH_ERROR:', authError);
+    return httpInternalServerError(response);
+  }
+
+  return httpOk(response);
 }
 
 export default async function handler(request: VercelRequest, response: VercelResponse) {
@@ -67,22 +87,8 @@ export default async function handler(request: VercelRequest, response: VercelRe
     }
 
     // FriendDev: Now that we've verified the turnstile token, we can proceed with the login process.
-    const cleanEmail = email.trim().toLowerCase();
+    return await handleSignIn(email, response);
 
-    const { error: authError } = await supabaseAdmin.auth.signInWithOtp({
-      email: cleanEmail,
-      options: {
-        shouldCreateUser: true,
-      }
-    });
-
-    if (authError) {
-      console.error('API->AUTH_ERROR:', authError);
-
-      return httpInternalServerError(response);
-    }
-
-    return httpOk(response);
   } catch (err) {
     console.error('API->ERROR:', err);
 
