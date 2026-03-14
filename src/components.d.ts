@@ -25,5 +25,6 @@ declare module 'vue' {
     LoginStepOtp: typeof import('./components/login/LoginStepOtp.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    TurnstileWidget: typeof import('./components/TurnstileWidget.vue')['default']
   }
 }

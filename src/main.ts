@@ -17,6 +17,9 @@ import { createApp } from 'vue'
 import 'unfonts.css'
 import '@/styles/global.scss'
 
+globalThis.onTurnstileLoad = () => {
+  document.dispatchEvent(new Event('turnstileLoaded'));
+};
 
 const app = createApp(App)
 

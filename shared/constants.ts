@@ -17,3 +17,7 @@ export const ContentTypes = {
 export const AuthorizationSchemes = {
   Bearer: 'Bearer',
 } as const;
+
+export const TurnstileConstants = {
+  VerifyUrl: 'https://challenges.cloudflare.com/turnstile/v0/siteverify',
+} as const;

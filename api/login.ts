@@ -1,19 +1,16 @@
-import { ContentTypes, HttpMethods } from "#shared/constants";
+import { ContentTypes, HttpMethods, HeaderKeys, TurnstileConstants } from "#shared/constants";
 import { VercelRequest, VercelResponse } from "@vercel/node";
 import { httpBadRequest, httpInternalServerError, httpMethodNotAllowed, httpOk } from "#api/_utils/http";
 import { LoginSchema } from "#shared/schemas/loginSchema";
 import { TurnstileVerifyResponse, TurnstileVerifyResponseSchema } from "#shared/schemas/turnstileVerifyResponseSchema";
 import { supabaseAdmin } from "#api/_utils/supabase-admin";
 import z from "zod";
-import { HeaderKeys } from "#shared/constants";
 
 const TURNSTILE_SECRET_KEY = process.env.TURNSTILE_SECRET_KEY;
 
 if (!TURNSTILE_SECRET_KEY) {
   throw new Error('TURNSTILE_SECRET_KEY is not defined');
 }
-
-const TURNSTILE_VERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
 
 /**
  * Verify the turnstile token.
@@ -22,7 +19,7 @@ const TURNSTILE_VERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/sit
  * @returns The turnstile token verification response.
  */
 async function verifyTurnstileToken(token: string): Promise<TurnstileVerifyResponse> {
-  const verifyResponse = await fetch(TURNSTILE_VERIFY_URL,
+  const verifyResponse = await fetch(TurnstileConstants.VerifyUrl,
     {
       method: HttpMethods.Post,
       body: JSON.stringify({

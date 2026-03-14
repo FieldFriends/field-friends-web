@@ -22,7 +22,7 @@
 
       <section class="mb-12" aria-labelledby="story-heading">
         <h2 id="story-heading" class="text-h4 font-weight-bold mb-4 text-primary">
-          The Origin
+          Origin
         </h2>
         <p class="text-body-1 text-secondary mb-4 page-text">
           Finding genuine friends on a massive campus can be challenging.
