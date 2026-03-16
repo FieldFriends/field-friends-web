@@ -1,36 +1,47 @@
 <template>
-  <div class="d-flex justify-center my-0">
+  <div class="turnstile-widget d-flex justify-center my-0">
     <div ref="widgetContainer" />
   </div>
 </template>
 
+<style scoped>
+.turnstile-widget {
+  min-height: 65px;
+}
+</style>
+
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { ref, onBeforeUnmount } from 'vue';
+import { useScriptTag } from '@vueuse/core';
+
+export interface TurnstileWidgetProps {
+  /**
+   * The site key for the Turnstile widget that is provided by Cloudflare.
+   */
+  siteKey: string;
+}
+
+const props = defineProps<TurnstileWidgetProps>();
 
 const getTurnstile = () => (globalThis as unknown as Window).turnstile;
 
 const emit = defineEmits<{
   token: [token: string];
   expired: [];
-  error: [error: any];
+  error: [error: unknown];
 }>();
 
-const siteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY;
 const widgetContainer = ref<HTMLElement | null>(null);
 const widgetId = ref<string | null>(null);
 
-if (!siteKey) {
-  emit('error', 'Missing Turnstile site key.');
-}
-
 const renderWidget = () => {
-  if (!widgetContainer.value || !siteKey || !getTurnstile()) {
+  if (!widgetContainer.value || !props.siteKey || !getTurnstile()) {
     return;
   }
 
   try {
     const id = getTurnstile().render(widgetContainer.value, {
-      sitekey: siteKey,
+      sitekey: props.siteKey,
       callback: (token: string) => emit('token', token),
       'expired-callback': () => emit('expired'),
       'error-callback': (err: any) => emit('error', err),
@@ -54,13 +65,15 @@ const reset = () => {
 
 defineExpose({ reset });
 
-onMounted(() => {
-  if (getTurnstile()) {
+useScriptTag(
+  'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit',
+  () => {
     renderWidget();
-  } else {
-    document.addEventListener('turnstileLoaded', renderWidget, { once: true });
+  },
+  {
+    defer: true
   }
-});
+);
 
 onBeforeUnmount(() => {
   if (widgetId.value !== null && getTurnstile()) {

@@ -21,6 +21,7 @@
 
     <turnstile-widget
       ref="turnstileRef"
+      :site-key="siteKey"
       @token="handleTurnstileToken"
       @expired="handleTurnstileExpired"
       @error="handleTurnstileError"
@@ -57,6 +58,8 @@ const emit = defineEmits<{
 const loading = ref(false);
 const turnstileToken = ref('');
 const turnstileRef = ref<InstanceType<typeof TurnstileWidget> | null>(null);
+
+const siteKey = import.meta.env.VITE_TURNSTILE_SITE_KEY;
 
 const handleTurnstileToken = (token: string) => {
   turnstileToken.value = token;
