@@ -74,6 +74,12 @@ const routes = [
     meta: { requiresAuth: false },
   },
   {
+    path: AppRoutes.Account.path,
+    name: AppRoutes.Account.name,
+    component: () => import('@/pages/Account.vue'),
+    meta: { requiresAuth: true },
+  },
+  {
     path: AppRoutes.Login.path,
     name: AppRoutes.Login.name,
     // FriendDev: Lazy load the login page so it doesn't slow down the homepage load
