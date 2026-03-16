@@ -26,6 +26,7 @@
     "@fontsource/roboto": "^5.2.9",
     "@mdi/font": "7.4.47",
     "@supabase/supabase-js": "^2.84.0",
+    "@vueuse/core": "^14.2.1",
     "pinia": "^3.0.3",
     "vue": "^3.5.21",
     "vue-router": "^4.5.1",
