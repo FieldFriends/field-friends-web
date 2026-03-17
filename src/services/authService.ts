@@ -1,6 +1,7 @@
 import type { Session, AuthChangeEvent, AuthError } from '@supabase/supabase-js';
 import type { IAuthService } from './auth/types/IAuthService';
 import type { AuthSubscription } from './auth/types/AuthSubscription';
+import type { AuthResponse } from './auth/types/AuthResponse';
 
 class AuthServiceProxy implements IAuthService {
   private adapter!: IAuthService;
@@ -9,8 +10,12 @@ class AuthServiceProxy implements IAuthService {
     this.adapter = newAdapter;
   }
 
-  async getSession(): Promise<{ session: Session | null; error: AuthError | null }> {
+  async getSession(): Promise<AuthResponse> {
     return this.adapter.getSession();
+  }
+
+  async signIn(email: string, code: string): Promise<AuthResponse> {
+    return this.adapter.signIn(email, code);
   }
 
   onAuthStateChange(callback: (event: AuthChangeEvent, session: Session | null) => void): AuthSubscription {

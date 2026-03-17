@@ -1,6 +1,7 @@
 import type { Session, AuthChangeEvent, AuthError } from '@supabase/supabase-js';
 import type { IAuthService } from './types/IAuthService';
-import { SupabaseAuthEvents, SupabaseRoles } from '#shared/constants';
+import type { AuthResponse } from './types/AuthResponse';
+import { SupabaseAuthEvents, SupabaseRoles, HttpStatusCodes } from '#shared/constants';
 import { MockAuthDefaults } from '#shared/mock/mockConstants';
 
 export class MockAuthService implements IAuthService {
@@ -26,8 +27,26 @@ export class MockAuthService implements IAuthService {
 
   private readonly listeners: Set<(event: AuthChangeEvent, session: Session | null) => void> = new Set();
 
-  async getSession(): Promise<{ session: Session | null; error: AuthError | null }> {
+  async getSession(): Promise<AuthResponse> {
     return { session: this.fakeSession, error: null };
+  }
+
+  async signIn(email: string, code: string): Promise<AuthResponse> {
+    if (code === MockAuthDefaults.OtpCode) {
+      queueMicrotask(() => {
+        this.listeners.forEach(callback => callback(SupabaseAuthEvents.SignedIn, this.fakeSession));
+      });
+      return { session: this.fakeSession, error: null };
+    }
+
+    return {
+      session: null,
+      error: {
+        name: 'AuthError',
+        message: 'Invalid OTP code.',
+        status: HttpStatusCodes.BadRequest
+      } as AuthError
+    };
   }
 
   onAuthStateChange(callback: (event: AuthChangeEvent, session: Session | null) => void) {

@@ -1,9 +1,11 @@
 import type { Session, AuthChangeEvent, AuthError } from '@supabase/supabase-js';
 import type { AuthSubscription } from './AuthSubscription';
+import type { AuthResponse } from './AuthResponse';
 
-// TODO @FriendDev Add sign in
 export interface IAuthService {
-  getSession(): Promise<{ session: Session | null; error: AuthError | null }>;
+  getSession(): Promise<AuthResponse>;
+
+  signIn(email: string, code: string): Promise<AuthResponse>;
 
   onAuthStateChange(callback: (event: AuthChangeEvent, session: Session | null) => void): AuthSubscription;
 

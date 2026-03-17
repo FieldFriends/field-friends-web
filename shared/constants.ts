@@ -5,6 +5,11 @@ export const HttpMethods = {
   Delete: 'DELETE',
 } as const;
 
+export const HttpStatusCodes = {
+  BadRequest: 400,
+  Unauthorized: 401,
+} as const;
+
 export const HeaderKeys = {
   ContentType: 'Content-Type',
   Authorization: 'Authorization',
@@ -24,6 +29,7 @@ export const TurnstileConstants = {
 
 export const SupabaseAuthEvents = {
   InitialSession: 'INITIAL_SESSION',
+  SignedIn: 'SIGNED_IN',
   SignedOut: 'SIGNED_OUT',
 } as const;
 

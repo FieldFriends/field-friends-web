@@ -48,7 +48,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import FriendTextField from '@/components/FriendTextField.vue';
-import { supabase } from '@/services/supabase';
+import { authService } from '@/services/authService';
 
 const props = defineProps<{
   email: string
@@ -65,10 +65,6 @@ const emit = defineEmits<{
 const loading = ref(false);
 
 const handleVerify = async () => {
-  // @FriendDev: CRITICAL REMOVE:
-  emit('verified');
-  return;
-
   const cleanCode = code.value?.trim();
 
   if (!cleanCode) {
@@ -78,11 +74,7 @@ const handleVerify = async () => {
   try {
     loading.value = true;
 
-    const { error: verifyError } = await supabase.auth.verifyOtp({
-      email: props.email,
-      token: cleanCode,
-      type: 'email',
-    });
+    const { error: verifyError } = await authService.signIn(props.email, cleanCode);
 
     if (verifyError) {
       throw verifyError;
