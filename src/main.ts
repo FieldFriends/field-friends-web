@@ -16,9 +16,29 @@ import { createApp } from 'vue'
 // Styles
 import 'unfonts.css'
 import '@/styles/global.scss'
+import { authService } from '@/services/authService'
 
-const app = createApp(App)
+import { AUTH_SERVICE_KEY } from '@/services/injectionKeys'
 
-registerPlugins(app)
+try {
+  if (import.meta.env.DEV && import.meta.env.VITE_USE_MOCK_AUTH === 'true') {
+    const { worker } = await import('./mocks/browser');
+    await worker.start({ onUnhandledRequest: 'bypass' });
 
-app.mount('#app')
+    const { MockAuthService } = await import('./services/auth/MockAuthService');
+    authService.setAdapter(new MockAuthService());
+  } else {
+    const { SupabaseAuthService } = await import('./services/auth/SupabaseAuthService');
+    authService.setAdapter(new SupabaseAuthService());
+  }
+
+  const app = createApp(App);
+
+  app.provide(AUTH_SERVICE_KEY, authService);
+
+  registerPlugins(app);
+
+  app.mount('#app');
+} catch (err) {
+  console.error(err);
+}

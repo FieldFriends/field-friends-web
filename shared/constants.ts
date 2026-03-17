@@ -21,3 +21,12 @@ export const AuthorizationSchemes = {
 export const TurnstileConstants = {
   VerifyUrl: 'https://challenges.cloudflare.com/turnstile/v0/siteverify',
 } as const;
+
+export const SupabaseAuthEvents = {
+  InitialSession: 'INITIAL_SESSION',
+  SignedOut: 'SIGNED_OUT',
+} as const;
+
+export const SupabaseRoles = {
+  Authenticated: 'authenticated',
+} as const;

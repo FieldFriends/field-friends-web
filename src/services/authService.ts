@@ -1,18 +1,25 @@
-import { supabase } from '@/services/supabase';
-import type { Session, AuthChangeEvent } from '@supabase/supabase-js';
+import type { Session, AuthChangeEvent, AuthError } from '@supabase/supabase-js';
+import type { IAuthService } from './auth/types/IAuthService';
+import type { AuthSubscription } from './auth/types/AuthSubscription';
 
-export const authService = {
-  async getSession(): Promise<{ session: Session | null; error: any }> {
-    const { data, error } = await supabase.auth.getSession();
+class AuthServiceProxy implements IAuthService {
+  private adapter!: IAuthService;
 
-    return { session: data.session, error };
-  },
-
-  onAuthStateChange(callback: (event: AuthChangeEvent, session: Session | null) => void) {
-    return supabase.auth.onAuthStateChange(callback);
-  },
-
-  async signOut() {
-    return await supabase.auth.signOut();
+  setAdapter(newAdapter: IAuthService) {
+    this.adapter = newAdapter;
   }
-};
+
+  async getSession(): Promise<{ session: Session | null; error: AuthError | null }> {
+    return this.adapter.getSession();
+  }
+
+  onAuthStateChange(callback: (event: AuthChangeEvent, session: Session | null) => void): AuthSubscription {
+    return this.adapter.onAuthStateChange(callback);
+  }
+
+  async signOut(): Promise<{ error: AuthError | null }> {
+    return this.adapter.signOut();
+  }
+}
+
+export const authService = new AuthServiceProxy();
