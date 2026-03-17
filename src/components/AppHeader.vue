@@ -148,24 +148,16 @@ const userEmail = computed(() => store.session?.user?.email || '');
 async function handleLogout() {
   await store.signOut();
 
-  router.push(AppRoutes.Home.path);
+  location.assign(AppRoutes.Home.path);
 }
 </script>
 
 <style scoped>
-/*
-  By changing the active-class to 'unused-active-class', we prevent Vuetify
-  from applying its default active styles (background overlay).
-  We then manually apply 'nav-active-link' based on the route path.
-*/
-
-/* Target the content for the underline */
 .nav-active-link :deep(.v-btn__content) {
   text-decoration: underline;
   text-underline-offset: 4px;
 }
 
-/* Ensure no background overlay is shown even if the unused class triggers something */
 .unused-active-class :deep(.v-btn__overlay) {
   opacity: 0 !important;
 }
