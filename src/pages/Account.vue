@@ -3,21 +3,22 @@
     <v-container class="flex-grow-1 pt-12 pb-16">
       <v-row justify="center">
         <v-col cols="12" md="10" lg="8">
-          <h1 class="text-h4 text-md-h2 font-weight-bold mb-8 text-primary mt-md-8 text-center" id="account-heading" tabindex="-1">
-            Account Data
-          </h1>
-
-          <div v-if="accountData">
-            <v-divider class="mb-12 border-opacity-25" color="secondary" aria-hidden="true" />
+          <div v-if="accountData" class="mt-md-4">
 
             <section class="mb-12" aria-labelledby="submission-heading">
-              <h2 id="submission-heading" class="text-h4 font-weight-bold mb-4 text-primary">
+              <h1 id="submission-heading" class="text-h4 font-weight-bold mb-4 text-primary">
                 Your Submission
-              </h2>
+              </h1>
               <p class="text-h6 text-secondary font-italic font-eb-garamond mb-8">
                 For this round
               </p>
               
+              <div class="mb-2">
+                <p class="text-h6 font-weight-bold text-primary font-dm-sans">{{ userEmail }}</p>
+              </div>
+
+              <v-divider class="my-4 border-opacity-25" color="secondary" aria-hidden="true" />
+
               <div class="pl-0 pl-md-4">
                 <div class="mb-6">
                   <h3 class="text-h6 font-weight-bold mb-2 text-primary font-playfair">Gender Identity</h3>
@@ -64,10 +65,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
+import { useAppStore } from '@/stores/app';
 import { getAccountData } from '@/services/endpoints/getAccountData';
 import type { AccountDataResponse } from '#shared/schemas/accountDataSchema';
 import { SOCIAL_ENERGY_OPTIONS, AFFILIATION_OPTIONS, GENDER_OPTIONS } from '#shared/friendConfig';
+
+const store = useAppStore();
+const userEmail = computed(() => store.session?.user?.email || '');
 
 const accountData = ref<AccountDataResponse | null>(null);
 const isLoading = ref(true);

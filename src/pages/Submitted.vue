@@ -1,19 +1,29 @@
 <template>
   <v-container class="submitted-page fill-height justify-center text-center">
-    <div class="submitted-page__content d-flex flex-column align-center">
-      <h1 class="text-h3 font-weight-bold mb-6 text-primary">
+    <div class="submitted-page__content w-100 d-flex flex-column align-center">
+      <h1 class="text-h2 font-weight-bold mb-8 text-primary">
         You're all set.
       </h1>
-
-      <div class="text-body-1 text-secondary mb-8">
-        We've received your submission
-      </div>
       
-      <p class="text-h6 font-weight-regular font-eb-garamond text-primary mb-0">
-        You'll receive an email with your group on <strong>{{ matchDate }}</strong>!
+      <p class="text-h5 font-weight-regular font-eb-garamond text-secondary mb-12">
+        You'll receive an email with your group on <strong>{{ matchDate }}</strong>.
       </p>
 
-      <p class="text-secondary font-italic mt-12">
+      <v-divider class="w-100 mb-12 border-opacity-25" color="secondary" />
+
+      <router-link
+        :to="AppRoutes.Account.path"
+        class="text-decoration-none font-weight-bold font-dm-sans text-link d-inline-flex align-center text-h6 mb-16"
+      >
+        View your submission
+        <v-icon
+          icon="mdi-arrow-right"
+          size="small"
+          class="ms-2"
+        />
+      </router-link>
+
+      <p class="text-body-2 text-secondary font-italic mt-4">
         All of your data in Field Friends will be permanently deleted on {{ matchDate }}
       </p>
     </div>
@@ -21,6 +31,7 @@
 </template>
 
 <script lang="ts" setup>
+import { AppRoutes } from '@/router/routeConfig';
 import { computed } from 'vue';
 
 // TODO @FriendDev CRITICAL

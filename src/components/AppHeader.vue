@@ -5,8 +5,15 @@
     location="left"
     class="d-sm-none bg-background"
   >
-    <div class="px-4 py-4 d-flex align-center border-b">
+    <div class="px-4 py-4 d-flex align-center border-b justify-space-between">
       <span class="text-h6 font-weight-bold font-playfair text-primary">Field Friends</span>
+    </div>
+
+    <div v-if="isLoggedIn" class="px-4 py-3 border-b bg-primary-lighten-5">
+      <router-link :to="AppRoutes.Account.path" class="text-subtitle-2 font-weight-bold text-primary d-block text-decoration-none d-flex align-center" @click="drawer = false" style="overflow: hidden;">
+        <v-icon icon="mdi-account-circle" class="mr-2 flex-shrink-0" size="small"></v-icon>
+        <span class="text-truncate">{{ userEmail }}</span>
+      </router-link>
     </div>
 
     <v-list nav class="pt-4">
@@ -95,7 +102,7 @@
     />
 
     <div v-if="isLoggedIn" class="d-flex align-center">
-      <router-link :to="AppRoutes.Account.path" class="text-caption font-weight-bold text-secondary mr-3 d-none d-md-block text-decoration-none">
+      <router-link :to="AppRoutes.Account.path" class="text-caption font-weight-bold text-secondary mr-3 d-none d-sm-block text-decoration-none">
         {{ userEmail }}
       </router-link>
       
