@@ -16,5 +16,9 @@ export const handlers = [
     return HttpResponse.json({
       submitted: true
     });
+  }),
+
+  http.post('/api/login', () => {
+    return HttpResponse.json({});
   })
 ];
