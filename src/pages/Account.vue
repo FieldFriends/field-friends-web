@@ -83,6 +83,14 @@ const getLabel = (options: readonly { label: string, value: string }[], value: s
 };
 
 onMounted(async () => {
+  if (!userEmail.value) {
+    isLoading.value = false;
+
+    error.value = 'We could not find an email associated with your session. Please try logging out and back in.';
+    
+    return;
+  }
+
   try {
     accountData.value = await getAccountData();
   } catch (err: any) {
