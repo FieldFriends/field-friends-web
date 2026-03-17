@@ -95,9 +95,9 @@
     />
 
     <div v-if="isLoggedIn" class="d-flex align-center">
-      <span class="text-caption text-medium-emphasis mr-3 d-none d-md-block">
+      <router-link :to="AppRoutes.Account.path" class="text-caption font-weight-bold text-secondary mr-3 d-none d-md-block text-decoration-none">
         {{ userEmail }}
-      </span>
+      </router-link>
       
       <v-btn
         variant="text"
@@ -140,6 +140,7 @@ const userEmail = computed(() => store.session?.user?.email || '');
 
 async function handleLogout() {
   await store.signOut();
+
   router.push(AppRoutes.Home.path);
 }
 </script>
