@@ -21,6 +21,7 @@ declare module 'vue-router/auto-routes' {
     '/': RouteRecordInfo<'/', '/', Record<never, never>, Record<never, never>>,
     '/About': RouteRecordInfo<'/About', '/About', Record<never, never>, Record<never, never>>,
     '/Account': RouteRecordInfo<'/Account', '/Account', Record<never, never>, Record<never, never>>,
+    '/AlreadySubmitted': RouteRecordInfo<'/AlreadySubmitted', '/AlreadySubmitted', Record<never, never>, Record<never, never>>,
     '/Contact': RouteRecordInfo<'/Contact', '/Contact', Record<never, never>, Record<never, never>>,
     '/FAQ': RouteRecordInfo<'/FAQ', '/FAQ', Record<never, never>, Record<never, never>>,
     '/Legal': RouteRecordInfo<'/Legal', '/Legal', Record<never, never>, Record<never, never>>,
@@ -51,6 +52,10 @@ declare module 'vue-router/auto-routes' {
     }
     'src/pages/Account.vue': {
       routes: '/Account'
+      views: never
+    }
+    'src/pages/AlreadySubmitted.vue': {
+      routes: '/AlreadySubmitted'
       views: never
     }
     'src/pages/Contact.vue': {

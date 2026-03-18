@@ -69,7 +69,7 @@ const handleError = (msg: string) => {
 };
 
 const handleVerified = async () => {
-  await router.push(AppRoutes.Form.path);
+  await router.push(AppRoutes.AlreadySubmitted.path);
 };
 
 const handleNextStep = () => {

@@ -9,55 +9,90 @@
       <span class="text-h6 font-weight-bold font-playfair text-primary">Field Friends</span>
     </div>
 
-    <div v-if="isLoggedIn" class="px-4 py-3 border-b bg-primary-lighten-5">
-      <router-link :to="AppRoutes.Account.path" class="text-subtitle-2 font-weight-bold text-primary d-block text-decoration-none d-flex align-center" @click="drawer = false" style="overflow: hidden;">
-        <v-icon icon="mdi-account-circle" class="mr-2 flex-shrink-0" size="small"></v-icon>
-        <span class="text-truncate">{{ userEmail }}</span>
+    <div v-if="isLoggedIn" class="px-4 py-3 border-b bg-primary-lighten-5 text-center">
+      <div class="text-subtitle-2 font-weight-bold text-primary text-truncate mb-2">
+        {{ userEmail }}
+      </div>
+      
+      <v-divider class="mx-auto mb-2" width="170" />
+
+      <router-link
+        :to="AppRoutes.Account.path"
+        class="text-h6 py-2 font-dm-sans font-weight-bold text-primary text-center d-block text-decoration-none"
+        @click="drawer = false"
+      >
+        Account
+      </router-link>
+      <router-link
+        :to="AppRoutes.AlreadySubmitted.path"
+        class="text-h6 py-2 font-dm-sans font-weight-bold text-primary text-center d-block text-decoration-none"
+        @click="drawer = false"
+      >
+        Sign-up Form
       </router-link>
     </div>
 
     <v-list nav class="pt-4">
       <v-list-item
         :to="AppRoutes.Home.path"
-        prepend-icon="mdi-home-outline"
-        title="Home"
-        class="font-dm-sans font-weight-bold text-primary mb-1"
         active-color="primary"
         @click="drawer = false"
-      />
+      >
+        <v-list-item-title class="text-h6 py-2 font-dm-sans font-weight-bold text-primary text-center">
+          Home
+        </v-list-item-title>
+      </v-list-item>
+      
       <v-list-item
         :to="AppRoutes.About.path"
-        prepend-icon="mdi-information-outline"
-        title="About"
-        class="font-dm-sans font-weight-bold text-primary mb-1"
         active-color="primary"
         @click="drawer = false"
-      />
+      >
+        <v-list-item-title class="text-h6 py-2 font-dm-sans font-weight-bold text-primary text-center">
+          About
+        </v-list-item-title>
+      </v-list-item>
+
       <v-list-item
         :to="AppRoutes.FAQ.path"
-        prepend-icon="mdi-help-circle-outline"
-        title="FAQ"
-        class="font-dm-sans font-weight-bold text-primary mb-1"
         active-color="primary"
         @click="drawer = false"
-      />
+      >
+        <v-list-item-title class="text-h6 py-2 font-dm-sans font-weight-bold text-primary text-center">
+          FAQ
+        </v-list-item-title>
+      </v-list-item>
+
       <v-divider class="my-2 mx-6" />
+
       <v-list-item
         :to="AppRoutes.Contact.path"
-        prepend-icon="mdi-email-outline"
-        title="Contact"
-        class="font-dm-sans font-weight-bold text-primary mb-1"
         active-color="primary"
         @click="drawer = false"
-      />
+      >
+        <v-list-item-title class="text-h6 py-2 font-dm-sans font-weight-bold text-primary text-center">
+          Contact
+        </v-list-item-title>
+      </v-list-item>
+
       <v-list-item
         :to="AppRoutes.Legal.path"
-        prepend-icon="mdi-scale-balance"
-        title="Legal"
-        class="font-dm-sans font-weight-bold text-primary mb-1"
         active-color="primary"
         @click="drawer = false"
-      />
+      >
+        <v-list-item-title class="text-h6 py-2 font-dm-sans font-weight-bold text-primary text-center">
+          Legal
+        </v-list-item-title>
+      </v-list-item>
+
+      <template v-if="isLoggedIn">
+        <v-divider class="my-2 mx-6" />
+        <v-list-item @click="handleLogout">
+          <v-list-item-title class="text-h6 py-2 font-dm-sans font-weight-bold text-secondary text-center">
+            Log out
+          </v-list-item-title>
+        </v-list-item>
+      </template>
     </v-list>
   </v-navigation-drawer>
 
@@ -88,7 +123,6 @@
         vertical
         inset
         class="mx-2 d-none d-sm-flex"
-        style="height: 16px; margin-top: auto; margin-bottom: auto;"
       />
       <v-btn variant="text" :to="AppRoutes.Contact.path" class="text-none">Contact</v-btn>
       <v-btn variant="text" :to="AppRoutes.Legal.path" class="text-none">Legal</v-btn>
@@ -98,22 +132,46 @@
       vertical
       inset
       class="mx-4 d-none d-sm-flex"
-      style="height: 20px; margin-top: auto; margin-bottom: auto;"
     />
 
     <div v-if="isLoggedIn" class="d-flex align-center">
-      <router-link :to="AppRoutes.Account.path" class="text-caption font-weight-bold text-secondary mr-3 d-none d-sm-block text-decoration-none">
-        {{ userEmail }}
-      </router-link>
-      
-      <v-btn
-        variant="text"
-        size="small"
-        class="text-none"
-        @click="handleLogout"
-      >
-        Logout
-      </v-btn>
+      <v-menu transition="slide-y-transition">
+        <template v-slot:activator="{ props }">
+          <v-btn
+            variant="text"
+            size="small"
+            class="font-dm-sans font-weight-bold text-primary mr-1 d-none d-sm-inline-flex"
+            v-bind="props"
+          >
+            {{ userEmail }}
+
+            <template #append>
+              <v-icon icon="mdi-chevron-down" />
+            </template>
+          </v-btn>
+        </template>
+        <v-list min-width="150">
+          <v-list-item :to="AppRoutes.Account.path">
+            <v-list-item-title class="text-primary font-weight-bold font-dm-sans">
+              Account
+            </v-list-item-title>
+          </v-list-item>
+
+          <v-list-item :to="AppRoutes.AlreadySubmitted.path">
+            <v-list-item-title class="text-primary font-weight-bold font-dm-sans">
+              Sign-up Form
+            </v-list-item-title>
+          </v-list-item>
+          
+          <v-divider class="mx-4" />
+          
+          <v-list-item @click="handleLogout">
+            <v-list-item-title class="font-weight-bold text-secondary font-dm-sans">
+              Log out
+            </v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </div>
 
     <div v-else>

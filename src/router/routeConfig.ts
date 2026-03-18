@@ -8,6 +8,7 @@ export const AppRoutes = {
   Legal: { name: 'Legal', path: '/legal' },
   Contact: { name: 'Contact', path: '/contact' },
   Account: { name: 'Account', path: '/account' },
+  AlreadySubmitted: { name: 'AlreadySubmitted', path: '/already-submitted' },
   NotFound: { name: 'NotFound', path: '/:pathMatch(.*)*' },
 } as const;
 

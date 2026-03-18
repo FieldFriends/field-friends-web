@@ -80,6 +80,31 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
+    path: AppRoutes.AlreadySubmitted.path,
+    name: AppRoutes.AlreadySubmitted.name,
+    component: () => import('@/pages/AlreadySubmitted.vue'),
+    meta: { requiresAuth: true },
+    beforeEnter: async (
+      to: import('vue-router').RouteLocationNormalized,
+      from: import('vue-router').RouteLocationNormalized,
+      next: import('vue-router').NavigationGuardNext
+    ) => {
+      const store = useAppStore();
+      const hasSubmitted = await hasUserSubmitted(store);
+
+      // FriendDev: If not submitted, go right to the form.
+      //            Otherwise, let the user pick if they want
+      //            to override their submission, or view it on the account page.
+      if (!hasSubmitted) {
+        next(AppRoutes.Form.path);
+
+        return;
+      }
+
+      next();
+    }
+  },
+  {
     path: AppRoutes.Login.path,
     name: AppRoutes.Login.name,
     // FriendDev: Lazy load the login page so it doesn't slow down the homepage load
@@ -120,24 +145,9 @@ const routes = [
     name: AppRoutes.Form.name,
     component: () => import('@/pages/SignUpForm.vue'),
     meta: { requiresAuth: true },
-    beforeEnter: async (
-      to: import('vue-router').RouteLocationNormalized,
-      from: import('vue-router').RouteLocationNormalized,
-      next: import('vue-router').NavigationGuardNext
-    ) => {
-      const store = useAppStore();
-      const hasSubmitted = await hasUserSubmitted(store);
-
-      if (hasSubmitted) {
-        next(AppRoutes.Submitted.path);
-        return;
-      }
-
-      next();
-    }
   },
   {
-    // FriendDev: 404 Catch-all route
+    // FriendDev: 404 catch-all.
     path: AppRoutes.NotFound.path,
     name: AppRoutes.NotFound.name,
     component: () => import('@/pages/NotFound.vue'),
@@ -152,6 +162,7 @@ const router = createRouter({
     if (savedPosition) {
       return savedPosition;
     }
+
     if (to.hash) {
       return new Promise((resolve) => {
         // FriendDev: Set a maximum loading time to avoid infinite loops.

@@ -12,7 +12,7 @@
 
       <v-btn
         class="px-12 mb-16"
-        :to="AppRoutes.Login.path"
+        :to="AppRoutes.AlreadySubmitted.path"
       >
         Sign up
       </v-btn>
