@@ -26,7 +26,7 @@
         </h2>
         <p class="text-body-1 text-secondary mb-4 page-text">
           Finding real friends on a big campus can be tough.
-          We often meet people by proximity—who we sit next to while we work or attend class, who lives in our building, etc.
+          We often meet people by proximity&mdash;who we sit next to while we work or attend class, who lives in our building&mdash;so on and so forth.
           These connections are valuable, but they often lack shared interests and are becoming increasingly difficult to come by.
         </p>
         <p class="text-body-1 text-secondary mb-4 page-text">
