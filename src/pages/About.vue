@@ -135,7 +135,7 @@
           It never touches the cloud.
         </p>
         <p class="text-body-1 text-secondary page-text">
-          We believe in transparency. You can independently verify our backend encryption logic by reading the source code
+          For full transparency, our backend encryption logic is
           <a
             href="https://github.com/FieldFriends/field-friends-web/tree/main/api"
             target="_blank"
