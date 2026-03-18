@@ -66,9 +66,20 @@
               :to="AppRoutes.Form.path"
               color="primary"
               variant="flat"
-              class="px-9 text-none"
+              class="px-9 text-none mb-8"
             >
               Resubmit
+            </v-btn>
+
+            <v-divider class="mb-8 mx-16 border-opacity-25" color="secondary" />
+
+            <v-btn
+              color="error"
+              variant="outlined"
+              class="px-9 text-none"
+              @click="showDeleteModal = true"
+            >
+              Delete Account
             </v-btn>
           </div>
         </v-col>
@@ -76,26 +87,126 @@
         
       </v-row>
     </v-container>
+
+    <v-dialog
+      v-model="showDeleteModal"
+      :max-width="mobile ? undefined : 500"
+      :fullscreen="mobile"
+      :transition="mobile ? 'dialog-bottom-transition' : 'dialog-transition'"
+    >
+      <v-card :class="['bg-background', mobile ? 'h-100 d-flex flex-column' : '']">
+        <v-card-title :class="['text-h5 font-weight-bold text-primary bg-error-lighten-5 pa-4', { 'pt-8': mobile }]">
+          Delete Account
+        </v-card-title>
+        <v-card-text :class="['pa-4 px-6 text-body-1 text-secondary mb-6', mobile ? 'flex-grow-1 pt-6' : '']">
+          <p>
+            Are you sure you want to delete your account? This action cannot be undone.
+          </p>
+          <p class="mt-2">
+            <strong>
+              All of your data and responses will be permanently deleted.
+            </strong>
+          </p>
+        </v-card-text>
+        <v-card-actions :class="['pa-4', mobile ? 'd-flex flex-column-reverse align-stretch pb-8' : 'pt-0']">
+          <v-btn
+            :color="mobile ? 'primary' : 'secondary'"
+            :variant="mobile ? 'outlined' : 'text'"
+            @click="showDeleteModal = false"
+            :disabled="isDeleting"
+            :block="mobile"
+          >
+            Cancel
+          </v-btn>
+
+          <v-spacer v-if="!mobile" />
+          
+          <v-btn
+            color="error"
+            variant="flat"
+            @click="deleteAccount"
+            :loading="isDeleting"
+            :class="[mobile ? 'mb-2' : 'px-6']"
+            :block="mobile"
+          >
+            Yes, delete my account
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-snackbar
+      v-model="snackbar.isVisible"
+      :color="snackbar.color"
+      location="top center"
+      timeout="5000"
+      class="mb-6"
+    >
+      <div class="font-weight-bold font-dm-sans">
+        {{ snackbar.message }}
+      </div>
+      <template #actions>
+        <v-btn icon="mdi-close" variant="text" color="white" @click="snackbar.isVisible = false" />
+      </template>
+    </v-snackbar>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
+import { useDisplay } from 'vuetify';
+import { useRouter } from 'vue-router';
 import { useAppStore } from '@/stores/app';
 import { getAccountData } from '@/services/endpoints/getAccountData';
+import { deleteAccountRequest } from '@/services/endpoints/deleteAccountRequest';
 import type { AccountDataResponse } from '#shared/schemas/accountDataSchema';
 import { SOCIAL_ENERGY_OPTIONS, AFFILIATION_OPTIONS, GENDER_OPTIONS } from '#shared/friendConfig';
 import { AppRoutes } from '@/router/routeConfig';
 
+const { mobile } = useDisplay();
 const store = useAppStore();
+const router = useRouter();
 const userEmail = computed(() => store.session?.user?.email || '');
 
 const accountData = ref<AccountDataResponse | null>(null);
 const isLoading = ref(true);
 const error = ref<string | null>(null);
 
+const showDeleteModal = ref(false);
+const isDeleting = ref(false);
+
+const snackbar = ref({
+  isVisible: false,
+  message: '',
+  color: 'error'
+});
+
+const showSnackbar = (message: string, color: 'success' | 'error' = 'error') => {
+  snackbar.value = {
+    isVisible: true,
+    message,
+    color
+  };
+};
+
 const getLabel = (options: readonly { label: string, value: string }[], value: string) => {
   return options.find(o => o.value === value)?.label || value;
+};
+
+const deleteAccount = async () => {
+  isDeleting.value = true;
+  try {
+    await deleteAccountRequest();
+    await store.signOut();
+
+    showDeleteModal.value = false;
+
+    // FriendDev: Refresh to home page.
+    location.assign(AppRoutes.Home.path);
+  } catch (err: any) {
+    showSnackbar(err.message || 'Failed to delete account. Please try again later.', 'error');
+  } finally {
+    isDeleting.value = false;
+  }
 };
 
 onMounted(async () => {
