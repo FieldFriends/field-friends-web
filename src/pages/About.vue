@@ -25,12 +25,12 @@
           Origin
         </h2>
         <p class="text-body-1 text-secondary mb-4 page-text">
-          Finding genuine friends on a massive campus can be challenging.
-          Often, we meet people by proximity—who we sit next to in class or at work, who lives in our building, etc.
+          Finding real friends on a big campus can be tough.
+          We often meet people by proximity—who we sit next to while we work or attend class, who lives in our building, etc.
           These connections are valuable, but they often lack shared interests and are becoming increasingly difficult to come by.
         </p>
         <p class="text-body-1 text-secondary mb-4 page-text">
-          Field Friends was created to help combat loneliness and foster connections that are rooted in mutual interests.
+          Field Friends was created to help combat loneliness and foster connections that are based on mutual interests.
           By moving beyond who you encounter in your day-to-day, we aim to help you find genuine connections.
         </p>
       </section>
