@@ -28,7 +28,11 @@
           </v-chip>
           
           <template v-if="props.shared === true">
-            <v-tooltip text="What you enter will be shared with your group" location="top">
+            <v-tooltip
+            text="What you enter will be shared with your group"
+            location="top"
+            openOnClick
+          >
               <template #activator="{ props: tooltipProps }">
                 <v-chip
                   v-bind="tooltipProps"
@@ -43,7 +47,11 @@
             </v-tooltip>
           </template>
           <template v-if="props.shared === false">
-            <v-tooltip text="What you enter will not be shared with your group" location="top">
+            <v-tooltip
+              text="What you enter will not be shared with your group"
+              location="top"
+              openOnClick
+            >
               <template #activator="{ props: tooltipProps }">
                 <v-chip
                   v-bind="tooltipProps"
