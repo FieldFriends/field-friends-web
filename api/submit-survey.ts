@@ -23,8 +23,8 @@ export default async function handler(request: VercelRequest, response: VercelRe
   try {
     const user = await authenticateUser(request, response);
 
-    if (!user || !user.email) {
-      return;
+    if (!user?.email) {
+      return httpBadRequest(response, 'No email found for user.');
     }
 
     // FriendDev: Now, attempt to parse the user data. It should be a JSON body.

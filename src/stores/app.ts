@@ -17,57 +17,85 @@ export const useAppStore = defineStore('app', {
   actions: {
     // FriendDev: Init auth to get our JWT.
     async initAuth() {
-      const { session } = await authService.getSession();
-      this.session = session;
+      this.startLoading();
 
-      authService.onAuthStateChange((_event, session) => {
+      try {
+        const { session, error } = await authService.getSession();
+
+        if (error) {
+          throw error;
+        }
+
         this.session = session;
-      });
+
+        authService.onAuthStateChange((_event, session) => {
+          this.session = session;
+        });
+      } catch (err) {
+        this.handleError(err, 'Failed to initialize authentication.');
+      } finally {
+        this.loading = false;
+      }
     },
 
     // FriendDev: Use just-in-time verification, refresh right before submission.
     async refreshSession(): Promise<boolean> {
-      const { session, error } = await authService.getSession();
+      try {
+        const { session, error } = await authService.getSession();
 
-      if (error || !session) {
-        this.session = null;
+        if (error || !session) {
+          this.session = null;
+          return false;
+        }
+
+        this.session = session;
+        return true;
+      } catch (err) {
+        this.handleError(err, 'Failed to refresh session.');
         return false;
       }
-
-      this.session = session;
-      return true;
     },
 
     async signOut() {
-      await authService.signOut();
-      this.session = null;
-      this.hasSubmitted = false;
+      this.startLoading();
+
+      try {
+        const { error } = await authService.signOut();
+
+        if (error) {
+          throw error;
+        }
+
+        this.session = null;
+        this.hasSubmitted = false;
+      } catch (err) {
+        this.handleError(err, 'Failed to sign out.');
+      } finally {
+        this.loading = false;
+      }
     },
 
     async submitSurvey(formData: ProfileSubmission) {
-      const isSessionValid = await this.refreshSession();
-
-      if (!isSessionValid || !this.session) {
-        this.error = 'Your session has expired, please refresh and try again.';
-        return false;
-      }
-
-      this.loading = true;
-      this.error = null;
+      this.startLoading();
 
       try {
+        const isSessionValid = await this.refreshSession();
+
+        if (!isSessionValid || !this.session) {
+          throw new Error('Your session has expired, please refresh and try again.');
+        }
+
         await submitSurveyRequest(formData);
 
-        // FriendDev: We've submitted now.
+        // FriendDev: If we get here w/o error then we've submitted.
         this.hasSubmitted = true;
 
         return true;
       } catch (err: any) {
-        console.error(err);
+        this.handleError(err, 'An unexpected error occurred during submission.');
 
-        this.error = err.message || 'An unexpected error occurred.';
-
-        return false;
+        // FriendDev: Throw for snackbar.
+        throw err;
       } finally {
         this.loading = false;
       }
@@ -78,15 +106,33 @@ export const useAppStore = defineStore('app', {
         return;
       }
 
-      this.loading = true;
+      this.startLoading();
 
       try {
         this.hasSubmitted = await getSubmissionStatus();
-      } catch (error) {
-        console.error('Failed to check status: ', error);
+      } catch (err) {
+        this.handleError(err, 'Failed to check submission status.');
       } finally {
         this.loading = false;
       }
-    }
+    },
+
+    /**
+     * Standardized error handling.
+     * @param err - The error object.
+     * @param fallback - The fallback error message.
+     * @returns The error message.
+     */
+    handleError(err: any, fallback: string): string {
+      const errorMessage = err?.message || (typeof err === 'string' ? err : fallback);
+      this.error = errorMessage;
+
+      return errorMessage;
+    },
+
+    startLoading() {
+      this.loading = true;
+      this.error = null;
+    },
   },
 });

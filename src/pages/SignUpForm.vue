@@ -339,7 +339,6 @@ const { exportToJSON, importFromJSON } = useFormIO();
 
 const fileInput = ref<HTMLInputElement | null>(null);
 
-// TODO @FriendDev CRITICAL - this isn't showing an error on fail submit? ALSO this page DOES NOT look good on mobile. ESPECIALLY terms.
 const snackbar = ref({
   isVisible: false,
   message: '',
@@ -419,7 +418,8 @@ const submitForm = async () => {
     }
     
   } catch (err) {
-    console.error("Submission error: ", err);
+    showSnackbar(store.error || 'An unexpected error occurred.', 'error');
+    console.error(err);
   } finally {
     isSubmitting.value = false;
   }
