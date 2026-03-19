@@ -98,17 +98,25 @@
         <v-card-title :class="['text-h5 font-weight-bold text-primary bg-error-lighten-5 pa-4', { 'pt-8': mobile }]">
           Delete Account
         </v-card-title>
-        <v-card-text :class="['pa-4 px-6 text-body-1 text-secondary mb-6', mobile ? 'flex-grow-1 pt-6' : '']">
+        <v-card-text :class="['pa-4 px-6 text-body-1 text-secondary mb-2', mobile ? 'flex-grow-1 pt-6' : '']">
           <p>
             Are you sure you want to delete your account? This action cannot be undone.
           </p>
-          <p class="mt-2">
+          <p class="mt-4">
             <strong>
-              All of your data and responses will be permanently deleted.
+              All of your data, including your form responses, will be permanently deleted.
+              This also withdraws you from any ongoing matching rounds.
             </strong>
           </p>
+          <p class="mt-4 text-caption">
+            Note: You can always sign up again during any open matching window.
+          </p>
         </v-card-text>
+
+        <v-divider class="mb-4" thickness="2" color="primary" />
+
         <v-card-actions :class="['pa-4', mobile ? 'd-flex flex-column-reverse align-stretch pb-8' : 'pt-0']">
+
           <v-btn
             :color="mobile ? 'primary' : 'secondary'"
             :variant="mobile ? 'outlined' : 'text'"

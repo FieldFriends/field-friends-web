@@ -22,7 +22,9 @@ import { AUTH_SERVICE_KEY } from '@/services/injectionKeys'
 
 try {
   if (import.meta.env.DEV && import.meta.env.VITE_USE_MOCK_AUTH === 'true') {
+    // FriendDev: Waiting to import until here will allow this code to never get deployed to production.
     const { worker } = await import('./mocks/browser');
+
     await worker.start({ onUnhandledRequest: 'bypass' });
 
     const { MockAuthService } = await import('./services/auth/MockAuthService');

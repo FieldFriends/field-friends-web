@@ -337,6 +337,7 @@ const { exportToJSON, importFromJSON } = useFormIO();
 
 const fileInput = ref<HTMLInputElement | null>(null);
 
+// TODO @FriendDev CRITICAL - this isn't showing an error on fail submit? ALSO this page DOES NOT look good on mobile. ESPECIALLY terms.
 const snackbar = ref({
   isVisible: false,
   message: '',
