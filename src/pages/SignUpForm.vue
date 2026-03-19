@@ -199,15 +199,17 @@
               :aria-describedby="`${descriptionId} ${termsListId}`"
             >
               <template v-slot:label>
-                I agree to the 
-                <router-link to="/legal#tos-heading" class="ms-1 text-primary text-decoration-none font-weight-bold d-inline-flex align-center" target="_blank">
-                  full Terms of Service
-                  <v-icon
-                    icon="mdi-open-in-new"
-                    size="x-small"
-                    class="ms-1"
-                  />
-                </router-link>
+                <div>
+                  I agree to the 
+                  <router-link to="/legal#tos-heading" class="ms-1 text-primary text-decoration-none font-weight-bold align-center" target="_blank">
+                    full Terms of Service
+                    <v-icon
+                      icon="mdi-open-in-new"
+                      size="x-small"
+                      class="ms-1"
+                    />
+                  </router-link>
+                </div>
               </template>
             </v-checkbox>
           </template>
