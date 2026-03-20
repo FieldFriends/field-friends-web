@@ -5,41 +5,42 @@
  */
 
 // Composables
-import { createRouter, createWebHistory, type NavigationGuard } from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
 import { setupLayouts } from 'virtual:generated-layouts';
 import Index from '@/pages/index.vue';
-import { useAppStore } from '@/stores/app';
+import { useAuthStore } from '@/stores/auth';
+import { useSurveyStore } from '@/stores/survey';
 import About from '@/pages/About.vue';
 import FAQ from '@/pages/FAQ.vue';
 import { AppRoutes } from './routeConfig';
 
 /**
  * A helper function to determine if the user is authenticated.
- * @param store - The app store.
+ * @param authStore - The auth store.
  * @returns A promise that resolves to a boolean indicating if the user is authenticated.
  */
-const isUserAuthenticated = async (store: ReturnType<typeof useAppStore>): Promise<boolean> => {
+const isUserAuthenticated = async (authStore: ReturnType<typeof useAuthStore>): Promise<boolean> => {
   // FriendDev: Valid session means user is authenticated.
-  if (store.session) {
+  if (authStore.session) {
     return true;
   }
 
-  return await store.refreshSession();
+  return await authStore.refreshSession();
 };
 
 /**
  * A helper function to determine if the user has submitted the form.
- * @param store - The app store.
+ * @param surveyStore - The survey store.
  * @returns A promise that resolves to a boolean indicating if the user has submitted the form.
  */
-const hasUserSubmitted = async (store: ReturnType<typeof useAppStore>): Promise<boolean> => {
-  if (store.hasSubmitted) {
+const hasUserSubmitted = async (surveyStore: ReturnType<typeof useSurveyStore>): Promise<boolean> => {
+  if (surveyStore.hasSubmitted) {
     return true;
   }
 
-  await store.checkSubmissionStatus();
+  await surveyStore.checkSubmissionStatus();
 
-  return store.hasSubmitted;
+  return surveyStore.hasSubmitted;
 };
 
 const routes = [
@@ -89,8 +90,8 @@ const routes = [
       from: import('vue-router').RouteLocationNormalized,
       next: import('vue-router').NavigationGuardNext
     ) => {
-      const store = useAppStore();
-      const hasSubmitted = await hasUserSubmitted(store);
+      const surveyStore = useSurveyStore();
+      const hasSubmitted = await hasUserSubmitted(surveyStore);
 
       // FriendDev: If not submitted, go right to the form.
       //            Otherwise, let the user pick if they want
@@ -115,11 +116,12 @@ const routes = [
       from: import('vue-router').RouteLocationNormalized,
       next: import('vue-router').NavigationGuardNext
     ) => {
-      const store = useAppStore();
-      const isAuthenticated = await isUserAuthenticated(store);
+      const authStore = useAuthStore();
+      const isAuthenticated = await isUserAuthenticated(authStore);
 
       if (isAuthenticated) {
-        const hasSubmitted = await hasUserSubmitted(store);
+        const surveyStore = useSurveyStore();
+        const hasSubmitted = await hasUserSubmitted(surveyStore);
 
         let targetRoute: string = AppRoutes.Form.path;
 
@@ -200,13 +202,13 @@ const router = createRouter({
 //            Note: this provides no actual security, so we still
 //            verify every request on the backend.
 router.beforeEach(async (to, from, next) => {
-  const store = useAppStore();
+  const authStore = useAuthStore();
 
   if (to.meta.requiresAuth) {
     // FriendDev: The store is reset on page refresh.
     //            Attempt to restore the session.
-    if (!store.session) {
-      const isValidSession = await store.refreshSession();
+    if (!authStore.session) {
+      const isValidSession = await authStore.refreshSession();
 
       if (!isValidSession) {
         // FriendDev: Invalid, send to login.

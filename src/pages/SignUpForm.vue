@@ -327,7 +327,7 @@ import {
   AGE_LIMITS, 
   MAX_BLOCKED_EMAILS
 } from '#shared/friendConfig';
-import { useAppStore } from '@/stores/app';
+import { useSurveyStore } from '@/stores/survey';
 import { ProfileSchema } from '#shared/schemas/profileSchema';
 import { useZodRules } from '@/composables/useZodRules';
 import FriendEmailList from '@/components/FriendEmailList.vue';
@@ -345,7 +345,7 @@ const snackbar = ref({
   color: 'success'
 });
 
-const store = useAppStore();
+const store = useSurveyStore();
 const formRef = ref<any>(null);
   
 const agreeTerms = ref(false);

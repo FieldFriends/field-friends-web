@@ -190,13 +190,13 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import { useAppStore } from '@/stores/app';
+import { useAuthStore } from '@/stores/auth';
 import { AppRoutes } from '@/router/routeConfig';
 
 
 const router = useRouter();
 const route = useRoute();
-const store = useAppStore();
+const store = useAuthStore();
 
 const drawer = ref(false);
 

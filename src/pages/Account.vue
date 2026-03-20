@@ -163,7 +163,7 @@
 import { ref, onMounted, computed } from 'vue';
 import { useDisplay } from 'vuetify';
 import { useRouter } from 'vue-router';
-import { useAppStore } from '@/stores/app';
+import { useAuthStore } from '@/stores/auth';
 import { getAccountData } from '@/services/endpoints/getAccountData';
 import { deleteAccountRequest } from '@/services/endpoints/deleteAccountRequest';
 import type { AccountDataResponse } from '#shared/schemas/accountDataSchema';
@@ -171,8 +171,7 @@ import { SOCIAL_ENERGY_OPTIONS, AFFILIATION_OPTIONS, GENDER_OPTIONS } from '#sha
 import { AppRoutes } from '@/router/routeConfig';
 
 const { mobile } = useDisplay();
-const store = useAppStore();
-const router = useRouter();
+const store = useAuthStore();
 const userEmail = computed(() => store.session?.user?.email || '');
 
 const accountData = ref<AccountDataResponse | null>(null);
