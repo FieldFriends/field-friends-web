@@ -13,6 +13,8 @@ import { useSurveyStore } from '@/stores/survey';
 import About from '@/pages/About.vue';
 import FAQ from '@/pages/FAQ.vue';
 import { AppRoutes } from './routeConfig';
+import { useConfigStore } from '@/stores/config';
+import { AppState } from '#shared/schemas/appStateSchema';
 
 /**
  * A helper function to determine if the user is authenticated.
@@ -141,6 +143,21 @@ const routes = [
     name: AppRoutes.Submitted.name,
     component: () => import('@/pages/Submitted.vue'),
     meta: { requiresAuth: true },
+    beforeEnter: async (
+      to: import('vue-router').RouteLocationNormalized,
+      from: import('vue-router').RouteLocationNormalized,
+      next: import('vue-router').NavigationGuardNext
+    ) => {
+      const configStore = useConfigStore();
+
+      // FriendDev: If the app is not open, redirect to the home page.
+      if (configStore.appState !== AppState.Open) {
+        next(AppRoutes.Home.path);
+        return;
+      }
+
+      next();
+    }
   },
   {
     path: AppRoutes.Form.path,

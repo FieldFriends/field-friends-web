@@ -7,10 +7,13 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
 import { useAuthStore } from '@/stores/auth';
+import { useConfigStore } from '@/stores/config';
 
-const store = useAuthStore();
+const authStore = useAuthStore();
+const configStore = useConfigStore();
 
 onMounted(() => {
-  store.initAuth();
+  authStore.initAuth();
+  configStore.fetchAppState();
 });
 </script>
