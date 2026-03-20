@@ -16,7 +16,7 @@ export async function makeApiRequest<T>(endpoint: string, options: IApiRequest):
   //            Basically sets JSON as default but can be overridden.
   const requestHeaders: HeadersInit = {
     [HeaderKeys.ContentType]: ContentTypes.Json,
-    ...(request.headers || {})
+    ...request.headers
   }
 
   // FriendDev: Validate session if auth is required.
