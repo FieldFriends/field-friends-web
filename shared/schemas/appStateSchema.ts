@@ -1,12 +1,16 @@
 import { z } from 'zod';
 
-export const appStateEnum = z.enum(['open', 'closed', 'paused', 'scheduled']);
+export enum AppState {
+  Open = 'open',
+  Closed = 'closed',
+  Paused = 'paused',
+  Scheduled = 'scheduled'
+}
 
 export const appStateResponseSchema = z.object({
-  currentState: appStateEnum,
+  currentState: z.enum(AppState),
   roundStart: z.string().nullable(),
   roundEnd: z.string().nullable(),
 });
 
-export type AppState = z.infer<typeof appStateEnum>;
 export type AppStateResponse = z.infer<typeof appStateResponseSchema>;

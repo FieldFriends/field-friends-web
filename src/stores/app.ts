@@ -4,13 +4,17 @@ import { getSubmissionStatus } from '@/services/endpoints/getSubmissionStatus';
 import { submitSurveyRequest } from '@/services/endpoints/submitSurveyRequest';
 import { authService } from '@/services/authService';
 import type { Session } from '@supabase/supabase-js';
+import { AppState, type AppStateResponse } from '#shared/schemas/appStateSchema';
+import { getAppState } from '@/services/endpoints/getAppState';
 
 export const useAppStore = defineStore('app', {
   state: () => ({
     session: null as Session | null,
     loading: false,
-    // FriendDev: Track if the user has submitted.
     hasSubmitted: false,
+    appState: AppState.Closed,
+    appStateDetails: null as AppStateResponse | null,
+    isAppStateLoaded: false,
     error: null as string | null,
   }),
 
@@ -112,6 +116,23 @@ export const useAppStore = defineStore('app', {
         this.hasSubmitted = await getSubmissionStatus();
       } catch (err) {
         this.handleError(err, 'Failed to check submission status.');
+      } finally {
+        this.loading = false;
+      }
+
+    },
+    async fetchAppState() {
+      this.startLoading();
+
+      try {
+        const data = await getAppState();
+
+        this.appStateDetails = data;
+        this.appState = data.currentState;
+        this.isAppStateLoaded = true;
+      } catch (err) {
+        this.handleError(err, 'Failed to load application scheduling state.');
+        this.appState = AppState.Closed;
       } finally {
         this.loading = false;
       }
