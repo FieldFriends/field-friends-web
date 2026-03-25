@@ -23,6 +23,7 @@ declare module 'vue' {
     FriendTextField: typeof import('./components/FriendTextField.vue')['default']
     LoginStepEmail: typeof import('./components/login/LoginStepEmail.vue')['default']
     LoginStepOtp: typeof import('./components/login/LoginStepOtp.vue')['default']
+    MatchingInfo: typeof import('./components/MatchingInfo.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     TurnstileWidget: typeof import('./components/TurnstileWidget.vue')['default']

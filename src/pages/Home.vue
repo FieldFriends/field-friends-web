@@ -17,6 +17,16 @@
         Sign up
       </v-btn>
 
+      <template v-if="shouldShowMatchingInfo">
+        <v-row justify="center" class="w-100 mb-12">
+          <v-col cols="12" md="10" lg="8">
+            <v-divider :thickness="2" />
+          </v-col>
+        </v-row>
+        
+        <MatchingInfo />
+      </template>
+
       <v-row justify="center" class="w-100 mb-12">
         <v-col cols="12" md="10" lg="8">
           <v-divider :thickness="2" />
@@ -142,6 +152,20 @@
             </a>
             is also publicly available, so you can see exactly how your data is handled.
           </p>
+
+          <p class="text-body-1 font-weight-regular text-secondary">
+            Read our <router-link
+              :to="{ path: AppRoutes.Legal.path, hash: '#privacy-heading' }"
+              class="text-decoration-none font-weight-bold text-link d-inline-flex align-center"
+            >
+              Privacy Policy
+              <v-icon
+                icon="mdi-arrow-right"
+                size="x-small"
+                class="ms-1"
+              />
+            </router-link>
+          </p>
         </v-col>
       </v-row>
     </v-container>
@@ -153,6 +177,15 @@
 
 <script lang="ts" setup>
 import { AppRoutes } from '@/router/routeConfig';
+import { useConfigStore } from '@/stores/config';
+import MatchingInfo from '@/components/MatchingInfo.vue';
+import { computed } from 'vue';
+
+const configStore = useConfigStore();
+
+const shouldShowMatchingInfo = computed(() => {
+  return configStore.loading || !configStore.isAppStateLoaded || configStore.isAcceptingResponses;
+});
 </script>
 
 <style scoped lang="scss">

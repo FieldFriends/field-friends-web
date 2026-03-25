@@ -6,7 +6,12 @@
       </h1>
       
       <p class="text-h5 font-weight-regular font-eb-garamond text-secondary mb-12">
-        You'll receive an email with your group on <strong>{{ matchDate }}</strong>.
+        <template v-if="configStore.loading || !configStore.isAppStateLoaded">
+          <v-skeleton-loader type="paragraph" class="mx-auto" width="400" />
+        </template>
+        <template v-else>
+          You'll receive an email with your group on <strong>{{ getWindowEndDateString }}</strong>.
+        </template>
       </p>
 
       <v-divider class="w-100 mb-12 border-opacity-25" color="secondary" />
@@ -24,7 +29,12 @@
       </router-link>
 
       <p class="text-body-2 text-secondary font-italic mt-4">
-        All of your data in Field Friends will be permanently deleted on {{ matchDate }}
+        <template v-if="configStore.loading || !configStore.isAppStateLoaded">
+          <v-skeleton-loader type="paragraph" class="mx-auto" width="300" />
+        </template>
+        <template v-else>
+          All of your data in Field Friends will be permanently deleted on {{ getWindowEndDateString }}.
+        </template>
       </p>
     </div>
   </v-container>
@@ -32,12 +42,11 @@
 
 <script lang="ts" setup>
 import { AppRoutes } from '@/router/routeConfig';
-import { computed } from 'vue';
+import { useWindowDates } from '@/composables/useWindowDates';
+import { useConfigStore } from '@/stores/config';
 
-// TODO @FriendDev CRITICAL
-const matchDate = computed(() => {
-  return "Sunday, October 22nd";
-});
+const configStore = useConfigStore();
+const { getWindowEndDateString } = useWindowDates();
 </script>
 
 <style scoped lang="scss">

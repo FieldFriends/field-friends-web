@@ -7,14 +7,14 @@
 // Composables
 import { createRouter, createWebHistory } from 'vue-router';
 import { setupLayouts } from 'virtual:generated-layouts';
-import Index from '@/pages/index.vue';
+import Home from '@/pages/Home.vue';
 import { useAuthStore } from '@/stores/auth';
 import { useSurveyStore } from '@/stores/survey';
 import About from '@/pages/About.vue';
 import FAQ from '@/pages/FAQ.vue';
 import { AppRoutes } from './routeConfig';
 import { useConfigStore } from '@/stores/config';
-import { AppState } from '#shared/schemas/appStateSchema';
+
 
 /**
  * A helper function to determine if the user is authenticated.
@@ -49,7 +49,7 @@ const routes = [
   {
     path: AppRoutes.Home.path,
     name: AppRoutes.Home.name,
-    component: Index,
+    component: Home,
     meta: { requiresAuth: false },
   },
   {
@@ -148,13 +148,13 @@ const routes = [
       from: import('vue-router').RouteLocationNormalized,
       next: import('vue-router').NavigationGuardNext
     ) => {
-      const configStore = useConfigStore();
+      // const configStore = useConfigStore();
 
-      // FriendDev: If the app is not open, redirect to the home page.
-      if (configStore.appState !== AppState.Open) {
-        next(AppRoutes.Home.path);
-        return;
-      }
+      // if (!configStore.isAcceptingResponses) {
+      //   next(AppRoutes.Home.path);
+
+      //   return;
+      // }
 
       next();
     }
@@ -164,6 +164,30 @@ const routes = [
     name: AppRoutes.Form.name,
     component: () => import('@/pages/SignUpForm.vue'),
     meta: { requiresAuth: true },
+  },
+  {
+    path: AppRoutes.Closed.path,
+    name: AppRoutes.Closed.name,
+    component: () => import('@/pages/Closed.vue'),
+    meta: { requiresAuth: false },
+    beforeEnter: async (
+      to: import('vue-router').RouteLocationNormalized,
+      from: import('vue-router').RouteLocationNormalized,
+      next: import('vue-router').NavigationGuardNext
+    ) => {
+      const configStore = useConfigStore();
+
+      // FriendDev: If we're accepting responses, just take them to the form!
+      //            Note: I think this should be intuitive since this page is
+      //                  only designed for when the form is closed.
+      if (configStore.isAcceptingResponses) {
+        next(AppRoutes.Form.path);
+
+        return;
+      }
+
+      next();
+    }
   },
   {
     // FriendDev: 404 catch-all.

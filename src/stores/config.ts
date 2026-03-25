@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { AppState, type AppStateResponse } from '#shared/schemas/appStateSchema';
+import { getWindowEndDate, getWindowStartDate, isAcceptingResponses, matchingClosed } from '#shared/utils/appStateUtils';
 import { getAppState } from '@/services/endpoints/getAppState';
 import { handleStoreError, startStoreLoading } from '@/stores/storeHelpers';
 
@@ -11,6 +12,13 @@ export const useConfigStore = defineStore('config', {
     loading: false,
     error: null as string | null,
   }),
+
+  getters: {
+    isAcceptingResponses: (state) => isAcceptingResponses(state.appState),
+    matchingClosed: (state) => matchingClosed(state.appState),
+    windowStartDate: (state) => getWindowStartDate(state.appStateDetails),
+    windowEndDate: (state) => getWindowEndDate(state.appStateDetails),
+  },
 
   actions: {
     async fetchAppState() {

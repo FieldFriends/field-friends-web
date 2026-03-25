@@ -9,6 +9,7 @@ export const AppRoutes = {
   Contact: { name: 'Contact', path: '/contact' },
   Account: { name: 'Account', path: '/account' },
   AlreadySubmitted: { name: 'AlreadySubmitted', path: '/already-submitted' },
+  Closed: { name: 'Closed', path: '/closed' },
   NotFound: { name: 'NotFound', path: '/:pathMatch(.*)*' },
 } as const;
 
