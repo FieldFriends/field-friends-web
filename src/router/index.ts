@@ -148,13 +148,13 @@ const routes = [
       from: import('vue-router').RouteLocationNormalized,
       next: import('vue-router').NavigationGuardNext
     ) => {
-      // const configStore = useConfigStore();
+      const configStore = useConfigStore();
 
-      // if (!configStore.isAcceptingResponses) {
-      //   next(AppRoutes.Home.path);
+      if (!configStore.isAcceptingResponses) {
+        next(AppRoutes.Home.path);
 
-      //   return;
-      // }
+        return;
+      }
 
       next();
     }
