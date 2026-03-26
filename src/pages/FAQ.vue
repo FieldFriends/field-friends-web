@@ -20,12 +20,6 @@
         </v-expansion-panel>
       </v-expansion-panels>
 
-      <!-- <div class="text-center mt-8">
-        <p class="text-body-1 text-secondary">
-          Still have questions? Reach out to us at 
-          <a href="mailto:support@fieldfriends.org" class="text-primary font-weight-bold text-decoration-none">support@fieldfriends.org</a>.
-        </p>
-      </div> -->
       <div class="text-center mt-8">
         <p class="text-body-1 text-secondary">
           Still have questions? Visit our
