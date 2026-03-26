@@ -10,7 +10,7 @@
           <v-skeleton-loader type="paragraph" class="mx-auto" width="400" />
         </template>
         <template v-else>
-          You'll receive an email with your group on <strong>{{ getWindowEndDateString }}</strong>.
+          You'll receive an email with your group by <strong>{{ getMatchDateString }}</strong>.
         </template>
       </p>
 
@@ -33,7 +33,7 @@
           <v-skeleton-loader type="paragraph" class="mx-auto" width="300" />
         </template>
         <template v-else>
-          All of your data in Field Friends will be permanently deleted on {{ getWindowEndDateString }}.
+          All of your data in Field Friends will be permanently deleted on <strong>{{ getWindowEndDateString }}</strong>.
         </template>
       </p>
     </div>
@@ -46,7 +46,7 @@ import { useWindowDates } from '@/composables/useWindowDates';
 import { useConfigStore } from '@/stores/config';
 
 const configStore = useConfigStore();
-const { getWindowEndDateString } = useWindowDates();
+const { getWindowEndDateString, getMatchDateString } = useWindowDates();
 </script>
 
 <style scoped lang="scss">
