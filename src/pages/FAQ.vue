@@ -53,7 +53,7 @@ const faqs = [
   },
   {
     question: "What if I don't want to get matched with someone?",
-    answerHtml: "If there's someone you'd rather not be matched with, just add their email to the \"blocked email\" section on the survey. Our algorithm ensures you aren't grouped together, and they will not be notified."
+    answerHtml: "If there's someone you'd rather not be matched with, just add their email to the \"blocked email\" section on the survey. Our algorithm ensures you aren't grouped together, and they won't be notified."
   },
   {
     question: "I didn't get matched this round. Why?",
