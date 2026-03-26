@@ -20,10 +20,22 @@
         </v-expansion-panel>
       </v-expansion-panels>
 
-      <div class="text-center mt-8">
+      <!-- <div class="text-center mt-8">
         <p class="text-body-1 text-secondary">
           Still have questions? Reach out to us at 
           <a href="mailto:support@fieldfriends.org" class="text-primary font-weight-bold text-decoration-none">support@fieldfriends.org</a>.
+        </p>
+      </div> -->
+      <div class="text-center mt-8">
+        <p class="text-body-1 text-secondary">
+          Still have questions? Visit our
+          <router-link
+            :to="AppRoutes.Contact.path"
+            class="text-decoration-none font-weight-bold font-dm-sans text-link d-inline-flex align-center mb-12"
+          >
+            Contact page
+          </router-link>
+          to reach out to us.
         </p>
       </div>
 
@@ -34,6 +46,8 @@
 </template>
 
 <script lang="ts" setup>
+import { AppRoutes } from '@/router/routeConfig';
+
 const faqs = [
   {
     question: "Who can use Field Friends?",
