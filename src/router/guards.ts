@@ -36,6 +36,19 @@ const hasUserSubmitted = async (surveyStore: ReturnType<typeof useSurveyStore>):
 };
 
 /**
+ * A helper function to ensure the app state is loaded without redundant API calls.
+ * @param configStore - The config store.
+ * @returns A promise that resolves when the app state is loaded.
+ */
+const ensureAppStateLoaded = async (configStore: ReturnType<typeof useConfigStore>): Promise<void> => {
+  if (configStore.isAppStateLoaded) {
+    return;
+  }
+
+  await configStore.fetchAppState();
+};
+
+/**
  * Navigation guard that requires the user to be authenticated.
  * @returns A promise that resolves to a redirect path if not authenticated, or void if authenticated.
  */
@@ -79,6 +92,7 @@ export const requireGuest = async (): Promise<string | void> => {
  */
 export const requireFormOpen = async (to: RouteLocationNormalized): Promise<string | void> => {
   const configStore = useConfigStore();
+  await ensureAppStateLoaded(configStore);
 
   // FriendDev: The form is open, so we don't need to do anything.
   if (configStore.isAcceptingResponses) {
@@ -94,6 +108,9 @@ export const requireFormOpen = async (to: RouteLocationNormalized): Promise<stri
  */
 export const requireFormClosed = async (): Promise<string | void> => {
   const configStore = useConfigStore();
+  // FriendDev: We need to wait for the app state to load before we can check anything.
+  //            Otherwise checks always fail.
+  await ensureAppStateLoaded(configStore);
 
   if (configStore.isAcceptingResponses) {
     return AppRoutes.Form.path;
