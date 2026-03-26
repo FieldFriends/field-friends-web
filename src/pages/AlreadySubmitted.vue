@@ -24,7 +24,7 @@
           Want to change your answers?
         </p>
         <v-btn
-          :to="AppRoutes.Form.path"
+          :to="AppRoutes.Form.withResubmit()"
           color="primary"
           variant="flat"
           class="px-9 text-none"

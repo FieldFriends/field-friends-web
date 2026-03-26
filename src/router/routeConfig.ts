@@ -1,7 +1,16 @@
+import { AppQueryParams } from './queryParams';
+
 export const AppRoutes = {
   Home: { name: 'Home', path: '/' },
   Login: { name: 'Login', path: '/login' },
-  Form: { name: 'Form', path: '/form' },
+  Form: {
+    name: 'Form',
+    path: '/form',
+    withResubmit: () => ({
+      path: '/form',
+      query: { [AppQueryParams.Resubmit.key]: AppQueryParams.Resubmit.values.True },
+    }),
+  },
   Submitted: { name: 'Submitted', path: '/submitted' },
   About: { name: 'About', path: '/about' },
   FAQ: { name: 'FAQ', path: '/faq' },
