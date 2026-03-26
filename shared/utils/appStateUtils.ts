@@ -1,8 +1,6 @@
 import { AppState, type AppStateResponse } from '../schemas/appStateSchema';
 
 export function isAcceptingResponses(state: AppState): boolean {
-  // TODO @FriendDev
-  //return false;
   return state === AppState.Open || state === AppState.Scheduled;
 }
 
