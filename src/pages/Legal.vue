@@ -143,7 +143,7 @@
         <h3 class="text-h6 font-weight-bold mb-2 text-primary font-playfair">Passive Conduit & Assumption of Risk</h3>
         <p class="text-body-1 text-secondary mb-4 page-text">
           Field Friends functions strictly as a data processor and a passive conduit for introductions.
-          <strong>We do not perform background checks, vet users, or guarantee
+          While we require an @illinois.edu email to sign up, <strong>we do not perform background checks, vet users, or guarantee
           the safety of any individual.</strong> Users assume all risks associated with meeting their matches.
           We strongly advise using common sense: meet in public places, trust your instincts,
           and prioritize your safety.
@@ -177,7 +177,7 @@
           To the maximum extent permitted by applicable law, in no event shall Field Friends,
           its creators, or volunteers be liable for any indirect,
           incidental, special, consequential, or punitive damages.
-          Our total liability for any claims arising from or relating to the service shall not exceed zero dollars ($0.00).
+          Our total liability for any claims arising from or relating to the service shall not exceed ten dollars ($10.00).
         </p>
       </section>
 

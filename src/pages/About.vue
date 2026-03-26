@@ -25,13 +25,11 @@
           Origin
         </h2>
         <p class="text-body-1 text-secondary mb-4 page-text">
-          Finding real friends on a big campus can be tough.
-          We often meet people by proximity&mdash;who we sit next to while we work or attend class, who lives in our building&mdash;so on and so forth.
-          These connections are valuable, but they often lack shared interests and are becoming increasingly difficult to come by.
+          Finding good friends on a campus as big as UIUC's can be tough.
+          We often meet people by proximity, but these connections tend to lack shared interests and can be hard to come by.
         </p>
         <p class="text-body-1 text-secondary mb-4 page-text">
-          Field Friends was created to help combat loneliness and foster connections that are based on mutual interests.
-          By moving beyond who you encounter in your day-to-day, we aim to help you find genuine connections.
+          Field Friends was created to help the UIUC community find friends based on interests, rather than just proximity.
         </p>
       </section>
 
