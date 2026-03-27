@@ -13,6 +13,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     AppFooter: typeof import('./components/AppFooter.vue')['default']
     AppHeader: typeof import('./components/AppHeader.vue')['default']
+    EmailMatchedPreview: typeof import('./components/EmailMatchedPreview.vue')['default']
     FriendCheckbox: typeof import('./components/FriendCheckbox.vue')['default']
     FriendEmailList: typeof import('./components/FriendEmailList.vue')['default']
     FriendFormCard: typeof import('./components/FriendFormCard.vue')['default']

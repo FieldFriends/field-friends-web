@@ -162,7 +162,6 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
 import { useDisplay } from 'vuetify';
-import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { getAccountData } from '@/services/endpoints/getAccountData';
 import { deleteAccountRequest } from '@/services/endpoints/deleteAccountRequest';

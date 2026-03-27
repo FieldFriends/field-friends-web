@@ -146,9 +146,23 @@
         />
 
         <friend-form-card
+          v-if="form.name || form.introduction"
+          label="Preview of your group intro"
+          required
+        >
+          <email-matched-preview
+            :name="form.name"
+            :introduction="form.introduction"
+          />
+          <p v-if="!form.introduction" class="text-body-2 font-italic text-secondary">
+            Without an introduction, only your name and email will be shared.            
+          </p>
+        </friend-form-card>
+
+        <friend-form-card
           label="Terms & Safety Summary"
           description="A quick summary of our most important safety points."
-          :required="true"
+          required
           :input-id="termsCheckboxId"
         >
           <template #default="{ descriptionId }">
@@ -175,7 +189,7 @@
                 </li>
               </ul>
             </div>
-
+            
             <v-divider class="my-4" />
 
             <p class="mb-4 text-secondary font-weight-bold text-body-2">
@@ -318,6 +332,7 @@ import { ref, reactive, computed, useId } from 'vue';
 import FriendTextField from '@/components/FriendTextField.vue';
 import FriendTextarea from '@/components/FriendTextarea.vue';
 import FriendRadioGroup from '@/components/FriendRadioGroup.vue';
+import EmailMatchedPreview from '@/components/EmailMatchedPreview.vue';
 
 import FriendFormCard from '@/components/FriendFormCard.vue';
 import { 
