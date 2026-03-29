@@ -36,3 +36,10 @@ export const SupabaseAuthEvents = {
 export const SupabaseRoles = {
   Authenticated: 'authenticated',
 } as const;
+
+export const AppStatusErrors = {
+  NotFound: 'NOT_FOUND',
+  DatabaseError: 'DB_ERROR',
+  ValidationError: 'VALIDATION_ERROR',
+  UnknownError: 'UNKNOWN_ERROR',
+} as const;
