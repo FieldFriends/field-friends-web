@@ -2,7 +2,7 @@ import { useAuthStore } from '@/stores/auth';
 import { useSurveyStore } from '@/stores/survey';
 import { useConfigStore } from '@/stores/config';
 import { AppRoutes } from './routeConfig';
-import { AppQueryParams } from './queryParams';
+import { AppQueryParams } from '#shared/constants';
 import type { RouteLocationNormalized } from 'vue-router';
 
 /**

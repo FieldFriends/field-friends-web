@@ -51,3 +51,13 @@ export const UnsubscribeConstants = {
 export const JwtConstants = {
   Algorithm: 'RS256',
 } as const;
+
+export const AppQueryParams = {
+  Resubmit: {
+    key: 'resubmit',
+    values: {
+      True: 'true',
+    },
+  },
+  Token: 'token',
+} as const;

@@ -30,6 +30,7 @@ declare module 'vue-router/auto-routes' {
     '/NotFound': RouteRecordInfo<'/NotFound', '/NotFound', Record<never, never>, Record<never, never>>,
     '/SignUpForm': RouteRecordInfo<'/SignUpForm', '/SignUpForm', Record<never, never>, Record<never, never>>,
     '/Submitted': RouteRecordInfo<'/Submitted', '/Submitted', Record<never, never>, Record<never, never>>,
+    '/Unsubscribe': RouteRecordInfo<'/Unsubscribe', '/Unsubscribe', Record<never, never>, Record<never, never>>,
   }
 
   /**
@@ -89,6 +90,10 @@ declare module 'vue-router/auto-routes' {
     }
     'src/pages/Submitted.vue': {
       routes: '/Submitted'
+      views: never
+    }
+    'src/pages/Unsubscribe.vue': {
+      routes: '/Unsubscribe'
       views: never
     }
   }

@@ -1,4 +1,4 @@
-import { AppQueryParams } from './queryParams';
+import { AppQueryParams } from '#shared/constants';
 
 export const AppRoutes = {
   Home: { name: 'Home', path: '/' },
@@ -19,6 +19,7 @@ export const AppRoutes = {
   Account: { name: 'Account', path: '/account' },
   AlreadySubmitted: { name: 'AlreadySubmitted', path: '/already-submitted' },
   Closed: { name: 'Closed', path: '/closed' },
+  Unsubscribe: { name: 'Unsubscribe', path: '/unsubscribe' },
   NotFound: { name: 'NotFound', path: '/:pathMatch(.*)*' },
 } as const;
 

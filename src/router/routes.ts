@@ -78,6 +78,11 @@ const routes: RouteRecordRaw[] = [
     beforeEnter: [requireFormClosed],
   },
   {
+    path: AppRoutes.Unsubscribe.path,
+    name: AppRoutes.Unsubscribe.name,
+    component: () => import('@/pages/Unsubscribe.vue'),
+  },
+  {
     // FriendDev: 404 catch-all.
     path: AppRoutes.NotFound.path,
     name: AppRoutes.NotFound.name,
