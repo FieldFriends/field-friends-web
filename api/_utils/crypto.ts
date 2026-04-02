@@ -10,13 +10,22 @@ const TEXT_ENCODING = 'utf8';
 const AES_KEY_LENGTH = 32;
 const OAEP_HASH_TYPE = 'sha256';
 
-// FriendDev: Get public key and replace newlines with "\n".
-const PUBLIC_KEY = (process.env.FIELD_FRIENDS_PUBLIC_KEY || '').replace(/\\n/g, '\n').trim();
+/**
+ * Safely retrieve the public key, ensuring newlines are formatted correctly.
+ * @throws Error if the key is missing from environment variables.
+ */
+export const getPublicKey = (): string => {
+  const key = (process.env.FIELD_FRIENDS_PUBLIC_KEY || '').replaceAll(String.raw`\n`, '\n').trim();
 
-// FriendDev: Fail if we have a bad encryption key.
-if (!PUBLIC_KEY) {
-  throw new Error('CRITICAL: FIELD_FRIENDS_PUBLIC_KEY is missing from environment variables.');
-}
+  // FriendDev: Fail if we have a bad encryption key.
+  if (!key) {
+    throw new Error('CRITICAL: FIELD_FRIENDS_PUBLIC_KEY is missing from environment variables.');
+  }
+
+  return key;
+};
+
+const PUBLIC_KEY = getPublicKey();
 
 /**
  * Generates a temporary AES-256 key for this specific user submission.

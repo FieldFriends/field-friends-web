@@ -43,3 +43,11 @@ export const AppStatusErrors = {
   ValidationError: 'VALIDATION_ERROR',
   UnknownError: 'UNKNOWN_ERROR',
 } as const;
+
+export const UnsubscribeConstants = {
+  Action: 'unsubscribe',
+} as const;
+
+export const JwtConstants = {
+  Algorithm: 'RS256',
+} as const;
