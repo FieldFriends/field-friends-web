@@ -61,3 +61,12 @@ export const AppQueryParams = {
   },
   Token: 'token',
 } as const;
+
+export const CryptoConstants = {
+  AesAlgorithm: 'aes-256-gcm',
+  EncryptionDelimiter: ':',
+  EncodingFormat: 'hex',
+  TextEncoding: 'utf8',
+  AesKeyLength: 32,
+  HashType: 'sha256',
+} as const;

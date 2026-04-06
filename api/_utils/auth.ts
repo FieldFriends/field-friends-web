@@ -2,7 +2,7 @@ import { VercelRequest, VercelResponse } from '@vercel/node';
 import { supabaseAdmin } from '#api/_utils/supabase-admin';
 import { extractAuthToken, httpUnauthorized } from '#api/_utils/http';
 import { User } from '@supabase/supabase-js';
-import { hashEmail } from './crypto';
+import { hashEmail } from './hashing';
 
 /**
  * Check if a user is banned. Checks if the user's email,
