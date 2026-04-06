@@ -27,6 +27,7 @@
     "@mdi/font": "7.4.47",
     "@supabase/supabase-js": "^2.84.0",
     "@vueuse/core": "^14.2.1",
+    "aws-lambda": "^1.0.7",
     "jsonwebtoken": "^9.0.3",
     "pinia": "^3.0.3",
     "vue": "^3.5.21",
@@ -36,6 +37,7 @@
   },
   "devDependencies": {
     "@tsconfig/node22": "^22.0.0",
+    "@types/aws-lambda": "^8.10.161",
     "@types/cloudflare-turnstile": "^0.2.2",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^22.9.0",
