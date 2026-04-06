@@ -4,7 +4,7 @@ import { encryptWithAes, startEncryptionSession } from '#api/_utils/crypto';
 import { ProfileSchema } from '#shared/schemas/profileSchema';
 import { z } from 'zod';
 import { httpBadRequest, httpInternalServerError, httpMethodNotAllowed, httpOk } from '#api/_utils/http';
-import { authenticateUser } from '#api/_utils/auth';
+import { authenticateUser, checkUserBanned } from '#api/_utils/auth';
 import { HttpMethods, AppStatusErrors } from '#shared/constants';
 import { EncryptionSession } from '#api/types/EncryptionSession';
 import { isAcceptingResponses } from '#shared/utils/appStateUtils';
@@ -35,6 +35,14 @@ export default async function handler(request: VercelRequest, response: VercelRe
     const user = await authenticateUser(request, response);
 
     if (!user?.email) {
+      return httpBadRequest(response, 'No email found for user.');
+    }
+
+    // FriendDev: Check if the user is banned.
+    const isBanned = await checkUserBanned(user.email);
+
+    if (isBanned) {
+      // FriendDev: Just return the same message as before to avoid leaking info. This is fine for now.
       return httpBadRequest(response, 'No email found for user.');
     }
 

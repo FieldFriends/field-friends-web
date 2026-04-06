@@ -1,4 +1,4 @@
-import { createCipheriv, publicEncrypt, randomBytes, constants } from 'node:crypto';
+import { createCipheriv, publicEncrypt, randomBytes, constants, createHmac } from 'node:crypto';
 import type { EncryptionSession } from '#api/types/EncryptionSession';
 
 const AES_ALGORITHM = 'aes-256-gcm';
@@ -8,7 +8,7 @@ const ENCRYPTION_DELIMITER = ':';
 const ENCODING_FORMAT = 'hex';
 const TEXT_ENCODING = 'utf8';
 const AES_KEY_LENGTH = 32;
-const OAEP_HASH_TYPE = 'sha256';
+const HASH_TYPE = 'sha256';
 
 /**
  * Safely retrieve the public key, ensuring newlines are formatted correctly.
@@ -27,6 +27,29 @@ export const getPublicKey = (): string => {
 
 const PUBLIC_KEY = getPublicKey();
 
+const getPepper = (): string => {
+  const pepper = process.env.HASH_PEPPER;
+
+  if (!pepper) {
+    throw new Error('CRITICAL: HASH_PEPPER is missing from environment variables.');
+  }
+
+  return pepper;
+}
+
+const PEPPER = getPepper();
+
+/**
+ * Hash an email address using SHA-256 and the current pepper.
+ * @param email - The email address to hash.
+ * @returns The hashed email address.
+ */
+export const hashEmail = (email: string): string => {
+  const cleanEmail = email.trim().toLowerCase();
+
+  return createHmac(HASH_TYPE, PEPPER).update(cleanEmail).digest(ENCODING_FORMAT);
+}
+
 /**
  * Generates a temporary AES-256 key for this specific user submission.
  * @returns - The raw key, for use with immediate encrypting, and the RSA-encrypted version for database storage.
@@ -37,7 +60,7 @@ export const startEncryptionSession = (): EncryptionSession => {
   const publicKeyConfig = {
     key: PUBLIC_KEY,
     padding: constants.RSA_PKCS1_OAEP_PADDING,
-    oaepHash: OAEP_HASH_TYPE
+    oaepHash: HASH_TYPE
   };
 
   const encryptedBuffer = publicEncrypt(publicKeyConfig, rawSessionKey);

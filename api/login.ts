@@ -5,6 +5,7 @@ import { LoginSchema } from "#shared/schemas/loginSchema";
 import { TurnstileVerifyResponse, TurnstileVerifyResponseSchema } from "#shared/schemas/turnstileVerifyResponseSchema";
 import { supabaseAdmin } from "#api/_utils/supabase-admin";
 import z from "zod";
+import { checkUserBanned } from "./_utils/auth";
 
 const TURNSTILE_SECRET_KEY = process.env.TURNSTILE_SECRET_KEY;
 
@@ -94,6 +95,15 @@ export default async function handler(request: VercelRequest, response: VercelRe
 
     if (!verifyData.success) {
       return httpBadRequest(response, 'Security check failed, please try again.');
+    }
+
+    // FriendDev: Now we need to query the banned table to see if we should even send an email.
+    //            Also prevents bounced emails from ruining our sender reputation.
+    const isBanned = await checkUserBanned(email);
+
+    // FriendDev: Return OK even if banned to prevent email enumeration.
+    if (isBanned) {
+      return httpOk(response);
     }
 
     // FriendDev: Now that we've verified the turnstile token, we can proceed with the login process.
