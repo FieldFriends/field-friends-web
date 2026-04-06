@@ -4,7 +4,7 @@ import { supabaseAdmin } from "./supabase-admin";
 
 /*
 For handling bounce emails. Compile with:
-npx esbuild api/_utils/bounceHandler.ts --bundle --platform=node --target=node18 --outfile=dist/bounceHandler.js
+npx esbuild api/_utils/bounceHandler.ts --bundle --platform=node --target=node24 --outfile=dist/bounceHandler.js
 */
 
 const LOG_HASH_LENGTH = 8;
