@@ -8,6 +8,6 @@ export const TurnstileVerifyResponseSchema = z.object({
   action: z.string().optional(),
   cdata: z.string().optional(),
   metadata: z.record(z.string(), z.union([z.string(), z.boolean()])).optional(),
-});
+}).strict();
 
 export type TurnstileVerifyResponse = z.infer<typeof TurnstileVerifyResponseSchema>;
