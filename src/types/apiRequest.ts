@@ -1,4 +1,4 @@
-import { HttpMethods } from '#shared/constants';
+import { HttpMethods } from '@shared/constants';
 
 export interface IApiRequest {
     method?: string;

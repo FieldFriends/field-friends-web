@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { AppStatusErrors } from "#shared/constants";
-import { AppStateResponse } from "#shared/schemas/appStateSchema";
+import { AppStatusErrors } from "@shared/constants";
+import { AppStateResponse } from "@shared/schemas/appStateSchema";
 
 // FriendDev: Type representing the possible error states of fetching app status.
 export type AppStatusErrorType = typeof AppStatusErrors[keyof typeof AppStatusErrors];

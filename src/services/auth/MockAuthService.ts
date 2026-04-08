@@ -1,8 +1,8 @@
 import type { Session, AuthChangeEvent, AuthError } from '@supabase/supabase-js';
 import type { IAuthService } from './types/IAuthService';
 import type { AuthResponse } from './types/AuthResponse';
-import { SupabaseAuthEvents, SupabaseRoles, HttpStatusCodes } from '#shared/constants';
-import { MockAuthDefaults } from '#shared/mock/mockAuthDefaults';
+import { SupabaseAuthEvents, SupabaseRoles, HttpStatusCodes } from '@shared/constants';
+import { MockAuthDefaults } from '@shared/mock/mockAuthDefaults';
 
 export class MockAuthService implements IAuthService {
   private fakeSession: Session | null = null;

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
-import { AppState, type AppStateResponse } from '#shared/schemas/appStateSchema';
-import { getWindowEndDate, getWindowStartDate, isAcceptingResponses, matchingClosed } from '#shared/utils/appStateUtils';
+import { AppState, type AppStateResponse } from '@shared/schemas/appStateSchema';
+import { getWindowEndDate, getWindowStartDate, isAcceptingResponses, matchingClosed } from '@shared/utils/appStateUtils';
 import { getAppState } from '@/services/endpoints/getAppState';
 import { handleStoreError, startStoreLoading } from '@/stores/storeHelpers';
 

@@ -1,11 +1,12 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
+    "moduleResolution": "Node",
     "paths": {
-      "#shared/*": [
+      "@shared/*": [
         "./shared/*"
       ],
-      "#api/*": [
+      "@api/*": [
         "./api/*"
       ]
     }

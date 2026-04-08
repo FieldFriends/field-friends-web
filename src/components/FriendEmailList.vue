@@ -63,7 +63,7 @@
 
 <script setup lang="ts">
 import FriendFormCard from './FriendFormCard.vue';
-import { EMAIL_REGEX, MAX_BLOCKED_EMAILS } from '#shared/friendConfig';
+import { EMAIL_REGEX, MAX_BLOCKED_EMAILS } from '@shared/friendConfig';
 
 defineOptions({ inheritAttrs: false });
 

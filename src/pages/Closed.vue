@@ -40,7 +40,7 @@
 </template>
 
 <script lang="ts" setup>
-import { AppState } from '#shared/schemas/appStateSchema';
+import { AppState } from '@shared/schemas/appStateSchema';
 import { useConfigStore } from '@/stores/config';
 import { useWindowDates } from '@/composables/useWindowDates';
 

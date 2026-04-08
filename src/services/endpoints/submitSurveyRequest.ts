@@ -1,6 +1,6 @@
-import { HttpMethods } from "#shared/constants";
+import { HttpMethods } from "@shared/constants";
 import { makeApiRequest } from "../api";
-import type { ProfileSubmission } from "#shared/schemas/profileSchema";
+import type { ProfileSubmission } from "@shared/schemas/profileSchema";
 
 /**
  * Submits the user's encrypted profile data to the backend.

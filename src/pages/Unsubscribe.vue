@@ -98,8 +98,8 @@
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { AppRoutes } from '@/router/routeConfig';
-import { UnsubscribeRequestSchema } from '#shared/schemas/unsubscribeRequestSchema';
-import type { UnsubscribeRequest } from '#shared/schemas/unsubscribeRequestSchema';
+import { UnsubscribeRequestSchema } from '@shared/schemas/unsubscribeRequestSchema';
+import type { UnsubscribeRequest } from '@shared/schemas/unsubscribeRequestSchema';
 import { unsubscribeRequest } from '@/services/endpoints/unsubscribeRequest';
 
 const route = useRoute();

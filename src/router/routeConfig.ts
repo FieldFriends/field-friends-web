@@ -1,4 +1,4 @@
-import { AppQueryParams } from '#shared/constants';
+import { AppQueryParams } from '@shared/constants';
 
 export const AppRoutes = {
   Home: { name: 'Home', path: '/' },

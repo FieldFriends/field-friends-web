@@ -31,7 +31,7 @@
 
 <script lang="ts" setup>
 import { useConfigStore } from '@/stores/config';
-import { AppState } from '#shared/schemas/appStateSchema';
+import { AppState } from '@shared/schemas/appStateSchema';
 import { useWindowDates } from '@/composables/useWindowDates';
 import { computed } from 'vue';
 

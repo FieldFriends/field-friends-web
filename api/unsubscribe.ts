@@ -1,16 +1,16 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import jwt from 'jsonwebtoken';
-import { supabaseAdmin } from '#api/_utils/supabase-admin';
-import { getPublicKey } from '#api/_utils/crypto';
+import { supabaseAdmin } from '@api/_utils/supabase-admin';
+import { getPublicKey } from '@api/_utils/crypto';
 import {
   httpBadRequest,
   httpInternalServerError,
   httpMethodNotAllowed,
   httpOk
-} from '#api/_utils/http';
-import { HttpMethods, JwtConstants } from '#shared/constants';
-import { UnsubscribeSchema } from '#shared/schemas/unsubscribeSchema';
-import { UnsubscribeRequestSchema } from '#shared/schemas/unsubscribeRequestSchema';
+} from '@api/_utils/http';
+import { HttpMethods, JwtConstants } from '@shared/constants';
+import { UnsubscribeSchema } from '@shared/schemas/unsubscribeSchema';
+import { UnsubscribeRequestSchema } from '@shared/schemas/unsubscribeRequestSchema';
 
 export default async function handler(request: VercelRequest, response: VercelResponse) {
   if (request.method !== HttpMethods.Post) {

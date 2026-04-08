@@ -1,5 +1,5 @@
 import { ApiRequest, type IApiRequest } from "@/types/apiRequest";
-import { ContentTypes, HeaderKeys } from "#shared/constants";
+import { ContentTypes, HeaderKeys } from "@shared/constants";
 import { authService } from "./authService";
 import { constructBearerHeader } from "@/utils/apiUtils";
 

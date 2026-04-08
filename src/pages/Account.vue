@@ -165,8 +165,8 @@ import { useDisplay } from 'vuetify';
 import { useAuthStore } from '@/stores/auth';
 import { getAccountData } from '@/services/endpoints/getAccountData';
 import { deleteAccountRequest } from '@/services/endpoints/deleteAccountRequest';
-import type { AccountDataResponse } from '#shared/schemas/accountDataSchema';
-import { SOCIAL_ENERGY_OPTIONS, AFFILIATION_OPTIONS, GENDER_OPTIONS } from '#shared/friendConfig';
+import type { AccountDataResponse } from '@shared/schemas/accountDataSchema';
+import { SOCIAL_ENERGY_OPTIONS, AFFILIATION_OPTIONS, GENDER_OPTIONS } from '@shared/friendConfig';
 import { AppRoutes } from '@/router/routeConfig';
 
 const { mobile } = useDisplay();

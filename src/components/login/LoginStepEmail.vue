@@ -44,7 +44,7 @@
 import { ref, computed } from 'vue';
 import FriendTextField from '@/components/FriendTextField.vue';
 import TurnstileWidget from '@/components/TurnstileWidget.vue';
-import { EMAIL_REGEX } from '#shared/friendConfig';
+import { EMAIL_REGEX } from '@shared/friendConfig';
 import { login } from '@/services/endpoints/login';
 
 

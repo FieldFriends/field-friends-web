@@ -1,5 +1,5 @@
 import { SNSEvent, SNSMessage } from "aws-lambda";
-import { hashEmail } from "#api/_utils/hashing";
+import { hashEmail } from "@api/_utils/hashing";
 import { supabaseAdmin } from "./supabase-admin";
 
 /*

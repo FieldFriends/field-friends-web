@@ -1,7 +1,7 @@
-import { supabaseAdmin } from "#api/_utils/supabase-admin";
-import { appStateResponseSchema } from "#shared/schemas/appStateSchema";
-import { AppStatusErrors } from "#shared/constants";
-import { AppStatusResult, AppStatusSuccess, AppStatusFailure } from "#api/types/AppStatusResult";
+import { supabaseAdmin } from "@api/_utils/supabase-admin";
+import { appStateResponseSchema } from "@shared/schemas/appStateSchema";
+import { AppStatusErrors } from "@shared/constants";
+import { AppStatusResult, AppStatusSuccess, AppStatusFailure } from "@api/types/AppStatusResult";
 
 /**
  * FriendDev: Fetch and parse the current app status from the DB safely.

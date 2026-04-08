@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import type { ProfileSubmission } from '#shared/schemas/profileSchema';
+import type { ProfileSubmission } from '@shared/schemas/profileSchema';
 import { getSubmissionStatus } from '@/services/endpoints/getSubmissionStatus';
 import { submitSurveyRequest } from '@/services/endpoints/submitSurveyRequest';
 import { useAuthStore } from '@/stores/auth';

@@ -4,7 +4,7 @@ import {
   AFFILIATION_VALUES,
   GENDER_VALUES,
   SOCIAL_ENERGY_VALUES
-} from '#shared/friendConfig';
+} from '@shared/friendConfig';
 
 export const AccountDataResponseSchema = z.object({
   gender: z.enum(GENDER_VALUES),

@@ -19,10 +19,10 @@
       "node"
     ],
     "paths": {
-      "#shared/*": [
+      "@shared/*": [
         "./shared/*"
       ],
-      "#api/*": [
+      "@api/*": [
         "./api/*"
       ]
     }

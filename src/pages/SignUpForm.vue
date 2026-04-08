@@ -343,9 +343,9 @@ import {
   SOCIAL_ENERGY_OPTIONS,
   AGE_LIMITS, 
   MAX_BLOCKED_EMAILS
-} from '#shared/friendConfig';
+} from '@shared/friendConfig';
 import { useSurveyStore } from '@/stores/survey';
-import { ProfileSchema } from '#shared/schemas/profileSchema';
+import { ProfileSchema } from '@shared/schemas/profileSchema';
 import { useZodRules } from '@/composables/useZodRules';
 import FriendEmailList from '@/components/FriendEmailList.vue';
 import { useFormIO } from '@/composables/useFormIO';
