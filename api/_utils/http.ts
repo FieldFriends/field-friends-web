@@ -34,9 +34,6 @@ export const httpOk = <T>(response: VercelResponse, data?: T, schema?: ZodType<T
   return response.status(Ok).json({ success: true, message: 'OK' });
 }
 
-// export const httpOk = (response: VercelResponse, data?: any) => {
-//   return response.status(200).json({ success: true, message: 'OK' });
-// };
 
 export const httpBadRequest = (response: VercelResponse, details: string) => {
   return response.status(400).json({ error: 'Bad Request', details: details });
@@ -48,6 +45,10 @@ export const httpUnauthorized = (response: VercelResponse, message: string) => {
 
 export const httpMethodNotAllowed = (response: VercelResponse) => {
   return response.status(405).json({ error: 'Method Not Allowed' });
+};
+
+export const httpNotFound = (response: VercelResponse, message?: string) => {
+  return response.status(404).json({ error: 'Not Found', message: message });
 };
 
 export const httpInternalServerError = (response: VercelResponse) => {

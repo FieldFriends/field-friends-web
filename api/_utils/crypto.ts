@@ -1,41 +1,44 @@
 import { createCipheriv, publicEncrypt, randomBytes, constants } from 'node:crypto';
 import type { EncryptionSession } from '#api/types/EncryptionSession';
+import { CryptoConstants } from '#shared/constants';
 
-const AES_ALGORITHM = 'aes-256-gcm';
+/**
+ * Safely retrieve the public key, ensuring newlines are formatted correctly.
+ * @throws Error if the key is missing from environment variables.
+ */
+export const getPublicKey = (): string => {
+  const key = (process.env.FIELD_FRIENDS_PUBLIC_KEY || '').replaceAll(String.raw`\n`, '\n').trim();
 
-// FriendDev: Delimiter between initialization vector, auth tag, and encrypted text.
-const ENCRYPTION_DELIMITER = ':';
-const ENCODING_FORMAT = 'hex';
-const TEXT_ENCODING = 'utf8';
-const AES_KEY_LENGTH = 32;
-const OAEP_HASH_TYPE = 'sha256';
+  // FriendDev: Fail if we have a bad encryption key.
+  if (!key) {
+    throw new Error('CRITICAL: FIELD_FRIENDS_PUBLIC_KEY is missing from environment variables.');
+  }
 
-// FriendDev: Get public key and replace newlines with "\n".
-const PUBLIC_KEY = (process.env.FIELD_FRIENDS_PUBLIC_KEY || '').replace(/\\n/g, '\n').trim();
+  return key;
+};
 
-// FriendDev: Fail if we have a bad encryption key.
-if (!PUBLIC_KEY) {
-  throw new Error('CRITICAL: FIELD_FRIENDS_PUBLIC_KEY is missing from environment variables.');
-}
+const PUBLIC_KEY = getPublicKey();
+
+
 
 /**
  * Generates a temporary AES-256 key for this specific user submission.
  * @returns - The raw key, for use with immediate encrypting, and the RSA-encrypted version for database storage.
  */
 export const startEncryptionSession = (): EncryptionSession => {
-  const rawSessionKey = randomBytes(AES_KEY_LENGTH);
+  const rawSessionKey = randomBytes(CryptoConstants.AesKeyLength);
 
   const publicKeyConfig = {
     key: PUBLIC_KEY,
     padding: constants.RSA_PKCS1_OAEP_PADDING,
-    oaepHash: OAEP_HASH_TYPE
+    oaepHash: CryptoConstants.HashType
   };
 
   const encryptedBuffer = publicEncrypt(publicKeyConfig, rawSessionKey);
 
   return {
     rawSessionKey: rawSessionKey,
-    encryptedSessionKey: encryptedBuffer.toString(ENCODING_FORMAT),
+    encryptedSessionKey: encryptedBuffer.toString(CryptoConstants.EncodingFormat),
   };
 }
 
@@ -57,22 +60,22 @@ export const encryptWithAes = (text: string, rawSessionKey: Buffer): string => {
   // FriendDev: Initialize the cipher.
   //            This pre-calculates the internal key schedule 
   //            and the hash key required for GCM signing.
-  const cipher = createCipheriv(AES_ALGORITHM, rawSessionKey, iv);
+  const cipher = createCipheriv(CryptoConstants.AesAlgorithm, rawSessionKey, iv);
 
   // FriendDev: Give it the raw text we want to encrypt, then tell it the text's
   //            format and encoding to update the cipher.
-  let encryptedText = cipher.update(text, TEXT_ENCODING, ENCODING_FORMAT);
+  let encryptedText = cipher.update(text, CryptoConstants.TextEncoding, CryptoConstants.EncodingFormat);
 
   // FriendDev: AES-GCM is a stream mode (based on CTR) and does not use 
   //            block padding. However, we must call final() 
   //            to flush any remaining bytes from OpenSSL's internal buffer 
   //            and finalize the GMAC state for the Auth Tag.
-  encryptedText = `${encryptedText}${cipher.final(ENCODING_FORMAT)}`;
+  encryptedText = `${encryptedText}${cipher.final(CryptoConstants.EncodingFormat)}`;
 
 
   // FriendDev: Extract the security signature so we know the data is unaltered.
-  const authTag = cipher.getAuthTag().toString(ENCODING_FORMAT);
+  const authTag = cipher.getAuthTag().toString(CryptoConstants.EncodingFormat);
 
   // FriendDev: Concatenate with our delimiter (":").
-  return `${iv.toString(ENCODING_FORMAT)}${ENCRYPTION_DELIMITER}${authTag}${ENCRYPTION_DELIMITER}${encryptedText}`;
+  return `${iv.toString(CryptoConstants.EncodingFormat)}${CryptoConstants.EncryptionDelimiter}${authTag}${CryptoConstants.EncryptionDelimiter}${encryptedText}`;
 }

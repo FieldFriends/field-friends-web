@@ -22,16 +22,14 @@
 
       <section class="mb-12" aria-labelledby="story-heading">
         <h2 id="story-heading" class="text-h4 font-weight-bold mb-4 text-primary">
-          The Origin
+          Origin
         </h2>
         <p class="text-body-1 text-secondary mb-4 page-text">
-          Finding genuine friends on a massive campus can be challenging.
-          Often, we meet people by proximity—who we sit next to in class or at work, who lives in our building, etc.
-          These connections are valuable, but they often lack shared interests and are becoming increasingly difficult to come by.
+          Finding good friends on a campus as big as UIUC's can be tough.
+          We often meet people by proximity, but these connections tend to lack shared interests and can be hard to come by.
         </p>
         <p class="text-body-1 text-secondary mb-4 page-text">
-          Field Friends was created to help combat loneliness and foster connections that are rooted in mutual interests.
-          By moving beyond who you encounter in your day-to-day, we aim to help you find genuine connections.
+          Field Friends was created to help the UIUC community find friends based on interests, rather than just proximity.
         </p>
       </section>
 
@@ -135,7 +133,7 @@
           It never touches the cloud.
         </p>
         <p class="text-body-1 text-secondary page-text">
-          We believe in transparency. You can independently verify our backend encryption logic by reading the source code
+          For full transparency, our backend encryption logic is
           <a
             href="https://github.com/FieldFriends/field-friends-web/tree/main/api"
             target="_blank"

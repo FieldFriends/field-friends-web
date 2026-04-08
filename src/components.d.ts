@@ -13,6 +13,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     AppFooter: typeof import('./components/AppFooter.vue')['default']
     AppHeader: typeof import('./components/AppHeader.vue')['default']
+    EmailMatchedPreview: typeof import('./components/EmailMatchedPreview.vue')['default']
     FriendCheckbox: typeof import('./components/FriendCheckbox.vue')['default']
     FriendEmailList: typeof import('./components/FriendEmailList.vue')['default']
     FriendFormCard: typeof import('./components/FriendFormCard.vue')['default']
@@ -23,7 +24,9 @@ declare module 'vue' {
     FriendTextField: typeof import('./components/FriendTextField.vue')['default']
     LoginStepEmail: typeof import('./components/login/LoginStepEmail.vue')['default']
     LoginStepOtp: typeof import('./components/login/LoginStepOtp.vue')['default']
+    MatchingInfo: typeof import('./components/MatchingInfo.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    TurnstileWidget: typeof import('./components/TurnstileWidget.vue')['default']
   }
 }

@@ -22,8 +22,14 @@
 
       <div class="text-center mt-8">
         <p class="text-body-1 text-secondary">
-          Still have questions? Reach out to us at 
-          <a href="mailto:fieldfriends.team@gmail.com" class="text-primary font-weight-bold text-decoration-none">fieldfriends.team@gmail.com</a>.
+          Still have questions? Visit our
+          <router-link
+            :to="AppRoutes.Contact.path"
+            class="text-decoration-none font-weight-bold font-dm-sans text-link d-inline-flex align-center mb-12"
+          >
+            Contact page
+          </router-link>
+          to reach out to us.
         </p>
       </div>
 
@@ -34,6 +40,8 @@
 </template>
 
 <script lang="ts" setup>
+import { AppRoutes } from '@/router/routeConfig';
+
 const faqs = [
   {
     question: "Who can use Field Friends?",
@@ -53,7 +61,7 @@ const faqs = [
   },
   {
     question: "What if I don't want to get matched with someone?",
-    answerHtml: "If there's someone you'd rather not be matched with, just add their email to the \"blocked email\" section on the survey. Our algorithm ensures you aren't grouped together, and they will not be notified."
+    answerHtml: "If there's someone you'd rather not be matched with, just add their email to the \"blocked email\" section on the survey. Our algorithm ensures you aren't grouped together, and they won't be notified."
   },
   {
     question: "I didn't get matched this round. Why?",

@@ -2,6 +2,34 @@ import { VercelRequest, VercelResponse } from '@vercel/node';
 import { supabaseAdmin } from '#api/_utils/supabase-admin';
 import { extractAuthToken, httpUnauthorized } from '#api/_utils/http';
 import { User } from '@supabase/supabase-js';
+import { hashEmail } from './hashing';
+
+/**
+ * Check if a user is banned. Checks if the user's email,
+ * when hashed with the current pepper, exists in the banned table.
+ * @param email - The email to check.
+ * @returns True if the user is banned, false otherwise.
+ */
+export async function checkUserBanned(email: string): Promise<boolean> {
+  const cleanEmail = email.trim().toLowerCase();
+  const hashedEmail = hashEmail(cleanEmail);
+
+  // FriendDev: Attempt to find the user in the banned table.
+  const { data, error } = await supabaseAdmin
+    .from('banned_users')
+    .select('id')
+    .eq('email_hash', hashedEmail)
+    .limit(1)
+    .maybeSingle();
+
+  if (error) {
+    console.error('API->BANNED_USER_CHECK_ERROR:', error);
+    throw new Error('Failed to check if user is banned');
+  }
+
+  // FriendDev: The presence of data indicates the user is banned.
+  return !!data;
+}
 
 /**
  * Authenticates the user from the request headers.
@@ -30,7 +58,7 @@ export const authenticateUser = async (request: VercelRequest, response: VercelR
   const { data, error: authError } = await supabaseAdmin.auth.getUser(token);
   const user = data.user;
 
-  if (authError || !user || !user.email) {
+  if (authError || !user?.email) {
     httpUnauthorized(response, "Invalid user token");
     return null;
   }

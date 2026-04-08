@@ -146,9 +146,25 @@
         />
 
         <friend-form-card
-          label="Quick Terms & Safety"
+          v-if="form.name || form.introduction"
+          label="Group Email Preview"
+          description="A preview of what will be shared with your group when you're matched."
+          required
+        >
+          <email-matched-preview
+            :name="form.name"
+            :introduction="form.introduction"
+            :email="userEmail"
+          />
+          <p v-if="!form.introduction" class="text-body-2 font-`italic text-secondary">
+            Without an introduction, only your name and email will be shared.            
+          </p>
+        </friend-form-card>
+
+        <friend-form-card
+          label="Terms & Safety Summary"
           description="A quick summary of our most important safety points."
-          :required="true"
+          required
           :input-id="termsCheckboxId"
         >
           <template #default="{ descriptionId }">
@@ -167,9 +183,15 @@
                   I understand that while emails are <strong>@illinois.edu</strong> verified,
                   Field Friends does not screen participants.
                 </li>
+                <li class="mb-2">
+                  <strong>
+                    Matching:
+                  </strong>
+                  I understand that, when matched, my email address will be shared with the group I'm matched into.
+                </li>
               </ul>
             </div>
-
+            
             <v-divider class="my-4" />
 
             <p class="mb-4 text-secondary font-weight-bold text-body-2">
@@ -193,15 +215,17 @@
               :aria-describedby="`${descriptionId} ${termsListId}`"
             >
               <template v-slot:label>
-                I agree to the 
-                <router-link to="/legal#tos-heading" class="ms-1 text-primary text-decoration-none font-weight-bold d-inline-flex align-center" target="_blank">
-                  full Terms of Service
-                  <v-icon
-                    icon="mdi-open-in-new"
-                    size="x-small"
-                    class="ms-1"
-                  />
-                </router-link>
+                <div>
+                  I agree to the 
+                  <router-link to="/legal#tos-heading" class="ms-1 text-primary text-decoration-none font-weight-bold align-center" target="_blank">
+                    full Terms of Service
+                    <v-icon
+                      icon="mdi-open-in-new"
+                      size="x-small"
+                      class="ms-1"
+                    />
+                  </router-link>
+                </div>
               </template>
             </v-checkbox>
           </template>
@@ -310,6 +334,7 @@ import { ref, reactive, computed, useId } from 'vue';
 import FriendTextField from '@/components/FriendTextField.vue';
 import FriendTextarea from '@/components/FriendTextarea.vue';
 import FriendRadioGroup from '@/components/FriendRadioGroup.vue';
+import EmailMatchedPreview from '@/components/EmailMatchedPreview.vue';
 
 import FriendFormCard from '@/components/FriendFormCard.vue';
 import { 
@@ -319,13 +344,14 @@ import {
   AGE_LIMITS, 
   MAX_BLOCKED_EMAILS
 } from '#shared/friendConfig';
-import { useAppStore } from '@/stores/app';
+import { useSurveyStore } from '@/stores/survey';
 import { ProfileSchema } from '#shared/schemas/profileSchema';
 import { useZodRules } from '@/composables/useZodRules';
 import FriendEmailList from '@/components/FriendEmailList.vue';
 import { useFormIO } from '@/composables/useFormIO';
 import type { FriendFormState } from '@/types/friendFormState';
 import { AppRoutes } from '@/router/routeConfig';
+import { useAuthStore } from '@/stores/auth';
 
 const { exportToJSON, importFromJSON } = useFormIO();
 
@@ -337,13 +363,16 @@ const snackbar = ref({
   color: 'success'
 });
 
-const store = useAppStore();
+const surveyStore = useSurveyStore();
+const authStore = useAuthStore();
 const formRef = ref<any>(null);
   
 const agreeTerms = ref(false);
 
 const termsCheckboxId = useId();
 const termsListId = useId();
+
+const userEmail = computed(() => authStore.session?.user?.email || null);
 
 const { rule } = useZodRules(ProfileSchema);
 
@@ -403,14 +432,15 @@ const submitForm = async () => {
     isSubmitting.value = true;
 
     // FriendDev: Safely use the parse result to submit the form.
-    const submittedForm = await store.submitSurvey(result.data);
+    const submittedForm = await surveyStore.submitSurvey(result.data);
 
     if (submittedForm) {
       await router.push(AppRoutes.Submitted.path);
     }
     
   } catch (err) {
-    console.error("Submission error: ", err);
+    showSnackbar(surveyStore.error || 'An unexpected error occurred.', 'error');
+    console.error(err);
   } finally {
     isSubmitting.value = false;
   }

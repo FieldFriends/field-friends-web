@@ -38,7 +38,7 @@
         <h3 class="text-h6 font-weight-bold mb-2 text-primary font-playfair">User Content License</h3>
         <p class="text-body-1 text-secondary mb-4 page-text">
           By submitting your survey responses, you grant Field Friends a non-exclusive, worldwide, royalty-free license to use, process, store, and share your provided text and information <strong>solely</strong> for the purpose of 
-          operating the matching service and introducing you to your group.
+          operating the matching service and introducing you to your group. Furthermore, you acknowledge and agree that upon successful matching, your email address will be disclosed to the other members of your assigned group to facilitate communication.
         </p>
 
         <h3 class="text-h6 font-weight-bold mb-2 text-primary font-playfair">Termination</h3>
@@ -105,7 +105,8 @@
         <p class="text-body-1 text-secondary mb-4 page-text">
           We use the collected information exclusively to facilitate the matching process.
           We will use your email address <strong>solely</strong> for sending
-          matching results and critical administrative notices (such as secure login codes).
+          matching results, critical administrative notices (such as secure login codes), and connecting you with other users.
+          As part of the core functionality of the service, your email address will be shared with the other individuals in your assigned match group.
           <strong class="text-primary font-italic">We do not sell, rent, or trade your data to third parties.</strong> We do not use your
           email for marketing. 
         </p>
@@ -124,7 +125,7 @@
           monthly matching round. Because our data storage is ephemeral, all user records
           from a matching round are securely and permanently wiped after the matches for
           that round are sent out. If you wish to request total manual deletion of your
-          data before the automatic wipe, please contact us at <strong>fieldfriends.team@gmail.com</strong>.
+          data before the automatic wipe, please contact us at <strong>support@fieldfriends.org</strong>.
         </p>
       </section>
 
@@ -142,7 +143,7 @@
         <h3 class="text-h6 font-weight-bold mb-2 text-primary font-playfair">Passive Conduit & Assumption of Risk</h3>
         <p class="text-body-1 text-secondary mb-4 page-text">
           Field Friends functions strictly as a data processor and a passive conduit for introductions.
-          <strong>We do not perform background checks, vet users, or guarantee
+          While we require an @illinois.edu email to sign up, <strong>we do not perform background checks, vet users, or guarantee
           the safety of any individual.</strong> Users assume all risks associated with meeting their matches.
           We strongly advise using common sense: meet in public places, trust your instincts,
           and prioritize your safety.
@@ -159,7 +160,7 @@
         <p class="text-body-1 text-secondary mb-4 page-text">
           Because we do not have an investigative capacity, we ask that users report any serious
           incidents or immediate threats directly to local authorities or the university's
-          Title IX office. You may inform us at <strong>fieldfriends.team@gmail.com</strong>
+          Title IX office. You may inform us at <strong>support@fieldfriends.org</strong>
           so we can take immediate action to ban the offending individual from future use of the service.
         </p>
 
@@ -176,7 +177,7 @@
           To the maximum extent permitted by applicable law, in no event shall Field Friends,
           its creators, or volunteers be liable for any indirect,
           incidental, special, consequential, or punitive damages.
-          Our total liability for any claims arising from or relating to the service shall not exceed zero dollars ($0.00).
+          Our total liability for any claims arising from or relating to the service shall not exceed ten dollars ($10.00).
         </p>
       </section>
 

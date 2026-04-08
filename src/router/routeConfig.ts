@@ -1,12 +1,25 @@
+import { AppQueryParams } from '#shared/constants';
+
 export const AppRoutes = {
   Home: { name: 'Home', path: '/' },
   Login: { name: 'Login', path: '/login' },
-  Form: { name: 'Form', path: '/form' },
+  Form: {
+    name: 'Form',
+    path: '/form',
+    withResubmit: () => ({
+      path: '/form',
+      query: { [AppQueryParams.Resubmit.key]: AppQueryParams.Resubmit.values.True },
+    }),
+  },
   Submitted: { name: 'Submitted', path: '/submitted' },
   About: { name: 'About', path: '/about' },
   FAQ: { name: 'FAQ', path: '/faq' },
   Legal: { name: 'Legal', path: '/legal' },
   Contact: { name: 'Contact', path: '/contact' },
+  Account: { name: 'Account', path: '/account' },
+  AlreadySubmitted: { name: 'AlreadySubmitted', path: '/already-submitted' },
+  Closed: { name: 'Closed', path: '/closed' },
+  Unsubscribe: { name: 'Unsubscribe', path: '/unsubscribe' },
   NotFound: { name: 'NotFound', path: '/:pathMatch(.*)*' },
 } as const;
 

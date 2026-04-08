@@ -6,11 +6,14 @@
 
 <script setup lang="ts">
 import { onMounted } from 'vue';
-import { useAppStore } from '@/stores/app';
+import { useAuthStore } from '@/stores/auth';
+import { useConfigStore } from '@/stores/config';
 
-const store = useAppStore();
+const authStore = useAuthStore();
+const configStore = useConfigStore();
 
 onMounted(() => {
-  store.initAuth();
+  authStore.initAuth();
+  configStore.fetchAppState();
 });
 </script>

@@ -1,6 +1,6 @@
 import { ApiRequest, type IApiRequest } from "@/types/apiRequest";
 import { ContentTypes, HeaderKeys } from "#shared/constants";
-import { supabase } from "./supabase";
+import { authService } from "./authService";
 import { constructBearerHeader } from "@/utils/apiUtils";
 
 /**
@@ -16,14 +16,14 @@ export async function makeApiRequest<T>(endpoint: string, options: IApiRequest):
   //            Basically sets JSON as default but can be overridden.
   const requestHeaders: HeadersInit = {
     [HeaderKeys.ContentType]: ContentTypes.Json,
-    ...(request.headers || {})
+    ...request.headers
   }
 
   // FriendDev: Validate session if auth is required.
   if (request.requireAuth) {
-    const { data } = await supabase.auth.getSession();
+    const { session } = await authService.getSession();
 
-    const token = data.session?.access_token;
+    const token = session?.access_token;
 
     if (!token) {
       throw new Error('Authentication required. No valid session found.');
