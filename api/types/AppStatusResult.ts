@@ -6,7 +6,7 @@ import { AppStateResponse } from "#shared/schemas/appStateSchema";
 export type AppStatusErrorType = typeof AppStatusErrors[keyof typeof AppStatusErrors];
 
 export class AppStatusSuccess {
-  readonly success = true;
+  readonly success = true as const;
   data: AppStateResponse;
 
   constructor(data: AppStateResponse) {
@@ -15,7 +15,7 @@ export class AppStatusSuccess {
 }
 
 export class AppStatusFailure {
-  readonly success = false;
+  readonly success = false as const;
   type: AppStatusErrorType;
   error?: z.ZodError | Error | string;
 

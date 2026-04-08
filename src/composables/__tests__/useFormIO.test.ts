@@ -1,32 +1,8 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { useFormIO } from '../useFormIO';
 import { z } from 'zod';
 
-class MockFileReader {
-  onload: ((event: any) => void) | null = null;
-  onerror: ((event: any) => void) | null = null;
-
-  readAsText(blob: Blob) {
-    blob.text().then(text => {
-      if (this.onload) {
-        this.onload({ target: { result: text } });
-      }
-    }).catch(() => {
-      if (this.onerror) {
-        this.onerror({ target: { error: 'Failed to read' } });
-      }
-    });
-  }
-}
-
 describe('useFormIO', () => {
-  beforeEach(() => {
-    vi.stubGlobal('FileReader', MockFileReader);
-  });
-
-  afterEach(() => {
-    vi.unstubAllGlobals();
-  });
 
   const { importFromJSON } = useFormIO();
   const TestSchema = z.object({
