@@ -153,8 +153,9 @@
           <email-matched-preview
             :name="form.name"
             :introduction="form.introduction"
+            :email="userEmail"
           />
-          <p v-if="!form.introduction" class="text-body-2 font-italic text-secondary">
+          <p v-if="!form.introduction" class="text-body-2 font-`italic text-secondary">
             Without an introduction, only your name and email will be shared.            
           </p>
         </friend-form-card>
@@ -349,6 +350,7 @@ import FriendEmailList from '@/components/FriendEmailList.vue';
 import { useFormIO } from '@/composables/useFormIO';
 import type { FriendFormState } from '@/types/friendFormState';
 import { AppRoutes } from '@/router/routeConfig';
+import { useAuthStore } from '@/stores/auth';
 
 const { exportToJSON, importFromJSON } = useFormIO();
 
@@ -360,13 +362,16 @@ const snackbar = ref({
   color: 'success'
 });
 
-const store = useSurveyStore();
+const surveyStore = useSurveyStore();
+const authStore = useAuthStore();
 const formRef = ref<any>(null);
   
 const agreeTerms = ref(false);
 
 const termsCheckboxId = useId();
 const termsListId = useId();
+
+const userEmail = computed(() => authStore.session?.user?.email || null);
 
 const { rule } = useZodRules(ProfileSchema);
 
@@ -426,14 +431,14 @@ const submitForm = async () => {
     isSubmitting.value = true;
 
     // FriendDev: Safely use the parse result to submit the form.
-    const submittedForm = await store.submitSurvey(result.data);
+    const submittedForm = await surveyStore.submitSurvey(result.data);
 
     if (submittedForm) {
       await router.push(AppRoutes.Submitted.path);
     }
     
   } catch (err) {
-    showSnackbar(store.error || 'An unexpected error occurred.', 'error');
+    showSnackbar(surveyStore.error || 'An unexpected error occurred.', 'error');
     console.error(err);
   } finally {
     isSubmitting.value = false;
