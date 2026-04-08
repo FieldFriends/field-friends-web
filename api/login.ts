@@ -5,7 +5,7 @@ import { LoginSchema } from "#shared/schemas/loginSchema";
 import { TurnstileVerifyResponse, TurnstileVerifyResponseSchema } from "#shared/schemas/turnstileVerifyResponseSchema";
 import { supabaseAdmin } from "#api/_utils/supabase-admin";
 import z from "zod";
-import { checkUserBanned } from "./_utils/auth";
+import { checkUserBanned } from "#api/_utils/auth";
 
 const TURNSTILE_SECRET_KEY = process.env.TURNSTILE_SECRET_KEY;
 
