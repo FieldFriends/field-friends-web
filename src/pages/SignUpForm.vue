@@ -147,7 +147,8 @@
 
         <friend-form-card
           v-if="form.name || form.introduction"
-          label="Preview of your group intro"
+          label="Group Email Preview"
+          description="A preview of what will be shared with your group when you're matched."
           required
         >
           <email-matched-preview

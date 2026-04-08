@@ -9,12 +9,22 @@
     border
   >
     <div>
-      <div class="d-flex align-center">
+      <div class="d-flex flex-column flex-sm-row align-start align-sm-center">
         <h2 class="text-h6 font-weight-bold font-dm-sans text-primary">
           {{ name || 'Your Name' }}
         </h2>
-        <v-divider vertical class="mx-3 my-2" color="secondary" opacity="0.3" thickness="2" />
-        <span class="text-body-2 text-accent">{{ email || 'your-email@illinois.edu' }}</span>
+        
+        <v-divider
+          vertical
+          class="mx-3 my-2 d-none d-sm-block"
+          color="secondary"
+          opacity="0.3"
+          thickness="2"
+        />
+        
+        <span class="text-body-2 text-accent mt-1 mt-sm-0">
+          {{ email || 'your-email@illinois.edu' }}
+        </span>
       </div>
 
       <blockquote 
@@ -26,7 +36,7 @@
     </div>
   </v-card>
 </template>
-``
+
 <script setup lang="ts">
 defineProps<{
   name?: string | null;
