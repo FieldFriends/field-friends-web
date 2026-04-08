@@ -3,7 +3,10 @@
   "private": true,
   "type": "module",
   "version": "0.0.0",
-
+  "imports": {
+    "#shared/*": "./shared/*.ts",
+    "#api/*": "./api/*.ts"
+  },
   "scripts": {
     "dev:clientserv": "run-p dev:client dev:server",
     "dev:client": "vite",
