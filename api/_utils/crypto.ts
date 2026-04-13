@@ -1,6 +1,6 @@
 import { createCipheriv, publicEncrypt, randomBytes, constants } from 'node:crypto';
-import type { EncryptionSession } from '@api/types/EncryptionSession';
-import { CryptoConstants } from '@shared/constants';
+import type { EncryptionSession } from '../types/EncryptionSession';
+import { CryptoConstants } from '../../shared/constants';
 
 /**
  * Safely retrieve the public key, ensuring newlines are formatted correctly.

@@ -1,4 +1,4 @@
-import { AppState, type AppStateResponse } from '@shared/schemas/appStateSchema';
+import { AppState, type AppStateResponse } from '../schemas/appStateSchema';
 
 export function isAcceptingResponses(state: AppState): boolean {
   return state === AppState.Open || state === AppState.Scheduled;

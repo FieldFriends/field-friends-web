@@ -1,4 +1,4 @@
-import { UnsubscribeConstants } from '@shared/constants';
+import { UnsubscribeConstants } from '../constants';
 import { z } from 'zod';
 
 export const UnsubscribeSchema = z.object({

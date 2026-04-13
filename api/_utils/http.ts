@@ -1,6 +1,6 @@
 import { VercelResponse } from "@vercel/node";
 import { ZodType } from "zod";
-import { AuthorizationSchemes } from "@shared/constants";
+import { AuthorizationSchemes } from "../../shared/constants";
 
 
 /**

@@ -1,9 +1,9 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { supabaseAdmin } from '@api/_utils/supabase-admin';
-import { httpInternalServerError, httpMethodNotAllowed, httpOk } from '@api/_utils/http';
+import { supabaseAdmin } from './_utils/supabase-admin';
+import { httpInternalServerError, httpMethodNotAllowed, httpOk } from './_utils/http';
 import { z } from 'zod';
-import { authenticateUser } from '@api/_utils/auth';
-import { HttpMethods } from '@shared/constants';
+import { authenticateUser } from './_utils/auth';
+import { HttpMethods } from '.././shared/constants';
 
 
 // FriendDev: The contract for our response.

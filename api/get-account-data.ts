@@ -1,9 +1,9 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { supabaseAdmin } from '@api/_utils/supabase-admin';
-import { httpInternalServerError, httpMethodNotAllowed, httpNotFound, httpOk } from '@api/_utils/http';
-import { authenticateUser } from '@api/_utils/auth';
-import { HttpMethods } from '@shared/constants';
-import { AccountDataResponseSchema } from '@shared/schemas/accountDataSchema';
+import { supabaseAdmin } from './_utils/supabase-admin';
+import { httpInternalServerError, httpMethodNotAllowed, httpNotFound, httpOk } from './_utils/http';
+import { authenticateUser } from './_utils/auth';
+import { HttpMethods } from '.././shared/constants';
+import { AccountDataResponseSchema } from '.././shared/schemas/accountDataSchema';
 
 export default async function handler(request: VercelRequest, response: VercelResponse) {
   if (request.method !== HttpMethods.Get) {
