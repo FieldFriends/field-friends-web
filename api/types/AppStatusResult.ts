@@ -7,6 +7,7 @@ export type AppStatusErrorType = typeof AppStatusErrors[keyof typeof AppStatusEr
 
 export type AppStatusSuccess = {
   success: true;
+  type?: never;
   data: AppStateResponse;
 };
 

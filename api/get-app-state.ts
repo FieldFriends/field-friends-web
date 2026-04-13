@@ -10,13 +10,13 @@ export default async function handler(request: VercelRequest, response: VercelRe
 
   const statusResult = await fetchAndValidateAppStatus();
 
-  if (!statusResult.success) {
-    if (statusResult.type === AppStatusErrors.NotFound) {
-      return httpNotFound(response, 'App status not found');
-    }
-
-    return httpInternalServerError(response);
+  if (statusResult.success) {
+    return httpOk(response, statusResult.data);
   }
 
-  return httpOk(response, statusResult.data);
+  if (statusResult.type === AppStatusErrors.NotFound) {
+    return httpNotFound(response, 'App status not found');
+  }
+
+  return httpInternalServerError(response);
 }
