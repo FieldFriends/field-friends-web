@@ -1,5 +1,5 @@
 import { createHmac } from 'node:crypto';
-import { CryptoConstants } from '../../shared/constants';
+import { CryptoConstants } from '../../shared/constants.js';
 
 const getPepper = (): string => {
   const pepper = process.env.HASH_PEPPER;

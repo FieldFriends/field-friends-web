@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { isAcceptingResponses } from '../utils/appStateUtils';
-import { AppState } from '../schemas/appStateSchema';
+import { isAcceptingResponses } from '../utils/appStateUtils.js';
+import { AppState } from '../schemas/appStateSchema.js';
 
 describe('isAcceptingResponses', () => {
   it('should return true for AppState.Open', () => {

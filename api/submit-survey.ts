@@ -1,15 +1,15 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { supabaseAdmin } from './_utils/supabase-admin';
-import { encryptWithAes, startEncryptionSession } from './_utils/crypto';
-import { ProfileSchema } from '.././shared/schemas/profileSchema';
+import { supabaseAdmin } from './_utils/supabase-admin.js';
+import { encryptWithAes, startEncryptionSession } from './_utils/crypto.js';
+import { ProfileSchema } from '.././shared/schemas/profileSchema.js';
 import { z } from 'zod';
-import { httpBadRequest, httpInternalServerError, httpMethodNotAllowed, httpOk } from './_utils/http';
-import { authenticateUser, checkUserBanned } from './_utils/auth';
-import { HttpMethods, AppStatusErrors } from '.././shared/constants';
-import { EncryptionSession } from './types/EncryptionSession';
-import { isAcceptingResponses } from '.././shared/utils/appStateUtils';
-import { fetchAndValidateAppStatus } from './_utils/app-state';
-import { EncryptedSurveyData } from './types/EncryptedSurveyData';
+import { httpBadRequest, httpInternalServerError, httpMethodNotAllowed, httpOk } from './_utils/http.js';
+import { authenticateUser, checkUserBanned } from './_utils/auth.js';
+import { HttpMethods, AppStatusErrors } from '.././shared/constants.js';
+import { EncryptionSession } from './types/EncryptionSession.js';
+import { isAcceptingResponses } from '.././shared/utils/appStateUtils.js';
+import { fetchAndValidateAppStatus } from './_utils/app-state.js';
+import { EncryptedSurveyData } from './types/EncryptedSurveyData.js';
 
 /**
  * Handle the incoming HTTP request, validate input, and attempt to insert the data into our DB if valid.

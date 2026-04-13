@@ -1,11 +1,11 @@
-import { ContentTypes, HttpMethods, HeaderKeys, TurnstileConstants } from ".././shared/constants";
+import { ContentTypes, HttpMethods, HeaderKeys, TurnstileConstants } from '.././shared/constants.js';
 import { VercelRequest, VercelResponse } from "@vercel/node";
-import { httpBadRequest, httpInternalServerError, httpMethodNotAllowed, httpOk } from "./_utils/http";
-import { LoginSchema } from ".././shared/schemas/loginSchema";
-import { TurnstileVerifyResponse, TurnstileVerifyResponseSchema } from ".././shared/schemas/turnstileVerifyResponseSchema";
-import { supabaseAdmin } from "./_utils/supabase-admin";
+import { httpBadRequest, httpInternalServerError, httpMethodNotAllowed, httpOk } from './_utils/http.js';
+import { LoginSchema } from '.././shared/schemas/loginSchema.js';
+import { TurnstileVerifyResponse, TurnstileVerifyResponseSchema } from '.././shared/schemas/turnstileVerifyResponseSchema.js';
+import { supabaseAdmin } from './_utils/supabase-admin.js';
 import z from "zod";
-import { checkUserBanned } from "./_utils/auth";
+import { checkUserBanned } from './_utils/auth.js';
 
 const TURNSTILE_SECRET_KEY = process.env.TURNSTILE_SECRET_KEY;
 

@@ -1,4 +1,4 @@
-import { EMAIL_REGEX } from "../friendConfig";
+import { EMAIL_REGEX } from '../friendConfig.js';
 import z from "zod";
 
 export const LoginSchema = z.object({

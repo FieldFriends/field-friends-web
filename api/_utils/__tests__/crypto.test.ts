@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { encryptWithAes, startEncryptionSession } from '../crypto';
+import { encryptWithAes, startEncryptionSession } from '../crypto.js';
 import { createDecipheriv, privateDecrypt, constants } from 'node:crypto';
 
 // Retrieve the private key we generated in setup.ts

@@ -1,7 +1,7 @@
 import { VercelRequest, VercelResponse } from '@vercel/node';
-import { supabaseAdmin } from '../_utils/supabase-admin';
-import { extractAuthToken, httpUnauthorized } from '../_utils/http';
-import { hashEmail } from '../_utils/hashing';
+import { supabaseAdmin } from '../_utils/supabase-admin.js';
+import { extractAuthToken, httpUnauthorized } from '../_utils/http.js';
+import { hashEmail } from '../_utils/hashing.js';
 import { User } from '@supabase/supabase-js';
 
 /**

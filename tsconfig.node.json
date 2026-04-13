@@ -19,6 +19,9 @@
       "node"
     ],
     "paths": {
+      "@vercel/node": [
+        "./node_modules/@vercel/node/dist/index.d.ts"
+      ],
       "@shared/*": [
         "./shared/*"
       ],

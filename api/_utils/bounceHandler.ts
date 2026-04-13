@@ -1,6 +1,6 @@
 import { SNSEvent, SNSMessage } from "aws-lambda";
-import { hashEmail } from "../_utils/hashing";
-import { supabaseAdmin } from "./supabase-admin";
+import { hashEmail } from '../_utils/hashing.js';
+import { supabaseAdmin } from './supabase-admin.js';
 
 /*
 For handling bounce emails. Compile with:

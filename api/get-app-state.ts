@@ -1,7 +1,7 @@
 import { VercelRequest, VercelResponse } from "@vercel/node";
-import { HttpMethods, AppStatusErrors } from ".././shared/constants";
-import { httpInternalServerError, httpMethodNotAllowed, httpNotFound, httpOk } from "./_utils/http";
-import { fetchAndValidateAppStatus } from "./_utils/app-state";
+import { HttpMethods, AppStatusErrors } from '.././shared/constants.js';
+import { httpInternalServerError, httpMethodNotAllowed, httpNotFound, httpOk } from './_utils/http.js';
+import { fetchAndValidateAppStatus } from './_utils/app-state.js';
 
 export default async function handler(request: VercelRequest, response: VercelResponse) {
   if (request.method !== HttpMethods.Get) {
