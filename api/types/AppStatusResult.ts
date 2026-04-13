@@ -5,24 +5,29 @@ import { AppStateResponse } from '../../shared/schemas/appStateSchema.js';
 // FriendDev: Type representing the possible error states of fetching app status.
 export type AppStatusErrorType = typeof AppStatusErrors[keyof typeof AppStatusErrors];
 
-export class AppStatusSuccess {
-  readonly success = true as const;
+export type AppStatusSuccess = {
+  success: true;
   data: AppStateResponse;
+};
 
-  constructor(data: AppStateResponse) {
-    this.data = data;
-  }
-}
-
-export class AppStatusFailure {
-  readonly success = false as const;
+export type AppStatusFailure = {
+  success: false;
   type: AppStatusErrorType;
   error?: z.ZodError | Error | string;
-
-  constructor(type: AppStatusErrorType, error?: z.ZodError | Error | string) {
-    this.type = type;
-    this.error = error;
-  }
-}
+};
 
 export type AppStatusResult = AppStatusSuccess | AppStatusFailure;
+
+export const makeAppStatusSuccess = (data: AppStateResponse): AppStatusSuccess => ({
+  success: true,
+  data,
+});
+
+export const makeAppStatusFailure = (
+  type: AppStatusErrorType,
+  error?: z.ZodError | Error | string
+): AppStatusFailure => ({
+  success: false,
+  type,
+  error,
+});

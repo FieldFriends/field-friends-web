@@ -8,7 +8,7 @@ import {
   MAX_BLOCKED_EMAILS,
   FIELD_MIN_FREETEXT_CHARS,
   FIELD_MAX_FREETEXT_CHARS
-} from '../friendConfig';
+} from '../friendConfig.js';
 
 export const ProfileSchema = z.object({
   name: z.string()

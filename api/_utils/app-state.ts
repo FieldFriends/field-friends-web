@@ -1,7 +1,7 @@
 import { supabaseAdmin } from '../_utils/supabase-admin.js';
 import { appStateResponseSchema } from '../../shared/schemas/appStateSchema.js';
 import { AppStatusErrors } from '../../shared/constants.js';
-import { AppStatusResult, AppStatusSuccess, AppStatusFailure } from '../types/AppStatusResult.js';
+import { AppStatusResult, makeAppStatusSuccess, makeAppStatusFailure } from '../types/AppStatusResult.js';
 
 /**
  * FriendDev: Fetch and parse the current app status from the DB safely.
@@ -15,11 +15,11 @@ export const fetchAndValidateAppStatus = async (): Promise<AppStatusResult> => {
 
     if (dbError) {
       console.error('API->_utils->DB_ERROR:', dbError);
-      return new AppStatusFailure(AppStatusErrors.DatabaseError, dbError.message);
+      return makeAppStatusFailure(AppStatusErrors.DatabaseError, dbError.message);
     }
 
     if (!data) {
-      return new AppStatusFailure(AppStatusErrors.NotFound);
+      return makeAppStatusFailure(AppStatusErrors.NotFound);
     }
 
     const parseResult = appStateResponseSchema.safeParse(data);
@@ -27,13 +27,13 @@ export const fetchAndValidateAppStatus = async (): Promise<AppStatusResult> => {
     if (!parseResult.success) {
       console.error('API->_utils->APP_STATE_SCHEMA_ERROR:', parseResult.error);
 
-      return new AppStatusFailure(AppStatusErrors.ValidationError, parseResult.error);
+      return makeAppStatusFailure(AppStatusErrors.ValidationError, parseResult.error);
     }
 
-    return new AppStatusSuccess(parseResult.data);
+    return makeAppStatusSuccess(parseResult.data);
   } catch (error) {
     console.error('API->_utils->UNKNOWN_ERROR:', error);
 
-    return new AppStatusFailure(AppStatusErrors.UnknownError, error instanceof Error ? error : String(error));
+    return makeAppStatusFailure(AppStatusErrors.UnknownError, error instanceof Error ? error : String(error));
   }
 };

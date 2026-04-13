@@ -7,7 +7,7 @@ import {
   httpInternalServerError,
   httpMethodNotAllowed,
   httpOk
-} from './_utils/http';
+} from './_utils/http.js';
 import { HttpMethods, JwtConstants } from '.././shared/constants.js';
 import { UnsubscribeSchema } from '.././shared/schemas/unsubscribeSchema.js';
 import { UnsubscribeRequestSchema } from '.././shared/schemas/unsubscribeRequestSchema.js';
