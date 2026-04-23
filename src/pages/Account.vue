@@ -59,19 +59,21 @@
           </div>
 
           <div class="text-center mt-0 pt-8 border-t border-opacity-25" v-if="!isLoading">
-            <p class="text-body-1 text-secondary mb-4">
-              Want to change your answers?
-            </p>
-            <v-btn
-              :to="AppRoutes.Form.withResubmit()"
-              color="primary"
-              variant="flat"
-              class="px-9 text-none mb-8"
-            >
-              Resubmit
-            </v-btn>
+            <template v-if="configStore.isAcceptingResponses">
+              <p class="text-body-1 text-secondary mb-4">
+                Want to change your answers?
+              </p>
+              <v-btn
+                :to="AppRoutes.Form.withResubmit()"
+                color="primary"
+                variant="flat"
+                class="px-9 text-none mb-8"
+              >
+                Resubmit
+              </v-btn>
 
-            <v-divider class="mb-8 mx-16 border-opacity-25" color="secondary" />
+              <v-divider class="mb-8 mx-16 border-opacity-25" color="secondary" />
+            </template>
 
             <v-btn
               color="error"
@@ -163,6 +165,7 @@
 import { ref, onMounted, computed } from 'vue';
 import { useDisplay } from 'vuetify';
 import { useAuthStore } from '@/stores/auth';
+import { useConfigStore } from '@/stores/config';
 import { getAccountData } from '@/services/endpoints/getAccountData';
 import { deleteAccountRequest } from '@/services/endpoints/deleteAccountRequest';
 import type { AccountDataResponse } from '@shared/schemas/accountDataSchema';
@@ -171,6 +174,7 @@ import { AppRoutes } from '@/router/routeConfig';
 
 const { mobile } = useDisplay();
 const store = useAuthStore();
+const configStore = useConfigStore();
 const userEmail = computed(() => store.session?.user?.email || '');
 
 const accountData = ref<AccountDataResponse | null>(null);

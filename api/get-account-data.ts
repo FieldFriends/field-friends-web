@@ -29,7 +29,7 @@ export default async function handler(request: VercelRequest, response: VercelRe
     }
 
     if (!data) {
-      return httpNotFound(response, 'User data not found');
+      return httpNotFound(response, 'Form responses not found');
     }
 
     return httpOk(response, data, AccountDataResponseSchema);
