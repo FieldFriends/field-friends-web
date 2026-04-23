@@ -47,6 +47,10 @@ export const httpMethodNotAllowed = (response: VercelResponse) => {
   return response.status(405).json({ error: 'Method Not Allowed' });
 };
 
+export const httpForbidden = (response: VercelResponse, message: string) => {
+  return response.status(403).json({ error: 'Forbidden', message: message });
+};
+
 export const httpNotFound = (response: VercelResponse, message?: string) => {
   return response.status(404).json({ error: 'Not Found', message: message });
 };

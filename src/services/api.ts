@@ -47,8 +47,8 @@ export async function makeApiRequest<T>(endpoint: string, options: IApiRequest):
     try {
       const errorData = await response.json();
 
-      // FriendDev: Try to give a more concrete error.
-      errorMessage = errorData.error || errorData.message || errorMessage;
+      // FriendDev: Try to give a more concrete error. Prioritize specific messages over generic errors.
+      errorMessage = errorData.message || errorData.details || errorData.error || errorMessage;
     } catch {
       // FriendDev: If we cannot get the response data due to some error, get the human-readable
       //            version of the response code.

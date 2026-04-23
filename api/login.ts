@@ -1,6 +1,6 @@
 import { ContentTypes, HttpMethods, HeaderKeys, TurnstileConstants } from '.././shared/constants.js';
 import { VercelRequest, VercelResponse } from "@vercel/node";
-import { httpBadRequest, httpInternalServerError, httpMethodNotAllowed, httpOk } from './_utils/http.js';
+import { httpBadRequest, httpInternalServerError, httpMethodNotAllowed, httpOk, httpForbidden } from './_utils/http.js';
 import { LoginSchema } from '.././shared/schemas/loginSchema.js';
 import { TurnstileVerifyResponse, TurnstileVerifyResponseSchema } from '.././shared/schemas/turnstileVerifyResponseSchema.js';
 import { supabaseAdmin } from './_utils/supabase-admin.js';
@@ -77,7 +77,7 @@ async function handleSignIn(email: string, response: VercelResponse) {
 
   if (authError) {
     if (authError.code === 'otp_disabled') {
-      return httpBadRequest(response, 'Field Friends is currently paused and is not accepting new users.');
+      return httpForbidden(response, 'Field Friends is currently paused and is not accepting new users.');
     }
 
     console.error('API->AUTH_ERROR:', authError);
