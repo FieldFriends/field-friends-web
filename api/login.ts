@@ -76,6 +76,10 @@ async function handleSignIn(email: string, response: VercelResponse) {
   });
 
   if (authError) {
+    if (authError.code === 'otp_disabled') {
+      return httpBadRequest(response, 'Field Friends is not accepting new users at this time.');
+    }
+
     console.error('API->AUTH_ERROR:', authError);
     return httpInternalServerError(response);
   }
