@@ -7,8 +7,7 @@ import { supabaseAdmin } from './_utils/supabase-admin.js';
 import z from "zod";
 import { checkUserBanned } from './_utils/auth.js';
 import { fetchAndValidateAppStatus } from './_utils/app-state.js';
-import { AppState } from '../shared/schemas/appStateSchema.js';
-import { isAcceptingResponses } from '@shared/utils/appStateUtils.js';
+import { isAcceptingResponses } from '../shared/utils/appStateUtils.js';
 
 const TURNSTILE_SECRET_KEY = process.env.TURNSTILE_SECRET_KEY;
 
