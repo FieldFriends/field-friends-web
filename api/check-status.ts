@@ -21,7 +21,7 @@ export default async function handler(request: VercelRequest, response: VercelRe
 	try {
 		const user = await authenticateUser(request, response);
 
-		if (!user || !user.email) {
+		if (!user?.email) {
 			return;
 		}
 

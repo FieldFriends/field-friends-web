@@ -6,6 +6,9 @@ import { TurnstileVerifyResponse, TurnstileVerifyResponseSchema } from '.././sha
 import { supabaseAdmin } from './_utils/supabase-admin.js';
 import z from "zod";
 import { checkUserBanned } from './_utils/auth.js';
+import { fetchAndValidateAppStatus } from './_utils/app-state.js';
+import { AppState } from '../shared/schemas/appStateSchema.js';
+import { isAcceptingResponses } from '@shared/utils/appStateUtils.js';
 
 const TURNSTILE_SECRET_KEY = process.env.TURNSTILE_SECRET_KEY;
 
@@ -52,12 +55,24 @@ async function verifyTurnstileToken(token: string): Promise<TurnstileVerifyRespo
  * @returns The HTTP response.
  */
 async function handleSignIn(email: string, response: VercelResponse) {
+  const statusResult = await fetchAndValidateAppStatus();
+
+  if (!statusResult.success) {
+    console.error('API->LOGIN->APP_STATUS_ERROR:', statusResult.type, statusResult.error);
+    return httpInternalServerError(response);
+  }
+
+  // FriendDev: Check if app is open.
+  const isOpen = isAcceptingResponses(statusResult.data.currentState);
+
   const cleanEmail = email.trim().toLowerCase();
 
   const { error: authError } = await supabaseAdmin.auth.signInWithOtp({
     email: cleanEmail,
     options: {
-      shouldCreateUser: true,
+      // FriendDev: If app is open, allow account creation. Otherwise, 
+      //            only allow existing users to login to delete their data.
+      shouldCreateUser: isOpen,
     }
   });
 

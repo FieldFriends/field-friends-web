@@ -76,7 +76,7 @@ export default async function handler(request: VercelRequest, response: VercelRe
 }
 
 // ============================================================================
-// MODULAR HELPER FUNCTIONS
+// Helper Functions
 // ============================================================================
 
 /**
