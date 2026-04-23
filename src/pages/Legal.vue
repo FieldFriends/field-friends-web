@@ -8,7 +8,7 @@
           </h1>
 
       <p class="text-body-1 text-secondary mb-12 page-text text-center font-italic">
-        Last Updated: March, 2026
+        Last Updated: April 2026
       </p>
 
       <section class="mb-12" aria-labelledby="tos-heading">
@@ -16,7 +16,7 @@
         
         <h3 class="text-h6 font-weight-bold mb-2 text-primary font-playfair">Eligibility</h3>
         <p class="text-body-1 text-secondary mb-4 page-text">
-          To use Field Friends, you must be 18 years of age or older and possess
+          To use Field Friends, you must be between 18 and 29 years of age and possess
           a valid <strong>@illinois.edu</strong> email address. By completing the
           sign-up process, you represent that you meet both conditions.
         </p>
@@ -56,10 +56,10 @@
 
         <h3 class="text-h6 font-weight-bold mb-2 text-primary font-playfair">Third-Party Links</h3>
         <p class="text-body-1 text-secondary mb-4 page-text">
-          Our service may contain links to third-party web sites or services that are
+          Our service may contain links to third-party websites or services that are
           not owned or controlled by Field Friends. We have no control over, and assume
           no responsibility for, the content, privacy policies, or practices of any
-          third-party web sites or services.
+          third-party websites or services.
         </p>
 
         <h3 class="text-h6 font-weight-bold mb-2 text-primary font-playfair">Changes to Terms</h3>
@@ -110,6 +110,9 @@
           <strong class="text-primary font-italic">We do not sell, rent, or trade your data to third parties.</strong> We do not use your
           email for marketing. 
         </p>
+        <p class="text-body-1 text-secondary mb-4 page-text">
+          We do use trusted third-party infrastructure providers (such as secure cloud hosting and transactional email services) strictly for the purpose of operating the application and routing our communications.
+        </p>
 
         <h3 class="text-h6 font-weight-bold mb-2 text-primary font-playfair">Data Security</h3>
         <p class="text-body-1 text-secondary mb-4 page-text">
@@ -119,13 +122,24 @@
           matching algorithm. 
         </p>
 
-        <h3 class="text-h6 font-weight-bold mb-2 text-primary font-playfair">Data Retention & Opt-Out</h3>
+        <h3 class="text-h6 font-weight-bold mb-2 text-primary font-playfair">
+          Data Retention & Opt-Out
+        </h3>
         <p class="text-body-1 text-secondary mb-4 page-text">
-          Submitting the sign-up form implies consent to participate in the current
-          monthly matching round. Because our data storage is ephemeral, all user records
-          from a matching round are securely and permanently wiped after the matches for
-          that round are sent out. If you wish to request total manual deletion of your
-          data before the automatic wipe, please contact us at <strong>support@fieldfriends.org</strong>.
+          Submitting the sign-up form implies consent to participate in the current matching round. You may withdraw your submission and instantly delete your data at any time before the matching window closes by using the delete feature on your Account page.
+        </p>
+        <p class="text-body-1 text-secondary mb-4 page-text">
+          Once the submission window closes and data is downloaded for offline processing, <strong>we can no longer process withdrawal or manual deletion requests</strong> for that round. 
+        </p>
+        <p class="text-body-1 text-secondary mb-4 page-text">
+          All user records are securely and permanently wiped within one hour after matches for that round are sent out.
+        </p>
+        
+        <h3 class="text-h6 font-weight-bold mb-2 text-primary font-playfair">
+          Exceptions to Data Deletion
+        </h3>
+        <p class="text-body-1 text-secondary mb-4 page-text">
+          For the safety of our users and to maintain email deliverability, we do not delete data related to banned individuals or bounced email addresses. If a user is banned, or if an email address generates a hard bounce or spam complaint, we retain a <strong>cryptographically hashed, anonymized version</strong> of that email address indefinitely. This hash cannot be reverse-engineered to identify you, but it allows our system to block future sign-ups or emails associated with that address.
         </p>
       </section>
 
@@ -147,6 +161,9 @@
           the safety of any individual.</strong> Users assume all risks associated with meeting their matches.
           We strongly advise using common sense: meet in public places, trust your instincts,
           and prioritize your safety.
+        </p>
+        <p class="text-body-1 text-secondary mb-4 page-text">
+          Furthermore, we rely on user-provided information for age and affiliation eligibility; we are not liable for individuals who falsify their identity, age, or other form responses to gain access to the service.
         </p>
 
         <h3 class="text-h6 font-weight-bold mb-2 text-primary font-playfair">No Warranty</h3>

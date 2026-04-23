@@ -216,15 +216,34 @@
             >
               <template v-slot:label>
                 <div>
-                  I agree to the 
-                  <router-link to="/legal#tos-heading" class="ms-1 text-primary text-decoration-none font-weight-bold align-center" target="_blank">
-                    full Terms of Service
+                  I agree to the full
+                  <router-link
+                    to="/legal#tos-heading"
+                    class="ms-1 text-primary text-decoration-none font-weight-bold align-center"
+                    target="_blank"
+                    @click.stop
+                  >
+                    Terms of Service
                     <v-icon
                       icon="mdi-open-in-new"
                       size="x-small"
                       class="ms-1"
                     />
                   </router-link>
+                  and
+                  <router-link
+                    to="/legal#privacy-heading"
+                    class="ms-1 text-primary text-decoration-none font-weight-bold"
+                    target="_blank"
+                    @click.stop
+                  >
+                    Privacy Policy
+                    <v-icon
+                      icon="mdi-open-in-new"
+                      size="x-small"
+                      class="ms-1" 
+                    />
+                  </router-link>.
                 </div>
               </template>
             </v-checkbox>
