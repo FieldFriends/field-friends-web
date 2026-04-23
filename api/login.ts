@@ -58,7 +58,7 @@ async function handleSignIn(email: string, response: VercelResponse) {
   const statusResult = await fetchAndValidateAppStatus();
 
   if (!statusResult.success) {
-    console.error('API->LOGIN->APP_STATUS_ERROR:', statusResult.type, statusResult.error);
+    console.error('API->LOGIN->APP_STATUS_ERROR');
     return httpInternalServerError(response);
   }
 
