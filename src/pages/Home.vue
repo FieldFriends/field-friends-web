@@ -96,7 +96,7 @@
             Connect
           </h3>
           <p class="text-body-2 text-secondary">
-            Get introduced to your new group via email.
+            Get introduced to your group via email.
           </p>
         </v-col>
       </v-row>
