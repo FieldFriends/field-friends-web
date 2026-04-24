@@ -2,7 +2,7 @@ import crypto from 'node:crypto';
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { HttpMethods } from "../../shared/constants.js";
 import { httpMethodNotAllowed, httpBadRequest, httpOk, httpForbidden, httpInternalServerError } from "../_utils/http.js";
-import { ZeptoMailWebhookSchema, ZeptoMailEvents, ZeptoMailWebhookPayload, BounceDetails, FblDetails, ZeptoMailWebhookHeaders } from "../../shared/schemas/zeptoMailWebhookSchema.js";
+import { ZeptoMailWebhookSchema, ZeptoMailEvents, ZeptoMailWebhookPayload, BounceDetails, FblDetails, ZeptoMailWebhookHeaders, BounceEventDataSchema, FblEventDataSchema } from "../../shared/schemas/zeptoMailWebhookSchema.js";
 import { z } from "zod";
 import { hashEmail } from '../_utils/hashing.js';
 import { supabaseAdmin } from '../_utils/supabase-admin.js';
@@ -72,6 +72,36 @@ function extractFblEmails(details: FblDetails[], eventName: string, badEmails: {
 }
 
 /**
+ * Processes a single event data object and extracts bad emails.
+ * @param data - The event data to process.
+ * @param eventName - ZeptoMail event name.
+ * @param badEmails - Array to accumulate bad emails.
+ */
+function extractBadEmailsFromData(
+  data: ZeptoMailWebhookPayload['event_message'][number]['event_data'][number],
+  eventName: string,
+  badEmails: { email: string; reason: string }[]
+): void {
+  if (data.object === ZeptoMailEvents.SoftBounce || data.object === ZeptoMailEvents.HardBounce) {
+    const parsed = BounceEventDataSchema.safeParse(data);
+
+    if (parsed.success) {
+      extractBounceEmails(parsed.data.details, eventName, badEmails);
+    } else {
+      console.error('API->ZEPTOMAIL_PARSE_ERROR: Malformed bounce event data', parsed.error);
+    }
+  } else if (data.object === ZeptoMailEvents.FblCompliant) {
+    const parsed = FblEventDataSchema.safeParse(data);
+
+    if (parsed.success) {
+      extractFblEmails(parsed.data.details, eventName, badEmails);
+    } else {
+      console.error('API->ZEPTOMAIL_PARSE_ERROR: Malformed FBL event data', parsed.error);
+    }
+  }
+}
+
+/**
  * Processes the validated ZeptoMail webhook payload, batching all db operations.
  * @param payload - ZeptoMailWebhookPayload to process.
  */
@@ -81,11 +111,7 @@ async function processWebhookPayload(payload: ZeptoMailWebhookPayload): Promise<
   for (const eventName of payload.event_name) {
     for (const msg of payload.event_message) {
       for (const data of msg.event_data) {
-        if (data.object === ZeptoMailEvents.SoftBounce || data.object === ZeptoMailEvents.HardBounce) {
-          extractBounceEmails(data.details, eventName, badEmails);
-        } else if (data.object === ZeptoMailEvents.FblCompliant) {
-          extractFblEmails(data.details, eventName, badEmails);
-        }
+        extractBadEmailsFromData(data, eventName, badEmails);
       }
     }
   }

@@ -47,15 +47,12 @@ const BounceDetailsSchema = z.object({
   diagnostic_message: z.string().optional(),
 }).strict();
 
-const BounceEventDataSchema = z.object({
+export const BounceEventDataSchema = z.object({
   details: z.array(BounceDetailsSchema),
-  object: z.union([
-    z.literal(ZeptoMailEvents.SoftBounce),
-    z.literal(ZeptoMailEvents.HardBounce),
-  ]),
+  object: z.enum([ZeptoMailEvents.SoftBounce, ZeptoMailEvents.HardBounce]),
 }).strict();
 
-const FblDetailsSchema = z.object({
+export const FblDetailsSchema = z.object({
   fblFrom: z.string(),
   returnPath: z.string(),
   ip: z.string(),
@@ -63,29 +60,31 @@ const FblDetailsSchema = z.object({
   to: z.array(z.string()),
 }).strict();
 
-const FblEventDataSchema = z.object({
+export const FblEventDataSchema = z.object({
   details: z.array(FblDetailsSchema),
   object: z.literal(ZeptoMailEvents.FblCompliant),
 }).strict();
 
-const EventDataSchema = z.discriminatedUnion('object', [
-  BounceEventDataSchema,
-  FblEventDataSchema,
-]);
+const EventDataSchema = z.object({
+  object: z.string(),
+}).loose();
 
 const EventMessageSchema = z.object({
   email_info: EmailInfoSchema,
   event_data: z.array(EventDataSchema),
   request_id: z.string(),
-}).strict();
+}).loose();
 
 export const ZeptoMailWebhookSchema = z.object({
-  event_name: z.array(z.enum(ZeptoMailEventValues)),
+  event_name: z.array(z.string()),
   event_message: z.array(EventMessageSchema),
   mailagent_key: z.string(),
   webhook_request_id: z.string(),
-}).strict();
+}).loose();
+
 
 export type ZeptoMailWebhookPayload = z.infer<typeof ZeptoMailWebhookSchema>;
 export type BounceDetails = z.infer<typeof BounceDetailsSchema>;
 export type FblDetails = z.infer<typeof FblDetailsSchema>;
+export type BounceEventData = z.infer<typeof BounceEventDataSchema>;
+export type FblEventData = z.infer<typeof FblEventDataSchema>;
