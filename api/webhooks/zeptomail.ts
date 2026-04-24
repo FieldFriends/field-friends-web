@@ -60,7 +60,11 @@ async function banEmails(badEmails: { email: string; reason: string }[]): Promis
  */
 function extractBounceEmails(details: BounceDetails[], eventName: string, badEmails: { email: string; reason: string }[]): void {
   for (const detail of details) {
-    console.log(`Bounce mapped for ${detail.bounced_recipient} with reason ${detail.reason}`);
+    // FriendDev: First char of email.
+    const censoredEmail = detail.bounced_recipient.charAt(0) ?? 'unknown';
+
+    console.log(`Bounce mapped for ${censoredEmail}*** with reason ${detail.reason}`);
+
     badEmails.push({ email: detail.bounced_recipient, reason: `ZeptoMail ${eventName}` });
   }
 }
