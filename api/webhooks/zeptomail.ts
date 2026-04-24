@@ -175,10 +175,9 @@ function readRawBody(request: IncomingMessage): Promise<string> {
 
 /**
  * Verifies the HMAC producer-signature from a ZeptoMail webhook request.
- * Extracts the payload data value following ZeptoMail's URL-encoded format.
  * @param request - HTTP request.
  * @param rawBody - The raw body string read from the request stream.
- * @returns The extracted JSON payload string on success, or null on failure.
+ * @returns The raw body string on success (for downstream JSON parsing), or null on failure.
  */
 function verifyProducerSignatureFromRequest(request: VercelRequest, rawBody: string): string | null {
   const signatureHeaderRaw = request.headers[ZeptoMailWebhookHeaders.ProducerSignature];
@@ -201,25 +200,14 @@ function verifyProducerSignatureFromRequest(request: VercelRequest, rawBody: str
     return null;
   }
 
-  // FriendDev: ZeptoMail sends the body URL-encoded. Decode it, then split on "="
-  //            with a limit of 2 to extract the JSON payload value.
-  //            This matches the Java sample: dataDecoded.split("=", 2) -> arr[1].
-  const dataDecoded = decodeURIComponent(rawBody);
-  const separatorIndex = dataDecoded.indexOf('=');
-
-  if (separatorIndex === -1) {
-    console.error('API->ZEPTOMAIL_SIGNATURE_ERROR: Body does not contain expected key=value format');
-    return null;
-  }
-
-  const dataValue = dataDecoded.substring(separatorIndex + 1);
-
-  if (!verifyProducerSignature(signature, dataValue)) {
+  // FriendDev: ZeptoMail sends the body as raw JSON.
+  //            The HMAC is computed directly over the raw body string.
+  if (!verifyProducerSignature(signature, rawBody)) {
     console.error('API->ZEPTOMAIL_SIGNATURE_ERROR: HMAC signature mismatch');
     return null;
   }
 
-  return dataValue;
+  return rawBody;
 }
 
 /**
