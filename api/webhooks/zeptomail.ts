@@ -1,0 +1,154 @@
+import crypto from 'node:crypto';
+import type { VercelRequest, VercelResponse } from "@vercel/node";
+import { HttpMethods } from "../../shared/constants.js";
+import { httpMethodNotAllowed, httpBadRequest, httpOk, httpForbidden, httpInternalServerError } from "../_utils/http.js";
+import { ZeptoMailWebhookSchema, ZeptoMailEvents, ZeptoMailWebhookPayload, BounceDetails, FblDetails, ZeptoMailWebhookHeaders } from "../../shared/schemas/zeptoMailWebhookSchema.js";
+import { z } from "zod";
+import { hashEmail } from '../_utils/hashing.js';
+import { supabaseAdmin } from '../_utils/supabase-admin.js';
+
+const LOG_HASH_LENGTH = 8;
+const BANNED_USERS_TABLE = "banned_users";
+const EMAIL_HASH_COLUMN = "email_hash";
+
+/**
+ * Bans user emails by hashing them and performing a bulk upsert into the banned_users table.
+ * @param badEmails - Array of bad emails and reasons to ban.
+ */
+async function banEmails(badEmails: { email: string; reason: string }[]): Promise<void> {
+  const uniquePayloads = new Map<string, { [key: string]: string }>();
+
+  for (const b of badEmails) {
+    const emailHash = hashEmail(b.email);
+    const displayHash = emailHash.substring(0, LOG_HASH_LENGTH);
+
+    console.log(`Flagging ${b.reason} for hash: ${displayHash}...`);
+
+    uniquePayloads.set(emailHash, {
+      [EMAIL_HASH_COLUMN]: emailHash,
+      reason: b.reason
+    });
+  }
+
+  const upsertPayload = Array.from(uniquePayloads.values());
+
+  const { error } = await supabaseAdmin.from(BANNED_USERS_TABLE).upsert(
+    upsertPayload,
+    { onConflict: EMAIL_HASH_COLUMN }
+  );
+
+  if (error) {
+    console.error("Supabase Bulk Upsert Error:", error);
+    throw error;
+  }
+}
+
+/**
+ * Maps bounce events to bad emails array.
+ * @param details - Bounce details from ZeptoMail.
+ * @param eventName - ZeptoMail event name.
+ * @param badEmails - Array to add bad emails to.
+ */
+function extractBounceEmails(details: BounceDetails[], eventName: string, badEmails: { email: string; reason: string }[]): void {
+  for (const detail of details) {
+    console.log(`Bounce mapped for ${detail.bounced_recipient} with reason ${detail.reason}`);
+    badEmails.push({ email: detail.bounced_recipient, reason: `ZeptoMail ${eventName}` });
+  }
+}
+
+/**
+ * Maps FBL/spam complaint events to bad emails array.
+ * @param details - FBL details from ZeptoMail.
+ * @param eventName - ZeptoMail event name.
+ * @param badEmails - Array to add bad emails to.
+ */
+function extractFblEmails(details: FblDetails[], eventName: string, badEmails: { email: string; reason: string }[]): void {
+  for (const detail of details) {
+    console.log(`Complaint mapped for IPs/ReturnPath ${detail.ip} / ${detail.returnPath}`);
+    for (const complainer of detail.to) {
+      badEmails.push({ email: complainer, reason: `ZeptoMail ${eventName}` });
+    }
+  }
+}
+
+/**
+ * Processes the validated ZeptoMail webhook payload, batching all db operations.
+ * @param payload - ZeptoMailWebhookPayload to process.
+ */
+async function processWebhookPayload(payload: ZeptoMailWebhookPayload): Promise<void> {
+  const badEmails: { email: string; reason: string }[] = [];
+
+  for (const eventName of payload.event_name) {
+    for (const msg of payload.event_message) {
+      for (const data of msg.event_data) {
+        if (data.object === ZeptoMailEvents.SoftBounce || data.object === ZeptoMailEvents.HardBounce) {
+          extractBounceEmails(data.details, eventName, badEmails);
+        } else if (data.object === ZeptoMailEvents.FblCompliant) {
+          extractFblEmails(data.details, eventName, badEmails);
+        }
+      }
+    }
+  }
+
+  if (badEmails.length > 0) {
+    await banEmails(badEmails);
+  }
+}
+
+/**
+ * Modular authentication function to verify ZeptoMail webhook signatures safely.
+ * @param request - HTTP request.
+ * @returns true if authenticated, false otherwise.
+ */
+function verifyZeptoMailAuth(request: VercelRequest): boolean {
+  const secret = process.env.ZEPTO_WEBHOOK_SECRET;
+  if (!secret) {
+    console.error('API->ZEPTOMAIL_AUTH_ERROR: ZEPTO_WEBHOOK_SECRET is not defined');
+    return false;
+  }
+
+  const authHeaderRaw = request.headers[ZeptoMailWebhookHeaders.Auth];
+  const authHeader = Array.isArray(authHeaderRaw) ? authHeaderRaw[0] : authHeaderRaw;
+
+  if (!authHeader) {
+    console.error('API->ZEPTOMAIL_AUTH_ERROR: Missing webhook secret header');
+    return false;
+  }
+
+  const expectedBuffer = Buffer.from(secret);
+  const actualBuffer = Buffer.from(authHeader);
+
+  return (expectedBuffer.length === actualBuffer.length) &&
+    (crypto.timingSafeEqual(expectedBuffer, actualBuffer));
+}
+
+/**
+ * Handle the incoming HTTP request from ZeptoMail webhooks.
+ * @param request - HTTP request.
+ * @param response - HTTP response.
+ */
+export default async function handler(request: VercelRequest, response: VercelResponse) {
+  if (request.method !== HttpMethods.Post) {
+    return httpMethodNotAllowed(response);
+  }
+
+  if (!verifyZeptoMailAuth(request)) {
+    return httpForbidden(response, 'Invalid webhook secret');
+  }
+
+  try {
+    const parseResult = ZeptoMailWebhookSchema.safeParse(request.body);
+
+    if (!parseResult.success) {
+      console.error('API->ZEPTOMAIL_PARSE_ERROR:', parseResult.error);
+      return httpBadRequest(response, JSON.stringify(z.treeifyError(parseResult.error)));
+    }
+
+    await processWebhookPayload(parseResult.data);
+
+    return httpOk(response);
+  } catch (err) {
+    console.error('API->ZEPTOMAIL_ERROR:', err);
+    return httpInternalServerError(response);
+  }
+}
