@@ -70,3 +70,21 @@ export const CryptoConstants = {
   AesKeyLength: 32,
   HashType: 'sha256',
 } as const;
+
+export const ZeptoMailSignatureConstants = {
+  Algorithm: 'HmacSHA256',
+  NodeAlgorithm: 'sha256',
+  HeaderDelimiter: ';',
+  FieldDelimiter: '=',
+
+  /**
+   * 5 minutes in milliseconds.
+   */
+  AcceptableDurationMs: 300000,
+  EncodingFormat: 'base64',
+  Fields: {
+    Timestamp: 'ts',
+    Signature: 's',
+    SigningAlgorithm: 's-algorithm',
+  },
+} as const;

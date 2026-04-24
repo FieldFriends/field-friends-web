@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 export const ZeptoMailWebhookHeaders = {
   Auth: 'x-zepto-secret',
+  ProducerSignature: 'producer-signature',
 } as const;
 
 export const ZeptoMailEvents = {
@@ -82,9 +83,27 @@ export const ZeptoMailWebhookSchema = z.object({
   webhook_request_id: z.string(),
 }).loose();
 
+export const ProducerSignatureSchema = z.object({
+  /**
+   * Timestamp (ms) when the webhook was initiated from ZeptoMail's server.
+   */
+  ts: z.number(),
+
+  /**
+   * The HMAC signature (Base64-encoded).
+   */
+  s: z.string(),
+
+  /**
+   * The signing algorithm identifier (e.g. "HmacSHA256").
+   */
+  sAlgorithm: z.string(),
+}).strict();
+
 
 export type ZeptoMailWebhookPayload = z.infer<typeof ZeptoMailWebhookSchema>;
 export type BounceDetails = z.infer<typeof BounceDetailsSchema>;
 export type FblDetails = z.infer<typeof FblDetailsSchema>;
 export type BounceEventData = z.infer<typeof BounceEventDataSchema>;
 export type FblEventData = z.infer<typeof FblEventDataSchema>;
+export type ProducerSignature = z.infer<typeof ProducerSignatureSchema>;

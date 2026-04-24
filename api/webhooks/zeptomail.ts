@@ -1,4 +1,5 @@
 import crypto from 'node:crypto';
+import type { IncomingMessage } from 'node:http';
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { HttpMethods } from "../../shared/constants.js";
 import { httpMethodNotAllowed, httpBadRequest, httpOk, httpForbidden, httpInternalServerError } from "../_utils/http.js";
@@ -6,6 +7,14 @@ import { ZeptoMailWebhookSchema, ZeptoMailEvents, ZeptoMailWebhookPayload, Bounc
 import { z } from "zod";
 import { hashEmail } from '../_utils/hashing.js';
 import { supabaseAdmin } from '../_utils/supabase-admin.js';
+import { parseProducerSignature, isSignatureExpired, verifyProducerSignature } from '../_utils/webhook-signature.js';
+
+// FriendDev: Disable Vercel's automatic body parser so we can access the raw request body.
+//            This is required for HMAC signature verification, which must hash the exact
+//            byte sequence sent by ZeptoMail.
+export const config = {
+  api: { bodyParser: false },
+};
 
 const LOG_HASH_LENGTH = 8;
 const BANNED_USERS_TABLE = "banned_users";
@@ -149,7 +158,75 @@ function verifyZeptoMailAuth(request: VercelRequest): boolean {
 }
 
 /**
+ * Reads the raw request body from an incoming HTTP stream.
+ * Required because we disabled Vercel's body parser for HMAC verification.
+ * @param request - The incoming HTTP request stream.
+ * @returns The raw body as a UTF-8 string.
+ */
+function readRawBody(request: IncomingMessage): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const chunks: Buffer[] = [];
+
+    request.on('data', (chunk: Buffer) => chunks.push(chunk));
+    request.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')));
+    request.on('error', reject);
+  });
+}
+
+/**
+ * Verifies the HMAC producer-signature from a ZeptoMail webhook request.
+ * Extracts the payload data value following ZeptoMail's URL-encoded format.
+ * @param request - HTTP request.
+ * @param rawBody - The raw body string read from the request stream.
+ * @returns The extracted JSON payload string on success, or null on failure.
+ */
+function verifyProducerSignatureFromRequest(request: VercelRequest, rawBody: string): string | null {
+  const signatureHeaderRaw = request.headers[ZeptoMailWebhookHeaders.ProducerSignature];
+  const signatureHeader = Array.isArray(signatureHeaderRaw) ? signatureHeaderRaw[0] : signatureHeaderRaw;
+
+  if (!signatureHeader) {
+    console.error('API->ZEPTOMAIL_SIGNATURE_ERROR: Missing producer-signature header');
+    return null;
+  }
+
+  const signature = parseProducerSignature(signatureHeader);
+
+  if (!signature) {
+    console.error('API->ZEPTOMAIL_SIGNATURE_ERROR: Malformed producer-signature header');
+    return null;
+  }
+
+  if (isSignatureExpired(signature.ts)) {
+    console.error('API->ZEPTOMAIL_SIGNATURE_ERROR: Signature timestamp expired');
+    return null;
+  }
+
+  // FriendDev: ZeptoMail sends the body URL-encoded. Decode it, then split on "="
+  //            with a limit of 2 to extract the JSON payload value.
+  //            This matches the Java sample: dataDecoded.split("=", 2) -> arr[1].
+  const dataDecoded = decodeURIComponent(rawBody);
+  const separatorIndex = dataDecoded.indexOf('=');
+
+  if (separatorIndex === -1) {
+    console.error('API->ZEPTOMAIL_SIGNATURE_ERROR: Body does not contain expected key=value format');
+    return null;
+  }
+
+  const dataValue = dataDecoded.substring(separatorIndex + 1);
+
+  if (!verifyProducerSignature(signature, dataValue)) {
+    console.error('API->ZEPTOMAIL_SIGNATURE_ERROR: HMAC signature mismatch');
+    return null;
+  }
+
+  return dataValue;
+}
+
+/**
  * Handle the incoming HTTP request from ZeptoMail webhooks.
+ * Uses dual-gate authentication:
+ *   Gate 1: Static secret header verification (fast reject).
+ *   Gate 2: HMAC producer-signature verification (cryptographic integrity).
  * @param request - HTTP request.
  * @param response - HTTP response.
  */
@@ -158,12 +235,34 @@ export default async function handler(request: VercelRequest, response: VercelRe
     return httpMethodNotAllowed(response);
   }
 
+  // FriendDev: Rejects unauthorized traffic before we incur the cost of reading the body stream.
   if (!verifyZeptoMailAuth(request)) {
     return httpForbidden(response, 'Invalid webhook secret');
   }
 
   try {
-    const parseResult = ZeptoMailWebhookSchema.safeParse(request.body);
+    // FriendDev: Read the raw body since we disabled Vercel's body parser.
+    const rawBody = await readRawBody(request);
+
+    // FriendDev: Cryptographic HMAC signature verification.
+    //            Validates payload integrity and protects against replay attacks.
+    const dataValue = verifyProducerSignatureFromRequest(request, rawBody);
+
+    if (!dataValue) {
+      return httpForbidden(response, 'Invalid producer signature');
+    }
+
+    // FriendDev: Parse the extracted JSON payload and validate against our schema.
+    let parsedBody: unknown;
+
+    try {
+      parsedBody = JSON.parse(dataValue);
+    } catch {
+      console.error('API->ZEPTOMAIL_PARSE_ERROR: Failed to parse webhook JSON payload');
+      return httpBadRequest(response, 'Invalid JSON payload');
+    }
+
+    const parseResult = ZeptoMailWebhookSchema.safeParse(parsedBody);
 
     if (!parseResult.success) {
       console.error('API->ZEPTOMAIL_PARSE_ERROR:', parseResult.error);
