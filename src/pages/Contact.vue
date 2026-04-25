@@ -75,7 +75,7 @@
       v-model="snackbar.isVisible"
       timeout="3000"
       location="top center"
-      color="success"
+      :color="snackbar.color"
     >
       {{ snackbar.message }}
       
@@ -102,9 +102,16 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
-const snackbar = ref({
+type Snackbar = {
+  isVisible: boolean;
+  message: string;
+  color: 'success' | 'error';
+}
+
+const snackbar = ref<Snackbar>({
   isVisible: false,
-  message: ''
+  message: '',
+  color: 'success'
 });
 
 const copyEmail = async () => {
@@ -113,10 +120,15 @@ const copyEmail = async () => {
 
     snackbar.value = {
       isVisible: true,
-      message: 'Email address copied to clipboard'
+      message: 'Email address copied to clipboard',
+      color: 'success'
     };
-  } catch (err) {
-    console.error('Failed to copy text: ', err);
+  } catch {
+    snackbar.value = {
+      isVisible: true,
+      message: 'Failed to copy email address',
+      color: 'error'
+    };
   }
 };
 </script>

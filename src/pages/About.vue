@@ -50,7 +50,7 @@
           <p class="text-body-1 text-secondary mb-4 page-text">
             <strong>1. Verification:</strong>
             You sign in using a one-time passcode sent to your
-            <strong>@illinois.edu</strong> email, keeping the platform exclusive to our community.
+            <strong>@illinois.edu</strong> email address. This ensures that everyone is part of the UIUC community.
           </p>
 
           <p class="text-body-1 text-secondary mb-4 page-text">
@@ -61,8 +61,8 @@
 
           <p class="text-body-1 text-secondary mb-4 page-text">
             <strong>3. Security & Encryption:</strong>
-            The moment you hit "Submit", your data is secured using strong, end-to-end encryption.
-            It is stored safely in an encrypted state, inaccessible to anyone—even us—while it sits in the database.
+            When you hit "Submit", your data is secured using strong, end-to-end encryption.
+            It is stored safely in an encrypted state and cannot be read by anyone (including us) while it sits in the database.
             <a
               href="#security-heading"
               class="text-decoration-none font-weight-bold text-link d-inline-flex align-center"
@@ -79,20 +79,20 @@
           <div class="text-body-1 text-secondary page-text">
             <p>
               <strong>4. The Matching Process:</strong>
-              After the deadline, your encrypted data is downloaded to an offline, local machine and decrypted just long enough to process.
-              We use natural language processing to read the semantic meaning behind your survey answers,
+              After the deadline, your encrypted data is downloaded to an offline, local machine and decrypted solely to process matches.
+              We use natural language processing to understand the meaning behind your survey answers,
               grouping you with 2-3 other people who have genuine alignment in interests.
             </p>
             <p class="mb-4">
-              Our algorithm also enforces strict demographic rules to ensure safe, balanced gender representation within every group.
-              You won't be matched with people outside of your university status (underclassmen, grad student, etc.).
+              Our algorithm enforces strict rules to ensure safe and balanced gender representation within every group.
+              You also won't be matched with people outside of your university status (underclassman, upperclassman, or graduate/staff).
             </p>
           </div>
 
           <p class="text-body-1 text-secondary mb-6 page-text">
             <strong>5. Delivery & Deletion:</strong>
-            Once groups of 3-4 are formed, introduction emails are automatically sent out.
-            Immediately afterward, all local data and the cloud database are securely deleted.
+            Once groups of 3-4 are formed, introduction emails will be sent out over a short period of time.
+            When all emails have been confirmed as delivered, your profile, survey responses, and all local matching data are securely deleted.
             From there, it's up to you to reach out to your group!
           </p>
         </div>

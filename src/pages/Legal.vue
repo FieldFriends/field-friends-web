@@ -117,9 +117,9 @@
         <h3 class="text-h6 font-weight-bold mb-2 text-primary font-playfair">Data Security</h3>
         <p class="text-body-1 text-secondary mb-4 page-text">
           We take the security of your data seriously. Before your survey responses and
-          identifying information ever reach our cloud database, they are encrypted using
-          AES-256 cloud encryption. The data is processed offline locally for the
-          matching algorithm. 
+          identifying information ever reach our cloud database, they are secured using
+          application-level hybrid envelope encryption. The data is processed offline locally for the
+          matching algorithm.
         </p>
 
         <h3 class="text-h6 font-weight-bold mb-2 text-primary font-playfair">
@@ -132,7 +132,7 @@
           Once the submission window closes and data is downloaded for offline processing, <strong>we can no longer process withdrawal or manual deletion requests</strong> for that round. 
         </p>
         <p class="text-body-1 text-secondary mb-4 page-text">
-          All user records are securely and permanently wiped within one hour after matches for that round are sent out.
+          Within one hour after matches for that round are s`ent out, your profile, survey responses, and all local matchmaking data are securely and permanently wiped.
         </p>
         
         <h3 class="text-h6 font-weight-bold mb-2 text-primary font-playfair">
@@ -194,7 +194,7 @@
           To the maximum extent permitted by applicable law, in no event shall Field Friends,
           its creators, or volunteers be liable for any indirect,
           incidental, special, consequential, or punitive damages.
-          Our total liability for any claims arising from or relating to the service shall not exceed ten dollars ($10.00).
+          Our total liability for any claims arising from or relating to the service shall not exceed fifty dollars ($50.00).
         </p>
       </section>
 
