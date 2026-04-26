@@ -28,18 +28,26 @@ async function banEmails(badEmails: { email: string; reason: string }[]): Promis
   const uniquePayloads = new Map<string, { [key: string]: string }>();
 
   for (const b of badEmails) {
-    const emailHash = hashEmail(b.email);
-    const displayHash = emailHash.substring(0, LOG_HASH_LENGTH);
+    try {
+      const emailHash = hashEmail(b.email);
+      const displayHash = emailHash.substring(0, LOG_HASH_LENGTH);
 
-    console.log(`Flagging ${b.reason} for hash: ${displayHash}...`);
+      console.log(`Flagging ${b.reason} for hash: ${displayHash}...`);
 
-    uniquePayloads.set(emailHash, {
-      [EMAIL_HASH_COLUMN]: emailHash,
-      reason: b.reason
-    });
+      uniquePayloads.set(emailHash, {
+        [EMAIL_HASH_COLUMN]: emailHash,
+        reason: b.reason
+      });
+    } catch (err) {
+      console.error(`API->ZEPTOMAIL_ERROR: Failed to hash email ${b.email}`, err);
+    }
   }
 
   const upsertPayload = Array.from(uniquePayloads.values());
+  if (upsertPayload.length === 0) {
+    console.info('API->ZEPTOMAIL_INFO: No unique bad emails to ban.');
+    return;
+  }
 
   const { error } = await supabaseAdmin.from(BANNED_USERS_TABLE).upsert(
     upsertPayload,
@@ -95,22 +103,33 @@ function extractBadEmailsFromData(
   eventName: string,
   badEmails: { email: string; reason: string }[]
 ): void {
-  if (data.object === ZeptoMailEvents.SoftBounce || data.object === ZeptoMailEvents.HardBounce) {
-    const parsed = BounceEventDataSchema.safeParse(data);
-
-    if (parsed.success) {
-      extractBounceEmails(parsed.data.details, eventName, badEmails);
-    } else {
-      console.error('API->ZEPTOMAIL_PARSE_ERROR: Malformed bounce event data', parsed.error);
+  try {
+    if (data.object === ZeptoMailEvents.SoftBounce) {
+      console.info('API->ZEPTOMAIL_INFO: Received soft bounce event, ignoring.');
+      return;
     }
-  } else if (data.object === ZeptoMailEvents.FblCompliant) {
-    const parsed = FblEventDataSchema.safeParse(data);
 
-    if (parsed.success) {
-      extractFblEmails(parsed.data.details, eventName, badEmails);
+    if (data.object === ZeptoMailEvents.HardBounce) {
+      const parsed = BounceEventDataSchema.safeParse(data);
+
+      if (parsed.success) {
+        extractBounceEmails(parsed.data.details, eventName, badEmails);
+      } else {
+        console.error('API->ZEPTOMAIL_PARSE_ERROR: Malformed bounce event data', parsed.error);
+      }
+    } else if (data.object === ZeptoMailEvents.FblCompliant) {
+      const parsed = FblEventDataSchema.safeParse(data);
+
+      if (parsed.success) {
+        extractFblEmails(parsed.data.details, eventName, badEmails);
+      } else {
+        console.error('API->ZEPTOMAIL_PARSE_ERROR: Malformed FBL event data', parsed.error);
+      }
     } else {
-      console.error('API->ZEPTOMAIL_PARSE_ERROR: Malformed FBL event data', parsed.error);
+      console.warn(`API->ZEPTOMAIL_WARN: Unhandled event data object type: ${data.object}`);
     }
+  } catch (err) {
+    console.error('API->ZEPTOMAIL_ERROR: Unexpected error extracting bad emails', err);
   }
 }
 
@@ -192,7 +211,13 @@ function verifyProducerSignatureFromRequest(request: VercelRequest, rawBody: str
     return null;
   }
 
-  const signature = parseProducerSignature(signatureHeader);
+  let signature;
+  try {
+    signature = parseProducerSignature(signatureHeader);
+  } catch (err) {
+    console.error('API->ZEPTOMAIL_SIGNATURE_ERROR: Failed to parse producer-signature header', err);
+    return null;
+  }
 
   if (!signature) {
     console.error('API->ZEPTOMAIL_SIGNATURE_ERROR: Malformed producer-signature header');
@@ -223,16 +248,16 @@ function verifyProducerSignatureFromRequest(request: VercelRequest, rawBody: str
  * @param response - HTTP response.
  */
 export default async function handler(request: VercelRequest, response: VercelResponse) {
-  if (request.method !== HttpMethods.Post) {
-    return httpMethodNotAllowed(response);
-  }
-
-  // FriendDev: Rejects unauthorized traffic before we incur the cost of reading the body stream.
-  if (!verifyZeptoMailAuth(request)) {
-    return httpForbidden(response, 'Invalid webhook secret');
-  }
-
   try {
+    if (request.method !== HttpMethods.Post) {
+      return httpMethodNotAllowed(response);
+    }
+
+    // FriendDev: Rejects unauthorized traffic before we incur the cost of reading the body stream.
+    if (!verifyZeptoMailAuth(request)) {
+      return httpForbidden(response, 'Invalid webhook secret');
+    }
+
     // FriendDev: Read the raw body since we disabled Vercel's body parser.
     const rawBody = await readRawBody(request);
 
