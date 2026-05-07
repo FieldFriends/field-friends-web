@@ -57,7 +57,7 @@ const faqs = [
   },
   {
     question: "How will I be contacted?",
-    answerHtml: "Once a monthly round closes and matches are finalized, you will receive an automated introduction email from <strong>noreply@fieldfriends.org</strong> connecting you with your group."
+    answerHtml: "Once a round closes and matches are finalized, you will receive an automated introduction email from <strong>noreply@fieldfriends.org</strong> connecting you with your group."
   },
   {
     question: "What if I don't want to get matched with someone?",

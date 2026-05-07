@@ -33,7 +33,7 @@
           <v-skeleton-loader type="paragraph" class="mx-auto" width="300" />
         </template>
         <template v-else>
-          All of your data in Field Friends will be permanently deleted on <strong>{{ getWindowEndDateString }}</strong>.
+          Your Field Friends account will automatically be deleted on <strong>{{ getWindowEndDateString }}</strong>.
         </template>
       </p>
     </div>
