@@ -4,6 +4,7 @@ import { useConfigStore } from '@/stores/config';
 import { AppRoutes } from './routeConfig';
 import { AppQueryParams } from '@shared/constants';
 import type { RouteLocationNormalized } from 'vue-router';
+import { hasUserSubmitted } from '@/utils/storeUtils';
 
 /**
  * A helper function to determine if the user is authenticated.
@@ -20,20 +21,6 @@ const isUserAuthenticated = async (authStore: ReturnType<typeof useAuthStore>): 
   return await authStore.refreshSession();
 };
 
-/**
- * A helper function to determine if the user has submitted the form.
- * @param surveyStore - The survey store.
- * @returns A promise that resolves to a boolean indicating if the user has submitted the form.
- */
-const hasUserSubmitted = async (surveyStore: ReturnType<typeof useSurveyStore>): Promise<boolean> => {
-  if (surveyStore.hasSubmitted) {
-    return true;
-  }
-
-  await surveyStore.checkSubmissionStatus();
-
-  return surveyStore.hasSubmitted;
-};
 
 /**
  * A helper function to ensure the app state is loaded without redundant API calls.

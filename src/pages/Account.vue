@@ -60,17 +60,32 @@
 
           <div class="text-center mt-0 pt-8 border-t border-opacity-25" v-if="!isLoading">
             <template v-if="configStore.isAcceptingResponses">
-              <p class="text-body-1 text-secondary mb-4">
-                Want to change your answers?
-              </p>
-              <v-btn
-                :to="AppRoutes.Form.withResubmit()"
-                color="primary"
-                variant="flat"
-                class="px-9 text-none mb-8"
-              >
-                Resubmit
-              </v-btn>
+              <template v-if="hasSubmitted">
+                <p class="text-body-1 text-secondary mb-4">
+                  Want to change your answers?
+                </p>
+                <v-btn
+                  :to="AppRoutes.Form.withResubmit()"
+                  color="primary"
+                  variant="flat"
+                  class="px-9 text-none mb-8"
+                >
+                  Resubmit
+                </v-btn>
+              </template>
+              <template v-else>
+                <p class="text-body-1 text-secondary mb-4">
+                  It looks like you haven't filled out the form!
+                </p>
+                <v-btn
+                  :to="AppRoutes.Form"
+                  color="primary"
+                  variant="flat"
+                  class="px-9 text-none mb-8"
+                >
+                  Sign up
+                </v-btn>
+              </template>
 
               <v-divider class="mb-8 mx-16 border-opacity-25" color="secondary" />
             </template>
@@ -171,10 +186,13 @@ import { deleteAccountRequest } from '@/services/endpoints/deleteAccountRequest'
 import type { AccountDataResponse } from '@shared/schemas/accountDataSchema';
 import { SOCIAL_ENERGY_OPTIONS, AFFILIATION_OPTIONS, GENDER_OPTIONS } from '@shared/friendConfig';
 import { AppRoutes } from '@/router/routeConfig';
+import { useSurveyStore } from '@/stores/survey';
+import { hasUserSubmitted } from '@/utils/storeUtils';
 
 const { mobile } = useDisplay();
 const store = useAuthStore();
 const configStore = useConfigStore();
+const surveyStore = useSurveyStore();
 const userEmail = computed(() => store.session?.user?.email || '');
 
 const accountData = ref<AccountDataResponse | null>(null);
@@ -183,6 +201,8 @@ const error = ref<string | null>(null);
 
 const showDeleteModal = ref(false);
 const isDeleting = ref(false);
+
+const hasSubmitted = ref(true);
 
 const snackbar = ref({
   isVisible: false,
@@ -219,6 +239,26 @@ const deleteAccount = async () => {
   }
 };
 
+const fetchAccountData = async () => {
+  try {
+    accountData.value = await getAccountData();
+  } catch (err: any) {
+    error.value = err.message || 'Failed to load account data. You might not have submitted your profile yet.';
+  }
+};
+
+const fetchSubmissionStatus = async () => {
+  try {
+    hasSubmitted.value = await hasUserSubmitted(surveyStore);
+  } catch (err: any) {
+    error.value = err.message || 'Failed to determine if you have submitted your profile yet.';
+
+    // FriendDev: Show resubmit link just in case! Otherwise they wouldn't be able to change
+    //            their answers if this fails.
+    hasSubmitted.value = true;
+  }
+}
+
 onMounted(async () => {
   if (!userEmail.value) {
     isLoading.value = false;
@@ -228,13 +268,10 @@ onMounted(async () => {
     return;
   }
 
-  try {
-    accountData.value = await getAccountData();
-  } catch (err: any) {
-    console.error('Failed to fetch account data:', err);
-    error.value = err.message || 'Failed to load account data. You might not have submitted your profile yet.';
-  } finally {
-    isLoading.value = false;
-  }
+  isLoading.value = true;
+
+  await Promise.all([fetchAccountData(), fetchSubmissionStatus()]);
+
+  isLoading.value = false;
 });
 </script>
