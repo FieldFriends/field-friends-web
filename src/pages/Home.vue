@@ -7,7 +7,7 @@
       </h1>
       
       <p class="text-h6 text-sm-h5 text-md-h4 text-secondary mb-12 font-dm-sans font-weight-regular" style="max-width: 690px;">
-        Get matched with friends at UIUC without having to swipe.
+        Friends by choice.
       </p>
 
       <v-btn
@@ -59,7 +59,7 @@
 
       <div class="text-body-1 text-center mb-3 text-secondary">
         <p>
-          Field Friends runs in monthly rounds.
+          Field Friends runs in rounds every two weeks.
         </p>
       </div>
 

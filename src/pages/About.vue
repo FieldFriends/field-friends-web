@@ -41,8 +41,8 @@
         </h2>
 
         <p class="text-body-1 text-secondary mb-4 page-text">
-          Field Friends runs in  <strong>monthly rounds</strong>.
-          To participate in a given month, you must sign up for that specific round.
+          Field Friends runs in  <strong>rounds every two weeks</strong>.
+          To participate in a given round, you must sign up for that specific round.
           Once the matching window closes, the process begins:
         </p>
 

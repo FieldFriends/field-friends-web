@@ -60,7 +60,7 @@
           <div class="mt-8">
             <p class="text-body-1 text-secondary page-text">
               We will never contact you from any other email addresses.
-              Additionally, because Field Friends operates in distinct monthly rounds,
+              Additionally, because Field Friends operates in distinct rounds every two weeks,
               <strong>you will only receive automated emails during a round you have actively signed up for.</strong>
             </p>
             <p class="text-body-1 text-secondary page-text mt-4">
