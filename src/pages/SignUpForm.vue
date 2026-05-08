@@ -368,7 +368,8 @@ import { ProfileSchema } from '@shared/schemas/profileSchema';
 import { useZodRules } from '@/composables/useZodRules';
 import FriendEmailList from '@/components/FriendEmailList.vue';
 import { useFormIO } from '@/composables/useFormIO';
-import type { FriendFormState } from '@/types/friendFormState';
+import { type FriendFormState, INITIAL_FORM_STATE } from '@/types/friendFormState';
+import { useFormDirty } from '@/composables/useFormDirty';
 import { AppRoutes } from '@/router/routeConfig';
 import { useAuthStore } from '@/stores/auth';
 
@@ -403,17 +404,10 @@ const ageOptions = computed(() => {
   return range;
 });
 
-const form = reactive<FriendFormState>({
-  name: '',
-  age: null,
-  gender: null,
-  affiliation: null,
-  social_energy: null,
-  interests: '',
-  activities: '',
-  introduction: '',
-  blocked_emails: []
-});
+const form = reactive<FriendFormState>({ ...INITIAL_FORM_STATE });
+
+const { suppressNextGuard, useLeaveGuard } = useFormDirty(form);
+useLeaveGuard();
 
 const router = useRouter();
 
@@ -454,6 +448,7 @@ const submitForm = async () => {
     const submittedForm = await surveyStore.submitSurvey(result.data);
 
     if (submittedForm) {
+      suppressNextGuard();
       await router.push(AppRoutes.Submitted.path);
     }
     
@@ -524,15 +519,7 @@ const handleAppendToIntro = (textToAppend: string | null | undefined) => {
 /**
  * Save responses to a JSON file.
  */
-const handleExport = async () => {
-  const { valid } = await formRef.value.validate();
-  
-  if (!valid) {
-    showSnackbar('Please fix validation errors before exporting.', 'error');
-    
-    return;
-  }
-
+const handleExport = () => {
   exportToJSON(form, 'field-friends-responses.json');
 };
 
@@ -553,7 +540,8 @@ const handleImport = async (event: Event) => {
 
   try {
     const importedData = await importFromJSON(file, ProfileSchema);
-    
+
+    suppressNextGuard();
     Object.assign(form, importedData);
     
     target.value = '';
