@@ -541,7 +541,6 @@ const handleImport = async (event: Event) => {
   try {
     const importedData = await importFromJSON(file, ProfileSchema);
 
-    suppressNextGuard();
     Object.assign(form, importedData);
     
     target.value = '';
