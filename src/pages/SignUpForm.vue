@@ -425,6 +425,8 @@ const submitForm = async () => {
   const { valid } = await formRef.value.validate();
   
   if (!valid || !agreeTerms.value) {
+    showSnackbar('Please address the errors above before submitting.', 'error');
+
     return;
   }
 
