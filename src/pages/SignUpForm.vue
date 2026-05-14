@@ -102,6 +102,7 @@
           v-model="form.introduction"
           class="mb-4"
           label="How do you want to be introduced to your group?"
+          description="<i>Please wait until after you're matched to share contact info!</i>"
           shared
           :rules="rule('introduction')"
           :max-rows="10"
