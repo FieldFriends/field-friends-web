@@ -8,7 +8,7 @@
           </h1>
 
       <p class="text-body-1 text-secondary mb-12 page-text text-center font-italic">
-        Last Updated: April 2026
+        Last Updated: May 2026
       </p>
 
       <section class="mb-12" aria-labelledby="tos-heading">
@@ -132,7 +132,7 @@
           Once the submission window closes and data is downloaded for offline processing, <strong>we can no longer process withdrawal or manual deletion requests</strong> for that round. 
         </p>
         <p class="text-body-1 text-secondary mb-4 page-text">
-          Within one hour after matches for that round are s`ent out, your profile, survey responses, and all local matchmaking data are securely and permanently wiped.
+          Within one hour after matches for that round are sent out, your profile, survey responses, and all local matchmaking data are securely and permanently wiped.
         </p>
         
         <h3 class="text-h6 font-weight-bold mb-2 text-primary font-playfair">
