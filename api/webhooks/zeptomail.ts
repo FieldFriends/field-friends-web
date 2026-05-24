@@ -3,7 +3,7 @@ import type { IncomingMessage } from 'node:http';
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { HttpMethods } from "../../shared/constants.js";
 import { httpMethodNotAllowed, httpBadRequest, httpOk, httpForbidden, httpInternalServerError } from "../_utils/http.js";
-import { ZeptoMailWebhookSchema, ZeptoMailEvents, ZeptoMailWebhookPayload, BounceDetails, FblDetails, ZeptoMailWebhookHeaders, BounceEventDataSchema, FblEventDataSchema } from "../../shared/schemas/zeptoMailWebhookSchema.js";
+import { ZeptoMailWebhookSchema, ZeptoMailEvents, ZeptoMailWebhookPayload, BounceDetails, FblDetails, ZeptoMailWebhookHeaders, BounceEventDataSchema, FblEventDataSchema, EventData } from "../../shared/schemas/zeptoMailWebhookSchema.js";
 import { z } from "zod";
 import { hashEmail } from '../_utils/hashing.js';
 import { supabaseAdmin } from '../_utils/supabase-admin.js';
@@ -99,7 +99,7 @@ function extractFblEmails(details: FblDetails[], eventName: string, badEmails: {
  * @param badEmails - Array to accumulate bad emails.
  */
 function extractBadEmailsFromData(
-  data: ZeptoMailWebhookPayload['event_message'][number]['event_data'][number],
+  data: EventData,
   eventName: string,
   badEmails: { email: string; reason: string }[]
 ): void {
@@ -117,7 +117,7 @@ function extractBadEmailsFromData(
       } else {
         console.error('API->ZEPTOMAIL_PARSE_ERROR: Malformed bounce event data', parsed.error);
       }
-    } else if (data.object === ZeptoMailEvents.FblCompliant) {
+    } else if (data.object === ZeptoMailEvents.FblCompliant || data.object === ZeptoMailEvents.FblComplaint) {
       const parsed = FblEventDataSchema.safeParse(data);
 
       if (parsed.success) {
@@ -140,9 +140,12 @@ function extractBadEmailsFromData(
 async function processWebhookPayload(payload: ZeptoMailWebhookPayload): Promise<void> {
   const badEmails: { email: string; reason: string }[] = [];
 
-  for (const eventName of payload.event_name) {
+  const eventNames = Array.isArray(payload.event_name) ? payload.event_name : [payload.event_name];
+
+  for (const eventName of eventNames) {
     for (const msg of payload.event_message) {
-      for (const data of msg.event_data) {
+      const eventDataArray = Array.isArray(msg.event_data) ? msg.event_data : [msg.event_data];
+      for (const data of eventDataArray) {
         extractBadEmailsFromData(data, eventName, badEmails);
       }
     }
