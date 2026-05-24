@@ -94,7 +94,7 @@
         >
           <template #description>
             <p>
-              Tell us why you enjoy it.
+              Tell us why you enjoy it
             </p> 
             <friend-example>
               I enjoy bouldering because it's kind of like solving a puzzle while getting a workout.
@@ -111,7 +111,9 @@
           :max-rows="10"
         >
           <template #description>
-            <p>Feel free to enter a range of activities.</p>
+            <p>
+              Feel free to enter a range of activities
+            </p>
             <friend-example>
               Watching movies at home, going to the bars, and playing basketball.
             </friend-example>
