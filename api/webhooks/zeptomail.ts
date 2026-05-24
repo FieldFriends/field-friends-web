@@ -250,7 +250,7 @@ function verifyProducerSignatureFromRequest(request: VercelRequest, rawBody: str
 export default async function handler(request: VercelRequest, response: VercelResponse) {
   try {
     // FriendDev: Log the payload for reference.
-    console.log('API->ZEPTOMAIL_WEBOOK::Request->', request);
+    console.log('API->ZEPTOMAIL_WEBOOK::Request->', request.body);
 
     if (request.method !== HttpMethods.Post) {
       return httpMethodNotAllowed(response);
