@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { supabaseAdmin } from './_utils/supabase-admin.js';
 import { encryptWithAes, startEncryptionSession } from './_utils/crypto.js';
-import { ProfileSchema } from '.././shared/schemas/profileSchema.js';
+import { ProfileSchema, createProfileSchema } from '.././shared/schemas/profileSchema.js';
 import { z } from 'zod';
 import { httpBadRequest, httpInternalServerError, httpMethodNotAllowed, httpOk } from './_utils/http.js';
 import { authenticateUser, checkUserBanned } from './_utils/auth.js';
@@ -47,7 +47,7 @@ export default async function handler(request: VercelRequest, response: VercelRe
     }
 
     // FriendDev: Validate the form response.
-    const parseResult = ProfileSchema.safeParse(request.body);
+    const parseResult = createProfileSchema(user.email).safeParse(request.body);
 
     if (!parseResult.success) {
       return httpBadRequest(response, JSON.stringify(z.treeifyError(parseResult.error)));

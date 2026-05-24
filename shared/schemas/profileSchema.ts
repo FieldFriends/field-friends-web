@@ -9,6 +9,7 @@ import {
   FIELD_MIN_FREETEXT_CHARS,
   FIELD_MAX_FREETEXT_CHARS
 } from '../friendConfig.js';
+import { isSelfEmail } from '../utils/emailUtils.js';
 
 export const ProfileSchema = z.object({
   name: z.string()
@@ -64,3 +65,29 @@ export const ProfileSchema = z.object({
 }).strict();
 
 export type ProfileSubmission = z.infer<typeof ProfileSchema>;
+
+/**
+ * Creates a context-aware ProfileSchema that prevents users from blocking their own email.
+ *
+ * @param userEmail - The email address of the current user.
+ * @returns A Zod schema extending ProfileSchema with context-aware validation.
+ */
+export const createProfileSchema = (userEmail?: string | null) => {
+  if (!userEmail) {
+    return ProfileSchema;
+  }
+
+  return ProfileSchema.extend({
+    blocked_emails: ProfileSchema.shape.blocked_emails.superRefine((emails, ctx) => {
+      emails.forEach((email, index) => {
+        if (isSelfEmail(email, userEmail)) {
+          ctx.addIssue({
+            code: "custom",
+            message: 'You cannot block your own email',
+            path: [index]
+          });
+        }
+      });
+    })
+  });
+};

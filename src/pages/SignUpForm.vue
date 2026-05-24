@@ -144,6 +144,7 @@
           description="You won't be placed in a group with anyone using these email addresses."
           :max-items="MAX_BLOCKED_EMAILS"
           :required="false"
+          :user-email="userEmail"
         />
 
         <friend-form-card
@@ -365,7 +366,7 @@ import {
   MAX_BLOCKED_EMAILS
 } from '@shared/friendConfig';
 import { useSurveyStore } from '@/stores/survey';
-import { ProfileSchema } from '@shared/schemas/profileSchema';
+import { ProfileSchema, createProfileSchema } from '@shared/schemas/profileSchema';
 import { useZodRules } from '@/composables/useZodRules';
 import FriendEmailList from '@/components/FriendEmailList.vue';
 import { useFormIO } from '@/composables/useFormIO';
@@ -436,7 +437,7 @@ const submitForm = async () => {
   }
 
   // FriendDev: Try to parse the form.
-  const result = ProfileSchema.safeParse(form);
+  const result = createProfileSchema(userEmail.value).safeParse(form);
 
   if (!result.success) {
     showSnackbar('Failed to parse form responses.', 'error');
