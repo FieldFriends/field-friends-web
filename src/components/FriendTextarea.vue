@@ -1,11 +1,14 @@
 <template>
   <friend-form-card
     :label="props.label"
-    :description="props.description"
     :required="props.required"
     :shared="props.shared"
     :input-id="id"
   >
+    <template #description>
+      <slot name="description" />
+    </template>
+
     <template #default="{ descriptionId }">
       <v-textarea
         :id="id"
@@ -37,7 +40,6 @@ const model = defineModel<string>();
 
 type Props = {
   label: string;
-  description?: string;
   placeholder?: string;
   rules?: any[];
   shared?: boolean | undefined;

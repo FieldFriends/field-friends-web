@@ -1,10 +1,12 @@
 <template>
   <friend-form-card
     :label="props.label"
-    :description="props.description"
     :required="false"
     :shared="false"
   >
+    <template #description>
+      <slot name="description" />
+    </template>
     <template #default="{ labelId, descriptionId }">
       <div 
         class="d-flex flex-column"
@@ -72,7 +74,6 @@ const model = defineModel<string[]>({ required: true, default: [] });
 
 type Props = {
   label: string;
-  description?: string;
   maxItems?: number;
   userEmail?: string | null;
 };

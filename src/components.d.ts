@@ -16,6 +16,7 @@ declare module 'vue' {
     EmailMatchedPreview: typeof import('./components/EmailMatchedPreview.vue')['default']
     FriendCheckbox: typeof import('./components/FriendCheckbox.vue')['default']
     FriendEmailList: typeof import('./components/FriendEmailList.vue')['default']
+    FriendExample: typeof import('./components/FriendExample.vue')['default']
     FriendFormCard: typeof import('./components/FriendFormCard.vue')['default']
     FriendNumberInput: typeof import('./components/FriendNumberInput.vue')['default']
     FriendRadioGroup: typeof import('./components/FriendRadioGroup.vue')['default']

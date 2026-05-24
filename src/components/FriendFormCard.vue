@@ -69,11 +69,12 @@
       </div>
 
       <div
-        v-if="props.description"
+        v-if="$slots.description"
         :id="descriptionId"
         class="mb-2 friend-form-card__description text-secondary"
-        v-html="props.description"
-      />
+      >
+        <slot name="description" />
+      </div>
 
       <slot :label-id="labelId" :description-id="descriptionId" />
     </div>
@@ -109,7 +110,6 @@ defineOptions({
 type Props = {
   label?: string;
   inputId?: string;
-  description?: string;
   required: boolean;
   fillColor?: string;
   borderColor?: string;

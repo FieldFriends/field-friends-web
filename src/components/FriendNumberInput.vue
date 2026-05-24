@@ -1,10 +1,12 @@
 <template>
   <friend-form-card
     :label="props.label"
-    :description="props.description"
     :required="props.required"
     :shared="props.shared"
   >
+    <template #description>
+      <slot name="description" />
+    </template>
     <v-number-input
       v-model="model"
       v-bind="$attrs"
@@ -28,7 +30,6 @@ const model = defineModel<number | null>();
 
 type Props = {
   label: string;
-  description?: string;
   placeholder?: string;
   rules?: any[];
   shared?: boolean | undefined;

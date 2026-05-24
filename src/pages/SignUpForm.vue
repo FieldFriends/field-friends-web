@@ -13,24 +13,30 @@
           v-model="form.name"
           class="mb-4"
           label="First Name"
-          description="Or nickname"
           placeholder="Your name"
           shared
           :rules="rule('name')"
-        />
+        >
+          <template #description>
+            Or nickname
+          </template>
+        </friend-text-field>
 
         <friend-select
           v-model="form.age"
           class="mb-4"
           label="Age"
-          description="Must be between ages 18&ndash;29 to participate"
           :items="ageOptions"
           placeholder="Select your age"
           variant="underlined"
           bg-color="white"
           :shared="false"
           :rules="rule('age')"
-        />
+        >
+          <template #description>
+            Must be between ages 18&ndash;29 to participate
+          </template>
+        </friend-select>
 
         <friend-radio-group
           v-model="form.gender"
@@ -82,32 +88,48 @@
           v-model="form.interests"
           class="mb-4"
           label="What are some hobbies, topics, or activities you are currently really into?"
-          description="Tell us <i>why</i> you enjoy it (e.g., <i>I enjoy bouldering because it feels like solving a puzzle while exercising</i>)."
           :shared="false"
           :rules="rule('interests')"
           :max-rows="10"
-        />
+        >
+          <template #description>
+            <p>
+              Tell us why you enjoy it.
+            </p> 
+            <friend-example>
+              I enjoy bouldering because it's kind of like solving a puzzle while getting a workout.
+            </friend-example>
+          </template>
+        </friend-textarea>
 
         <friend-textarea
           v-model="form.activities"
           class="mb-4"
           label="If you met up with this group, what would you do together?"
-          description="Feel free to enter a range of activities (e.g., <i>Watching movies at home, going to the bars, and playing basketball</i>)."
           :shared="false"
           :rules="rule('activities')"
           :max-rows="10"
-        />
+        >
+          <template #description>
+            <p>Feel free to enter a range of activities.</p>
+            <friend-example>
+              Watching movies at home, going to the bars, and playing basketball.
+            </friend-example>
+          </template>
+        </friend-textarea>
         
         <friend-textarea
           v-model="form.introduction"
           class="mb-4"
           label="How do you want to be introduced to your group?"
-          description="<i>Please wait until after you're matched to share contact info!</i>"
           shared
           :rules="rule('introduction')"
           :max-rows="10"
           :required="false"
         >
+          <template #description>
+            <i>Please wait until after you're matched to share contact info!</i>
+          </template>
           <div class="d-flex flex-wrap ga-2">
             <v-btn
               prepend-icon="mdi-content-duplicate"
@@ -141,34 +163,41 @@
           v-model="form.blocked_emails"
           class="mb-4"
           label="Blocked Emails"
-          description="You won't be placed in a group with anyone using these email addresses."
           :max-items="MAX_BLOCKED_EMAILS"
           :required="false"
           :user-email="userEmail"
-        />
+        >
+          <template #description>
+            You won't be placed in a group with anyone using these email addresses.
+          </template>
+        </friend-email-list>
 
         <friend-form-card
           v-if="form.name || form.introduction"
           label="Group Email Preview"
-          description="A preview of what will be shared with your group when you're matched."
           required
         >
+          <template #description>
+            A preview of what will be shared with your group when you're matched.
+          </template>
           <email-matched-preview
             :name="form.name"
             :introduction="form.introduction"
             :email="userEmail"
           />
-          <p v-if="!form.introduction" class="text-body-2 font-`italic text-secondary">
+          <p v-if="!form.introduction" class="text-body-2 font-italic text-secondary">
             Without an introduction, only your name and email will be shared.            
           </p>
         </friend-form-card>
 
         <friend-form-card
           label="Terms & Safety Summary"
-          description="A quick summary of our most important safety points."
           required
           :input-id="termsCheckboxId"
         >
+          <template #description>
+            A quick summary of our most important safety points.
+          </template>
           <template #default="{ descriptionId }">
             <div :id="termsListId" class="mb-4 text-body-1">
               <ul class="pl-6 mb-2">
@@ -355,6 +384,7 @@ import { ref, reactive, computed, useId } from 'vue';
 import FriendTextField from '@/components/FriendTextField.vue';
 import FriendTextarea from '@/components/FriendTextarea.vue';
 import FriendRadioGroup from '@/components/FriendRadioGroup.vue';
+import FriendExample from '@/components/FriendExample.vue';
 import EmailMatchedPreview from '@/components/EmailMatchedPreview.vue';
 
 import FriendFormCard from '@/components/FriendFormCard.vue';

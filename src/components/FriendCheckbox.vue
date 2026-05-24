@@ -1,11 +1,13 @@
 <template>
   <friend-form-card
     :label="props.label"
-    :description="props.description"
     :required="props.required"
     :shared="props.shared"
     :input-id="id"
   >
+    <template #description>
+      <slot name="description" />
+    </template>
     <template #default="{ descriptionId }">
       <v-checkbox
         :id="id"
@@ -34,7 +36,6 @@ const model = defineModel<boolean>();
 
 type Props = {
   label?: string;
-  description?: string;
   checkboxLabel: string;
   rules?: any[];
   shared?: boolean | undefined;
