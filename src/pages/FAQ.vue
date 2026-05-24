@@ -41,11 +41,12 @@
 
 <script lang="ts" setup>
 import { AppRoutes } from '@/router/routeConfig';
+import { AGE_LIMITS } from '@shared/friendConfig';
 
 const faqs = [
   {
     question: "Who can use Field Friends?",
-    answerHtml: "Anyone in the UIUC community with a valid <strong>@illinois.edu</strong> email address, including undergraduates, graduate students, and university staff/professionals. Field Friends is currently limited to ages 18&ndash;29 and is not intended for faculty."
+    answerHtml: `Anyone in the UIUC community with a valid <strong>@illinois.edu</strong> email address, including undergraduates, graduate students, and university staff/professionals. Field Friends is currently limited to ages ${AGE_LIMITS.min}&ndash;${AGE_LIMITS.max} and is not intended for faculty.`
   },
   {
     question: "How does the matching algorithm work?",

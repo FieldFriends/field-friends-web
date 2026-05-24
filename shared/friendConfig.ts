@@ -5,7 +5,7 @@ export const MAX_BLOCKED_EMAILS = 10;
 
 export const AGE_LIMITS = {
   min: 18,
-  max: 29,
+  max: 65,
 } as const;
 
 // FriendDev: some_email@illinois.edu
