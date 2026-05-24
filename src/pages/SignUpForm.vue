@@ -184,7 +184,7 @@
           </template>
           <email-matched-preview
             :name="form.name"
-            :introduction="form.introduction"
+            :introduction="form.introduction.trim()"
             :email="userEmail"
           />
           <p v-if="!form.introduction" class="text-body-2 font-italic text-secondary">

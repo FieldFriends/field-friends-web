@@ -29,7 +29,7 @@
 
       <blockquote 
         v-if="introduction"
-        class="border-s-lg mt-2 border-opacity-100 pl-4 py-1 border-accent font-italic text-secondary text-body-1"
+        class="email-preview__introduction border-s-lg mt-2 border-opacity-100 pl-4 py-1 border-accent font-italic text-secondary text-body-1"
       >
         {{ introduction }}
       </blockquote>
@@ -44,3 +44,9 @@ defineProps<{
   introduction?: string | null;
 }>();
 </script>
+
+<style scoped>
+.email-preview__introduction {
+  white-space: pre-wrap;
+}
+</style>
