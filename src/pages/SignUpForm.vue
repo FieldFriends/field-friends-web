@@ -34,7 +34,7 @@
           :rules="rule('age')"
         >
           <template #description>
-            Must be between ages 18&ndash;29 to participate
+            Must be between ages {{AGE_LIMITS.min}}&ndash;{{AGE_LIMITS.max}} to participate
           </template>
         </friend-select>
 
