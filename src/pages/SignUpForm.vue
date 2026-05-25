@@ -37,23 +37,6 @@
             Must be between ages {{AGE_LIMITS.min}}&ndash;{{AGE_LIMITS.max}} to participate
           </template>
         </friend-select>
-
-        <friend-age-range
-          v-model:min-age="form.desired_age_min"
-          v-model:max-age="form.desired_age_max"
-          class="mb-4"
-          label="Matching Age Range"
-          :target-age="form.age"
-          :min-limit="AGE_LIMITS.min"
-          :max-limit="AGE_LIMITS.max"
-          :min-rules="rule('desired_age_min')"
-          :max-rules="rule('desired_age_max')"
-          :shared="false"
-        >
-          <template #description>
-            Select the minimum and maximum ages you're comfortable being matched with
-          </template>
-        </friend-age-range>
         
         <friend-radio-group
           v-model="form.gender"
@@ -84,6 +67,23 @@
             :value="opt.value"
           />
         </friend-radio-group>
+
+        <friend-age-range
+          v-model:min-age="form.desired_age_min"
+          v-model:max-age="form.desired_age_max"
+          class="mb-4"
+          label="Matching Age Range"
+          :target-age="form.age"
+          :min-limit="AGE_LIMITS.min"
+          :max-limit="AGE_LIMITS.max"
+          :min-rules="rule('desired_age_min')"
+          :max-rules="rule('desired_age_max')"
+          :shared="false"
+        >
+          <template #description>
+            Select the minimum and maximum ages you're comfortable being matched with
+          </template>
+        </friend-age-range>
 
         <friend-radio-group
           v-model="form.social_energy"
