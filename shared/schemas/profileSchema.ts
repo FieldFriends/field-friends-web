@@ -62,7 +62,46 @@ export const ProfileSchema = z.object({
     .max(MAX_BLOCKED_EMAILS, { message: `You can only block up to ${MAX_BLOCKED_EMAILS} emails` })
     .default([]),
 
-}).strict();
+  desired_age_min: z.coerce.number()
+    .int()
+    .min(AGE_LIMITS.min, { message: `Must be at least ${AGE_LIMITS.min}` })
+    .max(AGE_LIMITS.max, { message: `Must be under ${AGE_LIMITS.max}` }),
+
+  desired_age_max: z.coerce.number()
+    .int()
+    .min(AGE_LIMITS.min, { message: `Must be at least ${AGE_LIMITS.min}` })
+    .max(AGE_LIMITS.max, { message: `Must be under ${AGE_LIMITS.max}` }),
+
+}).strict().superRefine((val, ctx) => {
+  if (val.desired_age_min > val.desired_age_max) {
+    ctx.addIssue({
+      code: "custom",
+      message: 'Minimum age must be less than or equal to maximum age',
+      path: ['desired_age_min']
+    });
+    ctx.addIssue({
+      code: "custom",
+      message: 'Maximum age must be greater than or equal to minimum age',
+      path: ['desired_age_max']
+    });
+  }
+
+  if (val.desired_age_min > val.age) {
+    ctx.addIssue({
+      code: "custom",
+      message: 'Minimum acceptable age cannot be greater than your own age',
+      path: ['desired_age_min']
+    });
+  }
+
+  if (val.desired_age_max < val.age) {
+    ctx.addIssue({
+      code: "custom",
+      message: 'Maximum acceptable age cannot be less than your own age',
+      path: ['desired_age_max']
+    });
+  }
+});
 
 export type ProfileSubmission = z.infer<typeof ProfileSchema>;
 

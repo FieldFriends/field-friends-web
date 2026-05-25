@@ -7,7 +7,7 @@
 
   <div class="d-flex mt-2 flex-column align-center bg-background">
     <v-container style="max-width: 40rem;" class="px-6">
-      <v-form ref="formRef" @submit.prevent="submitForm" validate-on="blur">
+      <v-form ref="formRef" @submit.prevent="submitForm" validate-on="invalid-input">
         
         <friend-text-field
           v-model="form.name"
@@ -38,6 +38,23 @@
           </template>
         </friend-select>
 
+        <friend-age-range
+          v-model:min-age="form.desired_age_min"
+          v-model:max-age="form.desired_age_max"
+          class="mb-4"
+          label="Matching Age Range"
+          :target-age="form.age"
+          :min-limit="AGE_LIMITS.min"
+          :max-limit="AGE_LIMITS.max"
+          :min-rules="rule('desired_age_min')"
+          :max-rules="rule('desired_age_max')"
+          :shared="false"
+        >
+          <template #description>
+            Select the minimum and maximum ages you're comfortable being matched with
+          </template>
+        </friend-age-range>
+        
         <friend-radio-group
           v-model="form.gender"
           class="mb-4"
@@ -384,6 +401,7 @@
 <script setup lang="ts">
 import { ref, reactive, computed, useId } from 'vue';
 import FriendTextField from '@/components/FriendTextField.vue';
+import FriendAgeRange from '@/components/FriendAgeRange.vue';
 import FriendTextarea from '@/components/FriendTextarea.vue';
 import FriendRadioGroup from '@/components/FriendRadioGroup.vue';
 import FriendExample from '@/components/FriendExample.vue';

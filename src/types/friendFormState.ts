@@ -3,6 +3,8 @@ import type { ProfileSubmission } from '../../shared/schemas/profileSchema';
 export interface FriendFormState {
   name: string;
   age: number | null;
+  desired_age_min: number | null;
+  desired_age_max: number | null;
   gender: ProfileSubmission['gender'] | null;
   affiliation: ProfileSubmission['affiliation'] | null;
   social_energy: ProfileSubmission['social_energy'] | null;
@@ -18,6 +20,8 @@ export interface FriendFormState {
 export const INITIAL_FORM_STATE: Readonly<FriendFormState> = Object.freeze({
   name: '',
   age: null,
+  desired_age_min: null,
+  desired_age_max: null,
   gender: null,
   affiliation: null,
   social_energy: null,

@@ -14,6 +14,7 @@ declare module 'vue' {
     AppFooter: typeof import('./components/AppFooter.vue')['default']
     AppHeader: typeof import('./components/AppHeader.vue')['default']
     EmailMatchedPreview: typeof import('./components/EmailMatchedPreview.vue')['default']
+    FriendAgeRange: typeof import('./components/FriendAgeRange.vue')['default']
     FriendCheckbox: typeof import('./components/FriendCheckbox.vue')['default']
     FriendEmailList: typeof import('./components/FriendEmailList.vue')['default']
     FriendExample: typeof import('./components/FriendExample.vue')['default']
