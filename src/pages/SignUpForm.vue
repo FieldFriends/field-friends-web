@@ -444,6 +444,7 @@ import { type FriendFormState, INITIAL_FORM_STATE } from '@/types/friendFormStat
 import { useFormDirty } from '@/composables/useFormDirty';
 import { AppRoutes } from '@/router/routeConfig';
 import { useAuthStore } from '@/stores/auth';
+import { VForm } from 'vuetify/components';
 import { 
   computeDefaultAffiliations, 
   computeDefaultMinAge, 
@@ -463,7 +464,8 @@ const snackbar = ref({
 
 const surveyStore = useSurveyStore();
 const authStore = useAuthStore();
-const formRef = ref<any>(null);
+
+const formRef = ref<InstanceType<typeof VForm> | null>(null);
   
 const agreeTerms = ref(false);
 
@@ -527,6 +529,10 @@ const showSnackbar = (message: string, color: 'success' | 'error' = 'success') =
 };
 
 const submitForm = async () => {
+  if (!formRef.value) {
+    return;
+  }
+
   const { valid } = await formRef.value.validate();
   
   if (!valid || !agreeTerms.value) {
@@ -692,7 +698,10 @@ const handleImport = async (event: Event) => {
     
     // FriendDev: The terms checkbox is naturally unchecked on import. 
     //            If it is the ONLY validation error, the imported data itself is perfectly valid.
-    const isOnlyTermsError = !valid && errors.length === 1 && errors[0].id === termsCheckboxId;
+    const firstError = errors[0];
+    const hasOnlyOneError = !valid && errors.length === 1;
+    const isTermsError = firstError !== undefined && firstError.id === termsCheckboxId;
+    const isOnlyTermsError = hasOnlyOneError && isTermsError;
     
     if (valid || isOnlyTermsError) {
       showSnackbar('Responses imported successfully!');
