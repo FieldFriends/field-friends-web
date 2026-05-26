@@ -7,6 +7,7 @@ export interface FriendFormState {
   desired_age_max: number | null;
   gender: ProfileSubmission['gender'] | null;
   affiliation: ProfileSubmission['affiliation'] | null;
+  desired_affiliations: ProfileSubmission['affiliation'][];
   social_energy: ProfileSubmission['social_energy'] | null;
   interests: string;
   activities: string;
@@ -24,6 +25,7 @@ export const INITIAL_FORM_STATE: Readonly<FriendFormState> = Object.freeze({
   desired_age_max: null,
   gender: null,
   affiliation: null,
+  desired_affiliations: [],
   social_energy: null,
   interests: '',
   activities: '',

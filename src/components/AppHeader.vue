@@ -35,7 +35,7 @@
     <v-list nav class="pt-4">
       <v-list-item
         :to="AppRoutes.Home.path"
-        active-color="primary"
+        color="primary"
         @click="drawer = false"
       >
         <v-list-item-title class="text-h6 py-2 font-dm-sans font-weight-bold text-primary text-center">
@@ -45,7 +45,7 @@
       
       <v-list-item
         :to="AppRoutes.About.path"
-        active-color="primary"
+        color="primary"
         @click="drawer = false"
       >
         <v-list-item-title class="text-h6 py-2 font-dm-sans font-weight-bold text-primary text-center">
@@ -55,7 +55,7 @@
 
       <v-list-item
         :to="AppRoutes.FAQ.path"
-        active-color="primary"
+        color="primary"
         @click="drawer = false"
       >
         <v-list-item-title class="text-h6 py-2 font-dm-sans font-weight-bold text-primary text-center">
@@ -67,7 +67,7 @@
 
       <v-list-item
         :to="AppRoutes.Contact.path"
-        active-color="primary"
+        color="primary"
         @click="drawer = false"
       >
         <v-list-item-title class="text-h6 py-2 font-dm-sans font-weight-bold text-primary text-center">
@@ -77,7 +77,7 @@
 
       <v-list-item
         :to="AppRoutes.Legal.path"
-        active-color="primary"
+        color="primary"
         @click="drawer = false"
       >
         <v-list-item-title class="text-h6 py-2 font-dm-sans font-weight-bold text-primary text-center">

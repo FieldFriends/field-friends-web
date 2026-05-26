@@ -41,7 +41,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, watch } from 'vue';
+import { computed } from 'vue';
 import FriendFormCard from './FriendFormCard.vue';
 
 defineOptions({ inheritAttrs: false });
@@ -67,46 +67,6 @@ const props = withDefaults(defineProps<Props>(), {
   required: true
 });
 
-const K_MIN = 0.4;
-const K_MAX = 0.4;
-const DEFAULT_OFFSET = 2;
-const CUTOFF_AGE = 25;
-
-/**
- * Calculates the recommended minimum age based on the target age.
- * @param targetAge - The user's actual age.
- * @param minLimit - The absolute minimum allowable age in the system.
- * @returns The calculated default minimum age.
- */
-function calculateMinAge(targetAge: number, minLimit: number): number {
-  const penalty = Math.max(0, targetAge - CUTOFF_AGE);
-  const diff = DEFAULT_OFFSET + (K_MIN * penalty);
-  const value = Math.round(targetAge - diff);
-  
-  if (value < minLimit) {
-    return minLimit;
-  }
-  
-  return value;
-}
-
-/**
- * Calculates the recommended maximum age based on the target age.
- * @param targetAge - The user's actual age.
- * @param maxLimit - The absolute maximum allowable age in the system.
- * @returns The calculated default maximum age.
- */
-function calculateMaxAge(targetAge: number, maxLimit: number): number {
-  const penalty = Math.max(0, targetAge - CUTOFF_AGE);
-  const diff = DEFAULT_OFFSET + (K_MAX * penalty);
-  const value = Math.round(targetAge + diff);
-  
-  if (value > maxLimit) {
-    return maxLimit;
-  }
-  
-  return value;
-}
 
 const isDisabled = computed(() => {
   if (props.targetAge === null) {
@@ -120,18 +80,4 @@ const isDisabled = computed(() => {
   return false;
 });
 
-watch(
-  () => props.targetAge,
-  (newTargetAge) => {
-    // FriendDev: Only update if target age is valid.
-    if (newTargetAge !== null && newTargetAge >= props.minLimit && newTargetAge <= props.maxLimit) {
-      minAge.value = calculateMinAge(newTargetAge, props.minLimit);
-      maxAge.value = calculateMaxAge(newTargetAge, props.maxLimit);
-    } else {
-      // FriendDev: Clear values if target age becomes invalid.
-      minAge.value = null;
-      maxAge.value = null;
-    }
-  }
-);
 </script>

@@ -7,7 +7,8 @@ import {
   EMAIL_REGEX,
   MAX_BLOCKED_EMAILS,
   FIELD_MIN_FREETEXT_CHARS,
-  FIELD_MAX_FREETEXT_CHARS
+  FIELD_MAX_FREETEXT_CHARS,
+  Affiliation
 } from '../friendConfig.js';
 import { isSelfEmail } from '../utils/emailUtils.js';
 
@@ -72,6 +73,9 @@ export const ProfileSchema = z.object({
     .min(AGE_LIMITS.min, { message: `Must be at least ${AGE_LIMITS.min}` })
     .max(AGE_LIMITS.max, { message: `Must be under ${AGE_LIMITS.max}` }),
 
+  desired_affiliations: z.array(z.enum(AFFILIATION_VALUES))
+    .min(1, { message: 'Must select at least one matching affiliation' }),
+
 }).strict().superRefine((val, ctx) => {
   if (val.desired_age_min > val.desired_age_max) {
     ctx.addIssue({
@@ -101,6 +105,30 @@ export const ProfileSchema = z.object({
       path: ['desired_age_max']
     });
   }
+
+  if (!val.desired_affiliations.includes(val.affiliation)) {
+    ctx.addIssue({
+      code: "custom",
+      message: 'You must be willing to match with your own affiliation',
+      path: ['desired_affiliations']
+    });
+  }
+
+  if (val.affiliation === Affiliation.GradsAndPros) {
+    if (val.desired_affiliations.length !== 1 || val.desired_affiliations[0] !== Affiliation.GradsAndPros) {
+      ctx.addIssue({
+        code: "custom",
+        message: 'Graduate and Professional students can only match with other Graduate and Professional students',
+        path: ['desired_affiliations']
+      });
+    }
+  } else if (val.desired_affiliations.includes(Affiliation.GradsAndPros)) {
+    ctx.addIssue({
+      code: "custom",
+      message: 'Undergraduates cannot match with Graduate and Professional students',
+      path: ['desired_affiliations']
+    });
+  }
 });
 
 export type ProfileSubmission = z.infer<typeof ProfileSchema>;
@@ -116,17 +144,16 @@ export const createProfileSchema = (userEmail?: string | null) => {
     return ProfileSchema;
   }
 
-  return ProfileSchema.extend({
-    blocked_emails: ProfileSchema.shape.blocked_emails.superRefine((emails, ctx) => {
-      emails.forEach((email, index) => {
-        if (isSelfEmail(email, userEmail)) {
-          ctx.addIssue({
-            code: "custom",
-            message: 'You cannot block your own email',
-            path: [index]
-          });
-        }
-      });
-    })
+  // FriendDev: We use .superRefine instead of .extend because ProfileSchema is already a ZodEffects.
+  return ProfileSchema.superRefine((val, ctx) => {
+    val.blocked_emails.forEach((email, index) => {
+      if (isSelfEmail(email, userEmail)) {
+        ctx.addIssue({
+          code: "custom",
+          message: 'You cannot block your own email',
+          path: ['blocked_emails', index]
+        });
+      }
+    });
   });
 };

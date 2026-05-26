@@ -1,39 +1,46 @@
+import { toValue, type MaybeRefOrGetter } from 'vue';
 import type { z } from 'zod';
 
 /**
  * Returns a validation rule array for a specific field.
- * Usage: :rules="rule('fieldName')"
+ * Evaluates the entire schema against the proposed form state.
+ * @param schemaSource - The Zod schema or a getter/ref returning it.
+ * @param formStateSource - The reactive form state or a getter/ref returning it.
+ * @returns An object containing the rule function.
  */
-export function useZodRules<T extends z.ZodObject<any>>(schema: T) {
-
-  const rule = (field: keyof z.infer<T>) => {
+export function useZodRules<TForm extends object>(
+  schemaSource: MaybeRefOrGetter<z.ZodType<any>>,
+  formStateSource: MaybeRefOrGetter<TForm>
+) {
+  const rule = (field: keyof TForm) => {
     return [
-      (value: any) => {
-        const fieldSchema = schema.shape[field as string];
+      (value: unknown) => {
+        // FriendDev: Resolve the schema and form state.
+        const schema = toValue(schemaSource);
+        const formState = toValue(formStateSource);
 
-        if (!fieldSchema) {
-          console.warn(`No Zod schema found for field: ${String(field)}`);
-          return true;
-        }
+        // FriendDev: Merge the proposed value into the form state.
+        const stateToValidate = {
+          ...formState,
+          [field]: value
+        };
 
-        // FriendDev: Run validation.
-        const result = fieldSchema.safeParse(value);
+        const result = schema.safeParse(stateToValidate);
 
         if (result.success) {
           return true;
         }
 
-        // FriendDev: Start with a generic message.
-        let message: string = "Field contains an error";
+        // FriendDev: Find the first issue that belongs to this specific field.
+        const issue = result.error.issues.find((i) => {
+          return i.path[0] === field;
+        });
 
-        try {
-          // FriendDev: Try to get the error message.
-          message = result.error.issues[0].message;
-        } catch (e) {
-          console.warn(`Could not find validation message for ${String(field)}`);
+        if (issue) {
+          return issue.message;
         }
 
-        return message;
+        return true;
       }
     ];
   };

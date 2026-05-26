@@ -24,6 +24,7 @@
 
         <friend-select
           v-model="form.age"
+          @update:model-value="onAgeUpdated"
           class="mb-4"
           label="Age"
           :items="ageOptions"
@@ -33,9 +34,6 @@
           :shared="false"
           :rules="rule('age')"
         >
-          <template #description>
-            Must be between ages {{AGE_LIMITS.min}}&ndash;{{AGE_LIMITS.max}} to participate
-          </template>
         </friend-select>
         
         <friend-radio-group
@@ -55,6 +53,7 @@
 
         <friend-radio-group
           v-model="form.affiliation"
+          @update:model-value="onAffiliationUpdated"
           class="mb-4"
           label="University Affiliation"
           :shared="false"
@@ -68,11 +67,26 @@
           />
         </friend-radio-group>
 
+        <v-divider :thickness="2" class="my-8" />
+
+        <friend-affiliation-match
+          v-if="isUndergradAffiliation(form.affiliation)"
+          v-model="form.desired_affiliations"
+          label="Matching Class Years"
+          class="mb-4"
+          :target-affiliation="form.affiliation"
+          :rules="rule('desired_affiliations')"
+        >
+          <template #description>
+            Select the class years you're comfortable being matched with.
+          </template>
+        </friend-affiliation-match>
+
         <friend-age-range
           v-model:min-age="form.desired_age_min"
           v-model:max-age="form.desired_age_max"
-          class="mb-4"
           label="Matching Age Range"
+          class="mb-4"
           :target-age="form.age"
           :min-limit="AGE_LIMITS.min"
           :max-limit="AGE_LIMITS.max"
@@ -84,6 +98,8 @@
             Select the minimum and maximum ages you're comfortable being matched with
           </template>
         </friend-age-range>
+
+        <v-divider :thickness="2" class="my-8" />
 
         <friend-radio-group
           v-model="form.social_energy"
@@ -191,6 +207,8 @@
           </template>
         </friend-email-list>
 
+        <v-divider :thickness="2" class="my-8" />
+        
         <friend-form-card
           v-if="form.name || form.introduction"
           label="Group Email Preview"
@@ -399,9 +417,10 @@
 
 
 <script setup lang="ts">
-import { ref, reactive, computed, useId } from 'vue';
+import { ref, reactive, computed, useId, nextTick } from 'vue';
 import FriendTextField from '@/components/FriendTextField.vue';
 import FriendAgeRange from '@/components/FriendAgeRange.vue';
+import FriendAffiliationMatch from '@/components/FriendAffiliationMatch.vue';
 import FriendTextarea from '@/components/FriendTextarea.vue';
 import FriendRadioGroup from '@/components/FriendRadioGroup.vue';
 import FriendExample from '@/components/FriendExample.vue';
@@ -409,7 +428,8 @@ import EmailMatchedPreview from '@/components/EmailMatchedPreview.vue';
 
 import FriendFormCard from '@/components/FriendFormCard.vue';
 import { 
-  AFFILIATION_OPTIONS, 
+  Affiliation,
+  AFFILIATION_OPTIONS,
   GENDER_OPTIONS,
   SOCIAL_ENERGY_OPTIONS,
   AGE_LIMITS, 
@@ -424,6 +444,12 @@ import { type FriendFormState, INITIAL_FORM_STATE } from '@/types/friendFormStat
 import { useFormDirty } from '@/composables/useFormDirty';
 import { AppRoutes } from '@/router/routeConfig';
 import { useAuthStore } from '@/stores/auth';
+import { 
+  computeDefaultAffiliations, 
+  computeDefaultMinAge, 
+  computeDefaultMaxAge,
+  isUndergradAffiliation 
+} from './SignUpFormHelpers';
 
 const { exportToJSON, importFromJSON } = useFormIO();
 
@@ -443,10 +469,11 @@ const agreeTerms = ref(false);
 
 const termsCheckboxId = useId();
 const termsListId = useId();
+const form = reactive<FriendFormState>({ ...INITIAL_FORM_STATE });
 
 const userEmail = computed(() => authStore.session?.user?.email || null);
 
-const { rule } = useZodRules(ProfileSchema);
+const { rule } = useZodRules(() => createProfileSchema(userEmail.value), form);
 
 const ageOptions = computed(() => {
   const range = [];
@@ -456,12 +483,38 @@ const ageOptions = computed(() => {
   return range;
 });
 
-const form = reactive<FriendFormState>({ ...INITIAL_FORM_STATE });
-
 const { suppressNextGuard, useLeaveGuard } = useFormDirty(form);
 useLeaveGuard();
 
 const router = useRouter();
+
+/**
+ * Handle affiliation updates from the UI and reset dependent matching fields.
+ * @param newAffiliation - The newly selected affiliation.
+ */
+const onAffiliationUpdated = (newAffiliation: string) => {
+  if (newAffiliation === Affiliation.GradsAndPros) {
+    form.desired_affiliations = [Affiliation.GradsAndPros];
+  } else if (newAffiliation) {
+    form.desired_affiliations = computeDefaultAffiliations(newAffiliation);
+  } else {
+    form.desired_affiliations = [];
+  }
+};
+
+/**
+ * Handle age updates from the UI and reset dependent matching fields.
+ * @param newAge - The newly selected age.
+ */
+const onAgeUpdated = (newAge: number | null) => {
+  if (newAge !== null && newAge >= AGE_LIMITS.min && newAge <= AGE_LIMITS.max) {
+    form.desired_age_min = computeDefaultMinAge(newAge, AGE_LIMITS.min);
+    form.desired_age_max = computeDefaultMaxAge(newAge, AGE_LIMITS.max);
+  } else {
+    form.desired_age_min = null;
+    form.desired_age_max = null;
+  }
+};
 
 const isSubmitting = ref(false);
 
@@ -593,13 +646,59 @@ const handleImport = async (event: Event) => {
   }
 
   try {
-    const importedData = await importFromJSON(file, ProfileSchema);
-
-    Object.assign(form, importedData);
+    const rawImportedData = await importFromJSON(file, ProfileSchema);
+    const safeImportedData = { ...rawImportedData };
+    
+    // FriendDev: Construct the proposed state based on a clean slate.
+    const proposedState = {
+      ...INITIAL_FORM_STATE,
+      ...safeImportedData
+    };
+    
+    // FriendDev: Validate the proposed state using our single-source-of-truth schema.
+    const schema = createProfileSchema(userEmail.value);
+    const result = schema.safeParse(proposedState);
+    
+    // FriendDev: If there are business logic violations, prune exactly the fields Zod flagged.
+    if (!result.success) {
+      for (const issue of result.error.issues) {
+        const path = issue.path[0];
+        
+        // FriendDev: Safely remove the invalid field if it exists in the import payload.
+        if (typeof path === 'string' && Object.prototype.hasOwnProperty.call(safeImportedData, path)) {
+          Reflect.deleteProperty(safeImportedData, path);
+        }
+      }
+    }
+    
+    // FriendDev: Overwrite the form state with the clean slate.
+    Object.assign(form, INITIAL_FORM_STATE);
+    
+    // FriendDev: Assign the pruned imported data.
+    Object.assign(form, safeImportedData);
     
     target.value = '';
     
-    showSnackbar('Responses imported successfully!');
+    // FriendDev: Force a re-validation so cross-field errors show up instantly.
+    await nextTick();
+    
+    if (!formRef.value) {
+      showSnackbar('Responses imported successfully!');
+
+      return;
+    }
+    
+    const { valid, errors } = await formRef.value.validate();
+    
+    // FriendDev: The terms checkbox is naturally unchecked on import. 
+    //            If it is the ONLY validation error, the imported data itself is perfectly valid.
+    const isOnlyTermsError = !valid && errors.length === 1 && errors[0].id === termsCheckboxId;
+    
+    if (valid || isOnlyTermsError) {
+      showSnackbar('Responses imported successfully!');
+    } else {
+      showSnackbar('Data imported, but some fields require attention.', 'error');
+    }
   } catch (error) {
     console.error('Import failed:', error);
     showSnackbar('Failed to import responses. File may be invalid.', 'error');
