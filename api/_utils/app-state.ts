@@ -1,10 +1,11 @@
 import { supabaseAdmin } from '../_utils/supabase-admin.js';
-import { appStateResponseSchema } from '../../shared/schemas/appStateSchema.js';
+import { AppStateResponseSchema } from '../../shared/schemas/appStateSchema.js';
 import { AppStatusErrors } from '../../shared/constants.js';
 import { AppStatusResult, makeAppStatusSuccess, makeAppStatusFailure } from '../types/AppStatusResult.js';
 
 /**
- * FriendDev: Fetch and parse the current app status from the DB safely.
+ * Fetches and parses app status from DB./
+ * @returns The app status.
  */
 export const fetchAndValidateAppStatus = async (): Promise<AppStatusResult> => {
   try {
@@ -22,7 +23,7 @@ export const fetchAndValidateAppStatus = async (): Promise<AppStatusResult> => {
       return makeAppStatusFailure(AppStatusErrors.NotFound);
     }
 
-    const parseResult = appStateResponseSchema.safeParse(data);
+    const parseResult = AppStateResponseSchema.safeParse(data);
 
     if (!parseResult.success) {
       console.error('API->_utils->APP_STATE_SCHEMA_ERROR:', parseResult.error);
