@@ -42,7 +42,7 @@
           &OpenCurlyDoubleQuote;To help people in the university community make friends by matching people into small groups based on shared interests.&CloseCurlyDoubleQuote;
         </p>
         <p class="text-body-1 text-secondary">
-          Designed with privacy and safety in mind, our local, private algorithm connects you with 2-3 other people at UIUC who share your interests.
+          Designed with privacy and safety in mind, our locally run algorithm connects you with 2-3 other people at UIUC who share your interests.
         </p>
       </div>
 
