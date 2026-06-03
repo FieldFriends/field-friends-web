@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { createHmac } from 'node:crypto';
 import { parseProducerSignature, isSignatureExpired, computeHmacSignature, verifyProducerSignature } from '../webhook-signature.js';
-import { ZeptoMailSignatureConstants } from '../../../shared/constants.js';
+import { ZeptoMailConfig } from '../../../shared/constants.js';
 
 // FriendDev: Known test key matching what ZEPTO_AUTH_KEY would be in env (set in test/setup.ts).
 const TEST_AUTH_KEY = process.env.ZEPTO_AUTH_KEY!;
@@ -83,7 +83,7 @@ describe('Webhook Signature Utilities', () => {
 
     it('should return false for a timestamp exactly at the boundary', () => {
       // FriendDev: Exactly at the limit should not be expired (uses > not >=).
-      const boundaryTimestamp = Date.now() - ZeptoMailSignatureConstants.AcceptableDurationMs;
+      const boundaryTimestamp = Date.now() - ZeptoMailConfig.AcceptableDurationMs;
 
       expect(isSignatureExpired(boundaryTimestamp)).toBe(false);
     });

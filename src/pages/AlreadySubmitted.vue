@@ -17,25 +17,30 @@
         />
       </router-link>
 
-      <v-divider thickness="2" :length="512" color="primary" class="mx-6" />
+      <template v-if="configStore.isAcceptingResponses">
+        <v-divider thickness="2" :length="512" color="primary" class="mx-6" />
 
-      <div class="text-center w-100 pt-8">
-        <p class="text-body-1 text-secondary mb-6">
-          Want to change your answers?
-        </p>
-        <v-btn
-          :to="AppRoutes.Form.withResubmit()"
-          color="primary"
-          variant="flat"
-          class="px-9 text-none"
-        >
-          Resubmit
-        </v-btn>
-      </div>
+        <div class="text-center w-100 pt-8">
+          <p class="text-body-1 text-secondary mb-6">
+            Want to change your answers?
+          </p>
+          <v-btn
+            :to="AppRoutes.Form.withResubmit()"
+            color="primary"
+            variant="flat"
+            class="px-9 text-none"
+          >
+            Resubmit
+          </v-btn>
+        </div>
+      </template>
     </div>
   </v-container>
 </template>
 
 <script lang="ts" setup>
 import { AppRoutes } from '@/router/routeConfig';
+import { useConfigStore } from '@/stores/config';
+
+const configStore = useConfigStore();
 </script>

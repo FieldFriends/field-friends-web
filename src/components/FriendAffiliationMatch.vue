@@ -8,82 +8,146 @@
       <slot name="description" />
     </template>
     
-    <div class="d-flex flex-column ga-2 mt-2">
-      <v-checkbox
-        v-for="(affiliation, index) in UNDERGRADUATE_AFFILIATIONS"
-        :key="affiliation"
-        v-model="desiredAffiliations"
-        :value="affiliation"
-        :label="getAffiliationLabel(affiliation)"
-        :disabled="isDisabled(affiliation)"
-        :rules="getRulesForIndex(index)"
+    <div class="d-flex flex-column flex-sm-row ga-4 w-100 mt-2">
+      <v-select
+        v-model="minAffiliation"
+        :items="minOptions"
+        :rules="props.minRules"
+        :disabled="isDisabled"
+        label="Min Class Year"
+        variant="underlined"
         color="primary"
         hide-details="auto"
+        class="flex-1-1-100"
+      />
+      
+      <v-select
+        v-model="maxAffiliation"
+        :items="maxOptions"
+        :rules="props.maxRules"
+        :disabled="isDisabled"
+        label="Max Class Year"
+        variant="underlined"
+        color="primary"
+        hide-details="auto"
+        class="flex-1-1-100"
       />
     </div>
   </friend-form-card>
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
 import FriendFormCard from './FriendFormCard.vue';
 import { UNDERGRADUATE_AFFILIATIONS, AFFILIATION_OPTIONS } from '@shared/friendConfig';
 import type { ProfileSubmission } from '@shared/schemas/profileSchema';
 
-const desiredAffiliations = defineModel<ProfileSubmission['affiliation'][]>({ default: [] });
+const minAffiliation = defineModel<ProfileSubmission['desired_affiliation_min'] | null>('minAffiliation');
+const maxAffiliation = defineModel<ProfileSubmission['desired_affiliation_max'] | null>('maxAffiliation');
+
+type AffiliationSelectOption = {
+  title: string;
+  value: string;
+  props: {
+    disabled: boolean;
+  };
+};
 
 type Props = {
   label: string;
   targetAffiliation: ProfileSubmission['affiliation'] | null;
-  rules?: any[];
+  minRules?: any[];
+  maxRules?: any[];
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  rules: () => []
+  minRules: () => [],
+  maxRules: () => []
 });
 
-
-
 /**
- * Retrieves the display label for a given affiliation value.
- * @param value - The affiliation value to lookup.
- * @returns The corresponding human-readable label.
+ * The options available for the minimum affiliation dropdown.
+ * 
+ * Computes an array of items for the select component, assigning the appropriate human-readable
+ * label for each class year. Disables options that correspond to class years greater than the
+ * user's own class year, as they must be comfortable matching with their own year.
+ * 
+ * @returns An array of objects containing title, value, and disabled properties.
  */
-const getAffiliationLabel = (value: string): string => {
-  const option = AFFILIATION_OPTIONS.find((opt) => {
-    return opt.value === value;
-  });
+const minOptions = computed(() => {
+  // FriendDev: The minimum class year cannot exceed the user's own class year.
+  let targetIndex = UNDERGRADUATE_AFFILIATIONS.length - 1;
 
-  if (option) {
-    return option.label;
+  if (props.targetAffiliation) {
+    const foundIndex = (UNDERGRADUATE_AFFILIATIONS as readonly string[]).indexOf(props.targetAffiliation);
+
+    if (foundIndex !== -1) {
+      targetIndex = foundIndex;
+    }
   }
+  
+  return UNDERGRADUATE_AFFILIATIONS.map((value, index): AffiliationSelectOption => {
+    const option = AFFILIATION_OPTIONS.find((opt) => {
+      return opt.value === value;
+    });
 
-  return value;
-}
+    return {
+      title: option ? option.label : value,
+      value: value,
+      props: {
+        disabled: index > targetIndex
+      }
+    };
+  });
+});
 
 /**
- * Determines if a specific checkbox should be disabled.
- * @param affiliation - The affiliation value for the checkbox.
- * @returns True if the checkbox should be disabled, false otherwise.
+ * The options available for the maximum affiliation dropdown.
+ * 
+ * Computes an array of items for the select component, assigning the appropriate human-readable
+ * label for each class year. Disables options that correspond to class years lesser than the
+ * user's own class year, as they must be comfortable matching with their own year.
+ * 
+ * @returns An array of objects containing title, value, and disabled properties.
  */
-const isDisabled = (affiliation: string): boolean => {
-  if (props.targetAffiliation === affiliation) {
+const maxOptions = computed(() => {
+  // FriendDev: The maximum class year cannot be less than the user's own class year.
+  let targetIndex = 0;
+
+  if (props.targetAffiliation) {
+    const foundIndex = (UNDERGRADUATE_AFFILIATIONS as readonly string[]).indexOf(props.targetAffiliation);
+
+    if (foundIndex !== -1) {
+      targetIndex = foundIndex;
+    }
+  }
+  
+  return UNDERGRADUATE_AFFILIATIONS.map((value, index): AffiliationSelectOption => {
+    const option = AFFILIATION_OPTIONS.find((opt) => {
+      return opt.value === value;
+    });
+
+    return {
+      title: option ? option.label : value,
+      value: value,
+      props: {
+        disabled: index < targetIndex
+      }
+    };
+  });
+});
+
+/**
+ * Determines if the dropdowns should be completely disabled.
+ * The dropdowns are only disabled if the user's target affiliation is null.
+ * @returns True if the fields should be disabled, false otherwise.
+ */
+const isDisabled = computed(() => {
+  if (props.targetAffiliation === null) {
     return true;
   }
-
+  
   return false;
-};
-
-/**
- * Retrieves the validation rules for a specific checkbox index.
- * @param index - The current index of the checkbox in the list.
- * @returns The rules array if it is the last checkbox, otherwise undefined.
- */
-const getRulesForIndex = (index: number): any[] | undefined => {
-  if (index === UNDERGRADUATE_AFFILIATIONS.length - 1) {
-    return props.rules;
-  }
-
-  return undefined;
-};
+});
 
 </script>

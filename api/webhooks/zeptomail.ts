@@ -8,10 +8,9 @@ import { z } from "zod";
 import { hashEmail } from '../_utils/hashing.js';
 import { supabaseAdmin } from '../_utils/supabase-admin.js';
 import { parseProducerSignature, isSignatureExpired, verifyProducerSignature } from '../_utils/webhook-signature.js';
+import { SERVER_ENV } from '../_utils/server-env.js';
 
-// FriendDev: Disable Vercel's automatic body parser so we can access the raw request body.
-//            This is required for HMAC signature verification, which must hash the exact
-//            byte sequence sent by ZeptoMail.
+// FriendDev: Disable automatic body parser so we can access the raw request body.
 export const config = {
   api: { bodyParser: false },
 };
@@ -25,11 +24,11 @@ const EMAIL_HASH_COLUMN = "email_hash";
  * @param badEmails - Array of bad emails and reasons to ban.
  */
 async function banEmails(badEmails: { email: string; reason: string }[]): Promise<void> {
-  const uniquePayloads = new Map<string, { [key: string]: string }>();
+  const uniquePayloads = new Map<string, { email_hash: string, reason: string }>();
 
   for (const b of badEmails) {
     try {
-      const emailHash = hashEmail(b.email);
+      const emailHash = await hashEmail(b.email);
       const displayHash = emailHash.substring(0, LOG_HASH_LENGTH);
 
       console.log(`Flagging ${b.reason} for hash: ${displayHash}...`);
@@ -48,6 +47,7 @@ async function banEmails(badEmails: { email: string; reason: string }[]): Promis
     console.info('API->ZEPTOMAIL_INFO: No unique bad emails to ban.');
     return;
   }
+
 
   const { error } = await supabaseAdmin.from(BANNED_USERS_TABLE).upsert(
     upsertPayload,
@@ -162,11 +162,7 @@ async function processWebhookPayload(payload: ZeptoMailWebhookPayload): Promise<
  * @returns true if authenticated, false otherwise.
  */
 function verifyZeptoMailAuth(request: VercelRequest): boolean {
-  const secret = process.env.ZEPTO_WEBHOOK_SECRET;
-  if (!secret) {
-    console.error('API->ZEPTOMAIL_AUTH_ERROR: ZEPTO_WEBHOOK_SECRET is not defined');
-    return false;
-  }
+  const secret = SERVER_ENV.ZEPTO_WEBHOOK_SECRET;
 
   const authHeaderRaw = request.headers[ZeptoMailWebhookHeaders.Auth];
   const authHeader = Array.isArray(authHeaderRaw) ? authHeaderRaw[0] : authHeaderRaw;

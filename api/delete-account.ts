@@ -1,9 +1,15 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { supabaseAdmin } from './_utils/supabase-admin.js';
+import { hashResponseId } from './_utils/hashing.js';
 import { httpInternalServerError, httpMethodNotAllowed, httpOk } from './_utils/http.js';
 import { authenticateUser } from './_utils/auth.js';
 import { HttpMethods } from '.././shared/constants.js';
 
+/**
+ * Handle the incoming HTTP request to delete the user's account and survey response.
+ * @param request - HTTP request.
+ * @param response - HTTP response.
+ */
 export default async function handler(request: VercelRequest, response: VercelResponse) {
   if (request.method !== HttpMethods.Delete) {
     return httpMethodNotAllowed(response);
@@ -16,13 +22,16 @@ export default async function handler(request: VercelRequest, response: VercelRe
       return;
     }
 
+    const responseId = hashResponseId(user.id);
+
     const { error: dbError } = await supabaseAdmin
       .from('responses')
       .delete()
-      .eq('user_id', user.id);
+      .eq('response_id', responseId);
 
     if (dbError) {
       console.error('API->DB_ERROR:', dbError);
+
       return httpInternalServerError(response);
     }
 
@@ -30,6 +39,7 @@ export default async function handler(request: VercelRequest, response: VercelRe
 
     if (authError) {
       console.error('API->AUTH_ERROR:', authError);
+
       return httpInternalServerError(response);
     }
 

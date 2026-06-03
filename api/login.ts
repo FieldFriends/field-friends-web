@@ -8,12 +8,7 @@ import z from "zod";
 import { checkUserBanned } from './_utils/auth.js';
 import { fetchAndValidateAppStatus } from './_utils/app-state.js';
 import { isAcceptingResponses } from '../shared/utils/appStateUtils.js';
-
-const TURNSTILE_SECRET_KEY = process.env.TURNSTILE_SECRET_KEY;
-
-if (!TURNSTILE_SECRET_KEY) {
-  throw new Error('TURNSTILE_SECRET_KEY is not defined');
-}
+import { SERVER_ENV } from './_utils/server-env.js';
 
 /**
  * Verify the turnstile token.
@@ -26,7 +21,7 @@ async function verifyTurnstileToken(token: string): Promise<TurnstileVerifyRespo
     {
       method: HttpMethods.Post,
       body: JSON.stringify({
-        secret: TURNSTILE_SECRET_KEY,
+        secret: SERVER_ENV.TURNSTILE_SECRET_KEY,
         response: token,
       }),
       headers: {

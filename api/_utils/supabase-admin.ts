@@ -1,21 +1,18 @@
 import { createClient } from "@supabase/supabase-js";
+import type { Database } from '../types/database.types.js';
+import { SERVER_ENV } from './server-env.js';
+import { PUBLIC_ENV } from './env-public.js';
 
-const supabaseUrl = process.env.VITE_SUPABASE_URL;
-const supabaseSecretKey = process.env.SUPABASE_SECRET_KEY;
-
-if (!supabaseUrl || !supabaseSecretKey) {
-  throw new Error('Server Error: Missing Supabase environment variables.');
-}
-
-// FriendDev: We're creating an admin client that connects to our database.
+// FriendDev: Admin client that connects to our DB.
 //            We disable persistSession because serverless functions are stateless.
 //            If we didn't, we might get an error, since the serverless Node.js
 //            environment has no local storage to save the session to.
-//            We do not automatically refresh the token for admin tasks.
-//            Our secret key does not expire, so we never want to refresh it.
-export const supabaseAdmin = createClient(supabaseUrl, supabaseSecretKey, {
+export const supabaseAdmin = createClient<Database, 'private_data'>(PUBLIC_ENV.VITE_SUPABASE_URL, SERVER_ENV.SUPABASE_SECRET_KEY, {
   auth: {
     persistSession: false,
     autoRefreshToken: false,
+  },
+  db: {
+    schema: 'private_data',
   }
 });

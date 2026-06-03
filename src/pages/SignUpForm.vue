@@ -71,14 +71,16 @@
 
         <friend-affiliation-match
           v-if="isUndergradAffiliation(form.affiliation)"
-          v-model="form.desired_affiliations"
+          v-model:min-affiliation="form.desired_affiliation_min"
+          v-model:max-affiliation="form.desired_affiliation_max"
           label="Matching Class Years"
           class="mb-4"
           :target-affiliation="form.affiliation"
-          :rules="rule('desired_affiliations')"
+          :min-rules="rule('desired_affiliation_min')"
+          :max-rules="rule('desired_affiliation_max')"
         >
           <template #description>
-            Select the class years you're comfortable being matched with.
+            Select the class years you're comfortable being matched with
           </template>
         </friend-affiliation-match>
 
@@ -446,7 +448,8 @@ import { AppRoutes } from '@/router/routeConfig';
 import { useAuthStore } from '@/stores/auth';
 import { VForm } from 'vuetify/components';
 import { 
-  computeDefaultAffiliations, 
+  computeDefaultMinAffiliation,
+  computeDefaultMaxAffiliation,
   computeDefaultMinAge, 
   computeDefaultMaxAge,
   isUndergradAffiliation 
@@ -496,11 +499,14 @@ const router = useRouter();
  */
 const onAffiliationUpdated = (newAffiliation: string) => {
   if (newAffiliation === Affiliation.GradsAndPros) {
-    form.desired_affiliations = [Affiliation.GradsAndPros];
+    form.desired_affiliation_min = Affiliation.GradsAndPros;
+    form.desired_affiliation_max = Affiliation.GradsAndPros;
   } else if (newAffiliation) {
-    form.desired_affiliations = computeDefaultAffiliations(newAffiliation);
+    form.desired_affiliation_min = computeDefaultMinAffiliation(newAffiliation);
+    form.desired_affiliation_max = computeDefaultMaxAffiliation(newAffiliation);
   } else {
-    form.desired_affiliations = [];
+    form.desired_affiliation_min = null;
+    form.desired_affiliation_max = null;
   }
 };
 

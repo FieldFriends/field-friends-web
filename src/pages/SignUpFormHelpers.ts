@@ -32,37 +32,49 @@ const DEFAULT_AGE_OFFSET = 3;
 const CUTOFF_AGE = 25;
 
 /**
- * Computes the default matching affiliations based on the target affiliation.
+ * Computes the default minimum matching affiliation based on the target affiliation.
  * @param target - The user's target affiliation.
- * @returns An array of default affiliation values, with the target affiliation and its neighbors.
+ * @returns The default minimum affiliation value.
  */
-export const computeDefaultAffiliations = (target: string): ProfileSubmission['affiliation'][] => {
+export const computeDefaultMinAffiliation = (target: string): ProfileSubmission['desired_affiliation_min'] | null => {
   if (target === Affiliation.GradsAndPros) {
-    return [Affiliation.GradsAndPros] as ProfileSubmission['affiliation'][];
+    return Affiliation.GradsAndPros;
   }
 
   const index = (UNDERGRADUATE_AFFILIATIONS as readonly string[]).indexOf(target);
 
   if (index === -1) {
-    return [];
+    return null;
   }
 
-  const defaults: ProfileSubmission['affiliation'][] = [];
-
-  // FriendDev: Add the preceding grade if it exists.
   if (index - DEFAULT_AFFILIATION_NEIGHBOR_OFFSET >= 0) {
-    defaults.push(UNDERGRADUATE_AFFILIATIONS[index - DEFAULT_AFFILIATION_NEIGHBOR_OFFSET] as ProfileSubmission['affiliation']);
+    return UNDERGRADUATE_AFFILIATIONS[index - DEFAULT_AFFILIATION_NEIGHBOR_OFFSET] as ProfileSubmission['desired_affiliation_min'];
   }
 
-  // FriendDev: Add the target grade.
-  defaults.push(UNDERGRADUATE_AFFILIATIONS[index] as ProfileSubmission['affiliation']);
+  return UNDERGRADUATE_AFFILIATIONS[index] as ProfileSubmission['desired_affiliation_min'];
+};
 
-  // FriendDev: Add the succeeding grade if it exists.
+/**
+ * Computes the default maximum matching affiliation based on the target affiliation.
+ * @param target - The user's target affiliation.
+ * @returns The default maximum affiliation value.
+ */
+export const computeDefaultMaxAffiliation = (target: string): ProfileSubmission['desired_affiliation_max'] | null => {
+  if (target === Affiliation.GradsAndPros) {
+    return Affiliation.GradsAndPros;
+  }
+
+  const index = (UNDERGRADUATE_AFFILIATIONS as readonly string[]).indexOf(target);
+
+  if (index === -1) {
+    return null;
+  }
+
   if (index + DEFAULT_AFFILIATION_NEIGHBOR_OFFSET < UNDERGRADUATE_AFFILIATIONS.length) {
-    defaults.push(UNDERGRADUATE_AFFILIATIONS[index + DEFAULT_AFFILIATION_NEIGHBOR_OFFSET] as ProfileSubmission['affiliation']);
+    return UNDERGRADUATE_AFFILIATIONS[index + DEFAULT_AFFILIATION_NEIGHBOR_OFFSET] as ProfileSubmission['desired_affiliation_max'];
   }
 
-  return defaults;
+  return UNDERGRADUATE_AFFILIATIONS[index] as ProfileSubmission['desired_affiliation_max'];
 };
 
 /**

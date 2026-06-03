@@ -59,6 +59,7 @@
             We ask for short explanations, because nuanced data leads to much better connections.
           </p>
 
+          <!-- TODO @FriendDev: CRITICAL, update copy to reflect new security. -->
           <p class="text-body-1 text-secondary mb-4 page-text">
             <strong>3. Security & Encryption:</strong>
             When you hit "Submit", your data is secured using strong, end-to-end encryption.

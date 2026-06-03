@@ -73,8 +73,13 @@ export const ProfileSchema = z.object({
     .min(AGE_LIMITS.min, { message: `Must be at least ${AGE_LIMITS.min}` })
     .max(AGE_LIMITS.max, { message: `Must be under ${AGE_LIMITS.max}` }),
 
-  desired_affiliations: z.array(z.enum(AFFILIATION_VALUES))
-    .min(1, { message: 'Must select at least one matching affiliation' }),
+  desired_affiliation_min: z.enum(AFFILIATION_VALUES, {
+    error: () => ({ message: 'Minimum class year is required' })
+  }),
+
+  desired_affiliation_max: z.enum(AFFILIATION_VALUES, {
+    error: () => ({ message: 'Maximum class year is required' })
+  }),
 
 }).strict().superRefine((val, ctx) => {
   if (val.desired_age_min > val.desired_age_max) {
@@ -106,27 +111,44 @@ export const ProfileSchema = z.object({
     });
   }
 
-  if (!val.desired_affiliations.includes(val.affiliation)) {
+  const minIndex = AFFILIATION_VALUES.indexOf(val.desired_affiliation_min);
+  const maxIndex = AFFILIATION_VALUES.indexOf(val.desired_affiliation_max);
+  const userIndex = AFFILIATION_VALUES.indexOf(val.affiliation);
+
+  if (minIndex > maxIndex) {
     ctx.addIssue({
       code: "custom",
-      message: 'You must be willing to match with your own affiliation',
-      path: ['desired_affiliations']
+      message: 'Minimum class year must be less than or equal to maximum class year',
+      path: ['desired_affiliation_min']
+    });
+    ctx.addIssue({
+      code: "custom",
+      message: 'Maximum class year must be greater than or equal to minimum class year',
+      path: ['desired_affiliation_max']
+    });
+  }
+
+  if (userIndex < minIndex || userIndex > maxIndex) {
+    ctx.addIssue({
+      code: "custom",
+      message: 'You must be willing to match with your own class year',
+      path: ['desired_affiliation_min']
     });
   }
 
   if (val.affiliation === Affiliation.GradsAndPros) {
-    if (val.desired_affiliations.length !== 1 || val.desired_affiliations[0] !== Affiliation.GradsAndPros) {
+    if (val.desired_affiliation_min !== Affiliation.GradsAndPros || val.desired_affiliation_max !== Affiliation.GradsAndPros) {
       ctx.addIssue({
         code: "custom",
-        message: 'Graduate and Professional students can only match with other Graduate and Professional students',
-        path: ['desired_affiliations']
+        message: 'Graduate and Professional folks can only match with other Graduate and Professional folks',
+        path: ['desired_affiliation_max']
       });
     }
-  } else if (val.desired_affiliations.includes(Affiliation.GradsAndPros)) {
+  } else if (val.desired_affiliation_min === Affiliation.GradsAndPros || val.desired_affiliation_max === Affiliation.GradsAndPros) {
     ctx.addIssue({
       code: "custom",
-      message: 'Undergraduates cannot match with Graduate and Professional students',
-      path: ['desired_affiliations']
+      message: 'Undergraduates cannot match with Graduate and Professional folks',
+      path: ['desired_affiliation_max']
     });
   }
 });
