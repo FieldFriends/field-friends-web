@@ -2,8 +2,6 @@ import 'vue-router';
 import { setupLayouts } from 'virtual:generated-layouts';
 import type { RouteRecordRaw } from 'vue-router';
 import Home from '@/pages/Home.vue';
-import About from '@/pages/About.vue';
-import FAQ from '@/pages/FAQ.vue';
 import { AppRoutes } from './routeConfig';
 import {
   requireAuth,
@@ -23,12 +21,12 @@ const routes: RouteRecordRaw[] = [
   {
     path: AppRoutes.About.path,
     name: AppRoutes.About.name,
-    component: About,
+    component: () => import('@/pages/About.vue'),
   },
   {
     path: AppRoutes.FAQ.path,
     name: AppRoutes.FAQ.name,
-    component: FAQ,
+    component: () => import('@/pages/FAQ.vue'),
   },
   {
     path: AppRoutes.Legal.path,
@@ -55,7 +53,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: AppRoutes.Login.path,
     name: AppRoutes.Login.name,
-    // FriendDev: Lazy load the login page so it doesn't slow down the homepage load
+    // FriendDev: Lazy load the login page so it doesn't slow down the homepage load.
     component: () => import('@/pages/Login.vue'),
     beforeEnter: [requireGuest],
   },

@@ -7,31 +7,35 @@
 
   <div class="d-flex mt-2 flex-column align-center bg-background">
     <v-container style="max-width: 40rem;" class="px-6">
-      <v-form ref="formRef" @submit.prevent="submitForm" validate-on="blur">
+      <v-form ref="formRef" @submit.prevent="submitForm" validate-on="invalid-input">
         
         <friend-text-field
           v-model="form.name"
           class="mb-4"
           label="First Name"
-          description="Or nickname"
           placeholder="Your name"
           shared
           :rules="rule('name')"
-        />
+        >
+          <template #description>
+            Or nickname
+          </template>
+        </friend-text-field>
 
         <friend-select
           v-model="form.age"
+          @update:model-value="onAgeUpdated"
           class="mb-4"
           label="Age"
-          description="Must be between ages 18&ndash;29 to participate"
           :items="ageOptions"
           placeholder="Select your age"
           variant="underlined"
           bg-color="white"
           :shared="false"
           :rules="rule('age')"
-        />
-
+        >
+        </friend-select>
+        
         <friend-radio-group
           v-model="form.gender"
           class="mb-4"
@@ -49,6 +53,7 @@
 
         <friend-radio-group
           v-model="form.affiliation"
+          @update:model-value="onAffiliationUpdated"
           class="mb-4"
           label="University Affiliation"
           :shared="false"
@@ -61,6 +66,42 @@
             :value="opt.value"
           />
         </friend-radio-group>
+
+        <v-divider :thickness="2" class="my-8" />
+
+        <friend-affiliation-match
+          v-if="isUndergradAffiliation(form.affiliation)"
+          v-model:min-affiliation="form.desired_affiliation_min"
+          v-model:max-affiliation="form.desired_affiliation_max"
+          label="Matching Class Years"
+          class="mb-4"
+          :target-affiliation="form.affiliation"
+          :min-rules="rule('desired_affiliation_min')"
+          :max-rules="rule('desired_affiliation_max')"
+        >
+          <template #description>
+            Select the class years you're comfortable being matched with
+          </template>
+        </friend-affiliation-match>
+
+        <friend-age-range
+          v-model:min-age="form.desired_age_min"
+          v-model:max-age="form.desired_age_max"
+          label="Matching Age Range"
+          class="mb-4"
+          :target-age="form.age"
+          :min-limit="AGE_LIMITS.min"
+          :max-limit="AGE_LIMITS.max"
+          :min-rules="rule('desired_age_min')"
+          :max-rules="rule('desired_age_max')"
+          :shared="false"
+        >
+          <template #description>
+            Select the minimum and maximum ages you're comfortable being matched with
+          </template>
+        </friend-age-range>
+
+        <v-divider :thickness="2" class="my-8" />
 
         <friend-radio-group
           v-model="form.social_energy"
@@ -82,32 +123,50 @@
           v-model="form.interests"
           class="mb-4"
           label="What are some hobbies, topics, or activities you are currently really into?"
-          description="Tell us <i>why</i> you enjoy it (e.g., <i>I enjoy bouldering because it feels like solving a puzzle while exercising</i>)."
           :shared="false"
           :rules="rule('interests')"
           :max-rows="10"
-        />
+        >
+          <template #description>
+            <p>
+              Tell us why you enjoy it
+            </p> 
+            <friend-example>
+              I enjoy bouldering because it's kind of like solving a puzzle while getting a workout.
+            </friend-example>
+          </template>
+        </friend-textarea>
 
         <friend-textarea
           v-model="form.activities"
           class="mb-4"
           label="If you met up with this group, what would you do together?"
-          description="Feel free to enter a range of activities (e.g., <i>Watching movies at home, going to the bars, and playing basketball</i>)."
           :shared="false"
           :rules="rule('activities')"
           :max-rows="10"
-        />
+        >
+          <template #description>
+            <p>
+              Feel free to enter a range of activities
+            </p>
+            <friend-example>
+              Watching movies at home, going to the bars, and playing basketball.
+            </friend-example>
+          </template>
+        </friend-textarea>
         
         <friend-textarea
           v-model="form.introduction"
           class="mb-4"
           label="How do you want to be introduced to your group?"
-          description="<i>Please wait until after you're matched to share contact info!</i>"
           shared
           :rules="rule('introduction')"
           :max-rows="10"
           :required="false"
         >
+          <template #description>
+            <i>Please wait until after you're matched to share contact info!</i>
+          </template>
           <div class="d-flex flex-wrap ga-2">
             <v-btn
               prepend-icon="mdi-content-duplicate"
@@ -141,33 +200,43 @@
           v-model="form.blocked_emails"
           class="mb-4"
           label="Blocked Emails"
-          description="You won't be placed in a group with anyone using these email addresses."
           :max-items="MAX_BLOCKED_EMAILS"
           :required="false"
-        />
+          :user-email="userEmail"
+        >
+          <template #description>
+            You won't be placed in a group with anyone using these email addresses.
+          </template>
+        </friend-email-list>
 
+        <v-divider :thickness="2" class="my-8" />
+        
         <friend-form-card
           v-if="form.name || form.introduction"
           label="Group Email Preview"
-          description="A preview of what will be shared with your group when you're matched."
           required
         >
+          <template #description>
+            A preview of what will be shared with your group when you're matched.
+          </template>
           <email-matched-preview
             :name="form.name"
-            :introduction="form.introduction"
+            :introduction="form.introduction.trim()"
             :email="userEmail"
           />
-          <p v-if="!form.introduction" class="text-body-2 font-`italic text-secondary">
+          <p v-if="!form.introduction" class="text-body-2 font-italic text-secondary">
             Without an introduction, only your name and email will be shared.            
           </p>
         </friend-form-card>
 
         <friend-form-card
           label="Terms & Safety Summary"
-          description="A quick summary of our most important safety points."
           required
           :input-id="termsCheckboxId"
         >
+          <template #description>
+            A quick summary of our most important safety points.
+          </template>
           <template #default="{ descriptionId }">
             <div :id="termsListId" class="mb-4 text-body-1">
               <ul class="pl-6 mb-2">
@@ -350,22 +419,26 @@
 
 
 <script setup lang="ts">
-import { ref, reactive, computed, useId } from 'vue';
+import { ref, reactive, computed, useId, nextTick } from 'vue';
 import FriendTextField from '@/components/FriendTextField.vue';
+import FriendAgeRange from '@/components/FriendAgeRange.vue';
+import FriendAffiliationMatch from '@/components/FriendAffiliationMatch.vue';
 import FriendTextarea from '@/components/FriendTextarea.vue';
 import FriendRadioGroup from '@/components/FriendRadioGroup.vue';
+import FriendExample from '@/components/FriendExample.vue';
 import EmailMatchedPreview from '@/components/EmailMatchedPreview.vue';
 
 import FriendFormCard from '@/components/FriendFormCard.vue';
 import { 
-  AFFILIATION_OPTIONS, 
+  Affiliation,
+  AFFILIATION_OPTIONS,
   GENDER_OPTIONS,
   SOCIAL_ENERGY_OPTIONS,
   AGE_LIMITS, 
   MAX_BLOCKED_EMAILS
 } from '@shared/friendConfig';
 import { useSurveyStore } from '@/stores/survey';
-import { ProfileSchema } from '@shared/schemas/profileSchema';
+import { ProfileSchema, createProfileSchema } from '@shared/schemas/profileSchema';
 import { useZodRules } from '@/composables/useZodRules';
 import FriendEmailList from '@/components/FriendEmailList.vue';
 import { useFormIO } from '@/composables/useFormIO';
@@ -373,6 +446,14 @@ import { type FriendFormState, INITIAL_FORM_STATE } from '@/types/friendFormStat
 import { useFormDirty } from '@/composables/useFormDirty';
 import { AppRoutes } from '@/router/routeConfig';
 import { useAuthStore } from '@/stores/auth';
+import { VForm } from 'vuetify/components';
+import { 
+  computeDefaultMinAffiliation,
+  computeDefaultMaxAffiliation,
+  computeDefaultMinAge, 
+  computeDefaultMaxAge,
+  isUndergradAffiliation 
+} from './SignUpFormHelpers';
 
 const { exportToJSON, importFromJSON } = useFormIO();
 
@@ -386,16 +467,18 @@ const snackbar = ref({
 
 const surveyStore = useSurveyStore();
 const authStore = useAuthStore();
-const formRef = ref<any>(null);
+
+const formRef = ref<InstanceType<typeof VForm> | null>(null);
   
 const agreeTerms = ref(false);
 
 const termsCheckboxId = useId();
 const termsListId = useId();
+const form = reactive<FriendFormState>({ ...INITIAL_FORM_STATE });
 
 const userEmail = computed(() => authStore.session?.user?.email || null);
 
-const { rule } = useZodRules(ProfileSchema);
+const { rule } = useZodRules(() => createProfileSchema(userEmail.value), form);
 
 const ageOptions = computed(() => {
   const range = [];
@@ -405,12 +488,41 @@ const ageOptions = computed(() => {
   return range;
 });
 
-const form = reactive<FriendFormState>({ ...INITIAL_FORM_STATE });
-
 const { suppressNextGuard, useLeaveGuard } = useFormDirty(form);
 useLeaveGuard();
 
 const router = useRouter();
+
+/**
+ * Handle affiliation updates from the UI and reset dependent matching fields.
+ * @param newAffiliation - The newly selected affiliation.
+ */
+const onAffiliationUpdated = (newAffiliation: string) => {
+  if (newAffiliation === Affiliation.GradsAndPros) {
+    form.desired_affiliation_min = Affiliation.GradsAndPros;
+    form.desired_affiliation_max = Affiliation.GradsAndPros;
+  } else if (newAffiliation) {
+    form.desired_affiliation_min = computeDefaultMinAffiliation(newAffiliation);
+    form.desired_affiliation_max = computeDefaultMaxAffiliation(newAffiliation);
+  } else {
+    form.desired_affiliation_min = null;
+    form.desired_affiliation_max = null;
+  }
+};
+
+/**
+ * Handle age updates from the UI and reset dependent matching fields.
+ * @param newAge - The newly selected age.
+ */
+const onAgeUpdated = (newAge: number | null) => {
+  if (newAge !== null && newAge >= AGE_LIMITS.min && newAge <= AGE_LIMITS.max) {
+    form.desired_age_min = computeDefaultMinAge(newAge, AGE_LIMITS.min);
+    form.desired_age_max = computeDefaultMaxAge(newAge, AGE_LIMITS.max);
+  } else {
+    form.desired_age_min = null;
+    form.desired_age_max = null;
+  }
+};
 
 const isSubmitting = ref(false);
 
@@ -423,6 +535,10 @@ const showSnackbar = (message: string, color: 'success' | 'error' = 'success') =
 };
 
 const submitForm = async () => {
+  if (!formRef.value) {
+    return;
+  }
+
   const { valid } = await formRef.value.validate();
   
   if (!valid || !agreeTerms.value) {
@@ -436,7 +552,7 @@ const submitForm = async () => {
   }
 
   // FriendDev: Try to parse the form.
-  const result = ProfileSchema.safeParse(form);
+  const result = createProfileSchema(userEmail.value).safeParse(form);
 
   if (!result.success) {
     showSnackbar('Failed to parse form responses.', 'error');
@@ -542,13 +658,62 @@ const handleImport = async (event: Event) => {
   }
 
   try {
-    const importedData = await importFromJSON(file, ProfileSchema);
-
-    Object.assign(form, importedData);
+    const rawImportedData = await importFromJSON(file, ProfileSchema);
+    const safeImportedData = { ...rawImportedData };
+    
+    // FriendDev: Construct the proposed state based on a clean slate.
+    const proposedState = {
+      ...INITIAL_FORM_STATE,
+      ...safeImportedData
+    };
+    
+    // FriendDev: Validate the proposed state using our single-source-of-truth schema.
+    const schema = createProfileSchema(userEmail.value);
+    const result = schema.safeParse(proposedState);
+    
+    // FriendDev: If there are business logic violations, prune exactly the fields Zod flagged.
+    if (!result.success) {
+      for (const issue of result.error.issues) {
+        const path = issue.path[0];
+        
+        // FriendDev: Safely remove the invalid field if it exists in the import payload.
+        if (typeof path === 'string' && Object.prototype.hasOwnProperty.call(safeImportedData, path)) {
+          Reflect.deleteProperty(safeImportedData, path);
+        }
+      }
+    }
+    
+    // FriendDev: Overwrite the form state with the clean slate.
+    Object.assign(form, INITIAL_FORM_STATE);
+    
+    // FriendDev: Assign the pruned imported data.
+    Object.assign(form, safeImportedData);
     
     target.value = '';
     
-    showSnackbar('Responses imported successfully!');
+    // FriendDev: Force a re-validation so cross-field errors show up instantly.
+    await nextTick();
+    
+    if (!formRef.value) {
+      showSnackbar('Responses imported successfully!');
+
+      return;
+    }
+    
+    const { valid, errors } = await formRef.value.validate();
+    
+    // FriendDev: The terms checkbox is naturally unchecked on import. 
+    //            If it is the ONLY validation error, the imported data itself is perfectly valid.
+    const firstError = errors[0];
+    const hasOnlyOneError = !valid && errors.length === 1;
+    const isTermsError = firstError !== undefined && firstError.id === termsCheckboxId;
+    const isOnlyTermsError = hasOnlyOneError && isTermsError;
+    
+    if (valid || isOnlyTermsError) {
+      showSnackbar('Responses imported successfully!');
+    } else {
+      showSnackbar('Data imported, but some fields require attention.', 'error');
+    }
   } catch (error) {
     console.error('Import failed:', error);
     showSnackbar('Failed to import responses. File may be invalid.', 'error');

@@ -62,18 +62,40 @@ export const AppQueryParams = {
   Token: 'token',
 } as const;
 
-export const CryptoConstants = {
-  AesAlgorithm: 'aes-256-gcm',
-  EncryptionDelimiter: ':',
-  EncodingFormat: 'hex',
-  TextEncoding: 'utf8',
-  AesKeyLength: 32,
-  HashType: 'sha256',
+export const Algorithms = {
+  SHA256: 'sha256',
+  SHA512: 'sha512',
+  AES_256_GCM: 'aes-256-gcm',
+  ML_KEM_1024: 'ml-kem-1024',
+  HMAC_SHA256: 'HmacSHA256',
 } as const;
 
-export const ZeptoMailSignatureConstants = {
-  Algorithm: 'HmacSHA256',
-  NodeAlgorithm: 'sha256',
+export const Encodings = {
+  Hex: 'hex',
+  Base64: 'base64',
+  Utf8: 'utf8',
+} as const;
+
+export const CryptoConfig = {
+  Scrypt: {
+    KeyLength: 32,
+    Cost: 16384,
+    BlockSize: 8,
+    Parallelization: 1,
+    /**
+     * 1024 * 1024 * 32. 32MB.
+     */
+    MaxMem: 33554432,
+  },
+  Session: {
+    AesKeyLength: 32,
+    HashLength: 64,
+    EncryptionDelimiter: ':',
+    HkdfInfo: 'FieldFriends_HybridKEM_Session_v1',
+  },
+} as const;
+
+export const ZeptoMailConfig = {
   HeaderDelimiter: ';',
   FieldDelimiter: '=',
 
@@ -81,7 +103,6 @@ export const ZeptoMailSignatureConstants = {
    * 5 minutes in milliseconds.
    */
   AcceptableDurationMs: 300000,
-  EncodingFormat: 'base64',
   Fields: {
     Timestamp: 'ts',
     Signature: 's',

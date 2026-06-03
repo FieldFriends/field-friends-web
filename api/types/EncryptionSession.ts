@@ -1,13 +1,19 @@
 export interface EncryptionSession {
   /**
-   * The raw AES key that is used to encrypt fields in this session.
+   * The final derived AES key from Hybrid KEM process.
    * This should not be stored.
    */
-  rawSessionKey: Buffer;
+  derivedSessionKey: Buffer;
 
   /**
-   * The AES key after it has been encrypted with RSA.
+   * RSA-encrypted portion of the shared secret.
    * Safe to be stored.
    */
-  encryptedSessionKey: string;
+  rsaCiphertext: string;
+
+  /**
+   * ML-KEM encapsulated ciphertext.
+   * Safe to be stored.
+   */
+  mlkemCiphertext: string;
 }

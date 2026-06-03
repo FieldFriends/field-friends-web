@@ -20,21 +20,6 @@
 
       <v-divider class="mb-12 border-opacity-25" color="secondary" aria-hidden="true" />
 
-      <section class="mb-12" aria-labelledby="story-heading">
-        <h2 id="story-heading" class="text-h4 font-weight-bold mb-4 text-primary">
-          Origin
-        </h2>
-        <p class="text-body-1 text-secondary mb-4 page-text">
-          Finding good friends on a campus as big as UIUC's can be tough.
-          We often meet people by proximity, but these connections tend to lack shared interests and can be hard to come by.
-        </p>
-        <p class="text-body-1 text-secondary mb-4 page-text">
-          Field Friends was created to help the UIUC community find friends based on interests, rather than just proximity.
-        </p>
-      </section>
-
-      <v-divider class="mb-12 border-opacity-25" color="secondary" aria-hidden="true" />
-
       <section class="mb-12" aria-labelledby="process-heading">
         <h2 id="process-heading" class="text-h4 font-weight-bold mb-4 text-primary">
           How it Works
@@ -61,8 +46,8 @@
 
           <p class="text-body-1 text-secondary mb-4 page-text">
             <strong>3. Security & Encryption:</strong>
-            When you hit "Submit", your data is secured using strong, end-to-end encryption.
-            It is stored safely in an encrypted state and cannot be read by anyone (including us) while it sits in the database.
+            When you hit "Submit," your identity is decoupled from your survey responses, and your data is secured using a post-quantum hybrid encryption strategy.
+            It's stored safely in a highly encrypted, anonymized state and can't be read by anyone (including us) while it sits in the database.
             <a
               href="#security-heading"
               class="text-decoration-none font-weight-bold text-link d-inline-flex align-center"
@@ -85,7 +70,8 @@
             </p>
             <p class="mb-4">
               Our algorithm enforces strict rules to ensure safe and balanced gender representation within every group.
-              You also won't be matched with people outside of your university status (underclassman, upperclassman, or graduate/staff).
+              Undergrads get granular control over which class years they're comfortable being matched with, while graduates and staff are matched within a separate pool.
+              Additionally, you can select which age ranges you're comfortable being matched with.
             </p>
           </div>
 
@@ -120,17 +106,19 @@
           Security Architecture
         </h2>
         <p class="text-body-1 text-secondary page-text mb-4">
-          To mitigate the risk of a cloud environment compromise, we use an <strong>Application-Level Hybrid Envelope Encryption</strong> strategy (AES-256 + RSA-4096).
+          To mitigate the risk of a cloud environment compromise, we use an <strong>application-level post-quantum hybrid envelope encryption</strong> strategy (AES-256 + RSA-4096 + ML-KEM-1024). This meets NIST Category 5 standards (the highest security level) for post-quantum cryptography.
         </p>
         <p class="text-body-1 text-secondary page-text mb-4">
-          When you submit your survey, the server generates a unique, ephemeral AES-256 key for your specific request.
-          Your data fields are encrypted with this AES key using AES-256-GCM.
-          Then, that AES key itself is encrypted using our public RSA-4096 key.
-          Only the encrypted data and the encrypted session key are ever committed to the database.
+          When you submit your survey, the server generates a unique classical random secret and a post-quantum shared secret via ML-KEM-1024. These secrets are mathematically combined using HKDF-SHA512 to derive an ephemeral AES-256 session key for your specific request. Your data fields are encrypted with this derived AES key using AES-256-GCM.
         </p>
         <p class="text-body-1 text-secondary page-text mb-4">
-          The private RSA key required to decrypt the data is stored strictly on our local offline machine.
-          It never touches the cloud.
+          Then, the server commits only the encrypted data alongside both the classical RSA ciphertext and the post-quantum ML-KEM ciphertext to the database.
+        </p>
+        <p class="text-body-1 text-secondary page-text mb-4">
+          The private RSA and ML-KEM keys required to reconstruct the session key and decrypt the data are stored strictly on our local offline machine. They never touch the cloud.
+        </p>
+        <p class="text-body-1 text-secondary page-text mb-4">
+          Furthermore, to protect your identity, we use scrypt hashing to prevent dictionary attacks on emails, and HMAC-SHA512 to create mathematically un-linkable response IDs. Your survey answers cannot be directly linked back to you in the database.
         </p>
         <p class="text-body-1 text-secondary page-text">
           For full transparency, our backend encryption logic is

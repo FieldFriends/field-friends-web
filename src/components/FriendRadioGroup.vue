@@ -1,10 +1,12 @@
 <template>
   <friend-form-card
     :label="props.label"
-    :description="props.description"
     :required="props.required"
     :shared="props.shared"
   >
+    <template #description>
+      <slot name="description" />
+    </template>
     <template #default="{ labelId, descriptionId }">
       <v-radio-group
         v-model="model"
@@ -33,7 +35,6 @@ const model = defineModel<any>();
 
 type Props = {
   label: string;
-  description?: string;
   rules?: any[];
   shared?: boolean | undefined;
   required?: boolean;

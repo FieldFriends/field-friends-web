@@ -12,7 +12,7 @@ import { User } from '@supabase/supabase-js';
  */
 export async function checkUserBanned(email: string): Promise<boolean> {
   const cleanEmail = email.trim().toLowerCase();
-  const hashedEmail = hashEmail(cleanEmail);
+  const hashedEmail = await hashEmail(cleanEmail);
 
   // FriendDev: Attempt to find the user in the banned table.
   const { data, error } = await supabaseAdmin

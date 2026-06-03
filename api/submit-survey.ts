@@ -1,7 +1,8 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { supabaseAdmin } from './_utils/supabase-admin.js';
 import { encryptWithAes, startEncryptionSession } from './_utils/crypto.js';
-import { ProfileSchema } from '.././shared/schemas/profileSchema.js';
+import { hashResponseId } from './_utils/hashing.js';
+import { createProfileSchema } from '.././shared/schemas/profileSchema.js';
 import { z } from 'zod';
 import { httpBadRequest, httpInternalServerError, httpMethodNotAllowed, httpOk } from './_utils/http.js';
 import { authenticateUser, checkUserBanned } from './_utils/auth.js';
@@ -9,16 +10,15 @@ import { HttpMethods, AppStatusErrors } from '.././shared/constants.js';
 import { EncryptionSession } from './types/EncryptionSession.js';
 import { isAcceptingResponses } from '.././shared/utils/appStateUtils.js';
 import { fetchAndValidateAppStatus } from './_utils/app-state.js';
-import { EncryptedSurveyData } from './types/EncryptedSurveyData.js';
 
 /**
  * Handle the incoming HTTP request, validate input, and attempt to insert the data into our DB if valid.
- * "default" tells Vercel to run this function when the endpoint is hit.
+ * `default` tells Vercel to run this function when the endpoint is hit.
  * @param request - HTTP request.
  * @param response - HTTP response.
  */
 export default async function handler(request: VercelRequest, response: VercelResponse) {
-  // FriendDev: We only accept POST requests since they are SUBMITTING data.
+  // FriendDev: We only accept POST requests since they are submitting data.
   if (request.method !== HttpMethods.Post) {
     return httpMethodNotAllowed(response);
   }
@@ -47,7 +47,7 @@ export default async function handler(request: VercelRequest, response: VercelRe
     }
 
     // FriendDev: Validate the form response.
-    const parseResult = ProfileSchema.safeParse(request.body);
+    const parseResult = createProfileSchema(user.email).safeParse(request.body);
 
     if (!parseResult.success) {
       return httpBadRequest(response, JSON.stringify(z.treeifyError(parseResult.error)));
@@ -55,29 +55,29 @@ export default async function handler(request: VercelRequest, response: VercelRe
 
     const formData = parseResult.data;
 
-    // FriendDev: Encrypt sensitive fields.
-    const encryptedData = encryptSurveyData(formData, user.email);
+    // FriendDev: Begin Hybrid KEM session.
+    const encryptionSession = await startEncryptionSession();
 
-    // FriendDev: Upsert allows users to overwrite their response if they submit again.
-    const { error: dbError } = await saveSurveyToDatabase(user.id, formData, encryptedData);
+    // FriendDev: Stringify and encrypt the entire payload.
+    const jsonPayload = JSON.stringify(formData);
+    const encryptedPayload = encryptWithAes(jsonPayload, encryptionSession.derivedSessionKey);
+
+    const { error: dbError } = await saveSurveyToDatabase(user.id, encryptionSession, encryptedPayload);
 
     if (dbError) {
       console.error('API->DB_ERROR:', dbError);
+
       return httpInternalServerError(response);
     }
 
-    // FriendDev: Success!
     return httpOk(response);
-
   } catch (error) {
     console.error("API->ERROR:", error);
+
     return httpInternalServerError(response);
   }
 }
 
-// ============================================================================
-// Helper Functions
-// ============================================================================
 
 /**
  * Checks if the app is open for responses.
@@ -108,68 +108,28 @@ export const ensureAppIsOpen = async (response: VercelResponse): Promise<boolean
   return true;
 };
 
-
 /**
- * Encrypts sensitive fields within the user's survey response.
- * @param formData - The user's survey response.
- * @param email - The user's email.
- * @returns The encrypted survey data.
- */
-export const encryptSurveyData = (formData: z.infer<typeof ProfileSchema>, email: string): EncryptedSurveyData => {
-  const encryptionSession: EncryptionSession = startEncryptionSession();
-
-  const encryptedName = encryptWithAes(formData.name, encryptionSession.rawSessionKey);
-  const encryptedEmail = encryptWithAes(email, encryptionSession.rawSessionKey);
-  const encryptedInterests = encryptWithAes(formData.interests, encryptionSession.rawSessionKey);
-  const encryptedActivities = encryptWithAes(formData.activities, encryptionSession.rawSessionKey);
-  const encryptedIntroduction = encryptWithAes(formData.introduction || '', encryptionSession.rawSessionKey);
-
-  const encryptedBlocked = formData.blocked_emails.map(e => encryptWithAes(e, encryptionSession.rawSessionKey));
-
-  return new EncryptedSurveyData(
-    encryptedName,
-    encryptedEmail,
-    encryptedInterests,
-    encryptedActivities,
-    encryptedIntroduction,
-    encryptedBlocked,
-    encryptionSession.encryptedSessionKey
-  );
-};
-
-/**
- * Upserts all user responses into the DB.
+ * Upserts all user responses into the DB using zero-knowledge architecture.
  * @param userId - The ID of the user submitting the survey.
- * @param formData - The user's survey response.
- * @param encryptedData - The encrypted survey data.
+ * @param encryptionSession - The active Hybrid KEM session containing ciphertexts.
+ * @param encryptedPayload - The AES-encrypted JSON payload.
  * @returns The result of the database upsert operation.
  */
 export const saveSurveyToDatabase = async (
   userId: string,
-  formData: z.infer<typeof ProfileSchema>,
-  encryptedData: EncryptedSurveyData
+  encryptionSession: EncryptionSession,
+  encryptedPayload: string
 ) => {
+  // FriendDev: Use a hash of the user's ID to de-identify them.
+  const responseId = hashResponseId(userId);
+
   return await supabaseAdmin
     .from('responses')
     .upsert({
-      user_id: userId,
-
-      gender: formData.gender,
-      age: formData.age,
-      affiliation: formData.affiliation,
-      social_energy: formData.social_energy,
-
-      // FriendDev: Never store the plaintext PII responses.
-      name: encryptedData.encryptedName,
-      email: encryptedData.encryptedEmail,
-      interests: encryptedData.encryptedInterests,
-      activities: encryptedData.encryptedActivities,
-      introduction: encryptedData.encryptedIntroduction,
-      blocked_emails: encryptedData.encryptedBlocked,
-
-      // FriendDev: Store the RSA-encrypted session key, which contains the AES key to decrypt.
-      session_key: encryptedData.sessionKey,
-
+      response_id: responseId,
+      rsa_ciphertext: encryptionSession.rsaCiphertext,
+      mlkem_ciphertext: encryptionSession.mlkemCiphertext,
+      encrypted_payload: encryptedPayload,
       submitted_at: new Date().toISOString(),
     });
 };

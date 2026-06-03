@@ -1,3 +1,8 @@
+<script setup lang="ts">
+import { AGE_LIMITS } from '@shared/friendConfig';
+
+</script>
+
 <template>
   <div class="bg-background text-primary d-flex flex-column min-vh-100">
     <v-container class="flex-grow-1 pt-12 pb-16">
@@ -16,7 +21,7 @@
         
         <h3 class="text-h6 font-weight-bold mb-2 text-primary font-playfair">Eligibility</h3>
         <p class="text-body-1 text-secondary mb-4 page-text">
-          To use Field Friends, you must be between 18 and 29 years of age and possess
+          To use Field Friends, you must be between {{AGE_LIMITS.min}} and {{AGE_LIMITS.max}} years of age and possess
           a valid <strong>@illinois.edu</strong> email address. By completing the
           sign-up process, you represent that you meet both conditions.
         </p>

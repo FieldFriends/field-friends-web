@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
     "moduleResolution": "Node",
     "paths": {
       "@vercel/node": [

@@ -1,10 +1,12 @@
 <template>
   <friend-form-card
     :label="props.label"
-    :description="props.description"
     :required="false"
     :shared="false"
   >
+    <template #description>
+      <slot name="description" />
+    </template>
     <template #default="{ labelId, descriptionId }">
       <div 
         class="d-flex flex-column"
@@ -64,6 +66,7 @@
 <script setup lang="ts">
 import FriendFormCard from './FriendFormCard.vue';
 import { EMAIL_REGEX, MAX_BLOCKED_EMAILS } from '@shared/friendConfig';
+import { isSelfEmail } from '@shared/utils/emailUtils';
 
 defineOptions({ inheritAttrs: false });
 
@@ -71,18 +74,39 @@ const model = defineModel<string[]>({ required: true, default: [] });
 
 type Props = {
   label: string;
-  description?: string;
   maxItems?: number;
+  userEmail?: string | null;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   maxItems: MAX_BLOCKED_EMAILS
 });
 
-const emailRules = [
-  (v: string) => !!v || 'Email is required',
-  (v: string) => EMAIL_REGEX.test(v) || 'Must be a valid @illinois.edu address'
-];
+/**
+ * Validation rules for individual blocked email text fields.
+ */
+const emailRules = computed(() => {
+  return [
+    (v: string) => {
+      if (!v) {
+        return 'Email is required';
+      }
+      return true;
+    },
+    (v: string) => {
+      if (!EMAIL_REGEX.test(v)) {
+        return 'Must be a valid @illinois.edu address';
+      }
+      return true;
+    },
+    (v: string) => {
+      if (isSelfEmail(v, props.userEmail)) {
+        return 'You cannot block your own email';
+      }
+      return true;
+    }
+  ];
+});
 
 const addEmail = () => {
   if (model.value.length < props.maxItems) {
