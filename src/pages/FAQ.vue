@@ -50,7 +50,7 @@ const faqs = [
   },
   {
     question: "How does the matching algorithm work?",
-    answerHtml: "We use natural language processing to understand your survey responses and group you with 2-3 other people who share similar interests and social preferences. We also group by university status (underclassman/upperclassman/graduate & staff) to ensure balanced connections. For more details, check out the <a href='/about#process-heading' class='text-link font-weight-bold text-decoration-none'>How it Works</a> section on our <a href='/about' class='text-link font-weight-bold text-decoration-none'>About page</a>."
+    answerHtml: "We use natural language processing to understand your survey responses and group you with 2-3 other people who share similar interests and social preferences. Undergraduates get to choose which class years they're comfortable being matched with, while graduates and staff are matched within a separate pool. Additionally, you can choose which age ranges you're comfortable being matched with. For more details, check out the <a href='/about#process-heading' class='text-link font-weight-bold text-decoration-none'>How it Works</a> section on our <a href='/about' class='text-link font-weight-bold text-decoration-none'>About page</a>."
   },
   {
     question: "How is my data handled?",

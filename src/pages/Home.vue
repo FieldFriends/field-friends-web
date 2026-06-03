@@ -42,7 +42,7 @@
           &OpenCurlyDoubleQuote;To help people in the university community make friends by matching people into small groups based on shared interests.&CloseCurlyDoubleQuote;
         </p>
         <p class="text-body-1 text-secondary">
-          Powered by our smart, local, private algorithm to connect you with 2-3 other people who share your interests.
+          Designed with privacy and safety in mind, our local, private algorithm connects you with 2-3 other people at UIUC who share your interests.
         </p>
       </div>
 
@@ -72,7 +72,7 @@
             Verify
           </h3>
           <p class="text-body-2 text-secondary">
-            Sign in with and verify your <strong>@illinois.edu</strong> email with a one-time code.
+            Sign in and verify your <strong>@illinois.edu</strong> email with a one-time code.
           </p>
         </v-col>
 
@@ -131,7 +131,7 @@
           </h3>
           
           <p class="text-body-1 font-weight-regular text-secondary">
-            Your data is encrypted before it's ever stored on our database.
+            Your data is encrypted before it's ever stored in our database.
             All of your information, including the connection to your email, is <strong>permanently deleted</strong> after you're matched.
           </p>
           <p class="landing-page__privacy-details text-body-1 mt-8 font-weight-regular text-secondary">
