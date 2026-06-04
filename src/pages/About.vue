@@ -118,7 +118,7 @@
           The private RSA and ML-KEM keys required to reconstruct the session key and decrypt the data are stored strictly on our local offline machine. They never touch the cloud.
         </p>
         <p class="text-body-1 text-secondary page-text mb-4">
-          Furthermore, to protect your identity, we use scrypt hashing to prevent dictionary attacks on emails, and HMAC-SHA512 to create mathematically un-linkable response IDs. Your survey answers cannot be directly linked back to you in the database.
+          Furthermore, to protect your identity, we use scrypt hashing to prevent dictionary attacks on emails, and HMAC-SHA512 to create mathematically unlinkable response IDs. Your survey answers cannot be directly linked back to you in the database.
         </p>
         <p class="text-body-1 text-secondary page-text">
           Feel free to read the source code for our security architecture
