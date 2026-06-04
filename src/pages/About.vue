@@ -121,14 +121,14 @@
           Furthermore, to protect your identity, we use scrypt hashing to prevent dictionary attacks on emails, and HMAC-SHA512 to create mathematically un-linkable response IDs. Your survey answers cannot be directly linked back to you in the database.
         </p>
         <p class="text-body-1 text-secondary page-text">
-          For full transparency, our backend encryption logic is
+          Feel free to read the source code for our security architecture
           <a
             href="https://github.com/FieldFriends/field-friends-web/tree/main/api"
             target="_blank"
             rel="noopener noreferrer"
             class="text-decoration-none font-weight-bold text-link d-inline-flex align-center"
           >
-            available on GitHub
+            on GitHub
             <v-icon
               icon="mdi-open-in-new"
               size="x-small"
