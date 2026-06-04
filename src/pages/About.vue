@@ -106,7 +106,7 @@
           Security Architecture
         </h2>
         <p class="text-body-1 text-secondary page-text mb-4">
-          To mitigate the risk of a cloud environment compromise, we use an <strong>application-level post-quantum hybrid envelope encryption</strong> strategy (AES-256 + RSA-4096 + ML-KEM-1024). This meets NIST Category 5 standards (the highest security level) for post-quantum cryptography.
+          To mitigate the risk of a cloud environment compromise, we use an <strong>application-level post-quantum hybrid envelope encryption</strong> strategy (AES-256 + RSA-4096 + ML-KEM-1024). This meets NIST's highest security level for post-quantum cryptography.
         </p>
         <p class="text-body-1 text-secondary page-text mb-4">
           When you submit your survey, the server generates a unique classical random secret and a post-quantum shared secret via ML-KEM-1024. These secrets are mathematically combined using HKDF-SHA512 to derive an ephemeral AES-256 session key for your specific request. Your data fields are encrypted with this derived AES key using AES-256-GCM.
