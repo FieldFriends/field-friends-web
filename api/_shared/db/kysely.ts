@@ -8,9 +8,12 @@ import { KyselyDatabase } from './types.js';
  */
 const pool = new pg.Pool({
   connectionString: SERVER_ENV.SUPABASE_DATABASE_URL,
-  // FriendDev: Limits the maximum number of concurrent database connections from this pool.
-  //            Since Vercel serverless functions can spawn many concurrent instances,
-  //            keeping this number low prevents exhausting the Supabase connection limit.
+
+  /**
+   * Limits the maximum number of concurrent database connections from this pool.
+   * Since Vercel serverless functions can spawn many concurrent instances,
+   * keeping this number low prevents exhausting the Supabase connection limit.
+   */
   max: 10,
 });
 
