@@ -11,6 +11,8 @@ import {
 import { HttpMethods, JwtConstants } from '.././shared/constants.js';
 import { UnsubscribeSchema } from '.././shared/schemas/unsubscribeSchema.js';
 import { UnsubscribeRequestSchema } from '.././shared/schemas/unsubscribeRequestSchema.js';
+import { hashResponseId } from './_utils/hashing.js';
+import { deleteResponse } from './_shared/db/responses.js';
 
 export default async function handler(request: VercelRequest, response: VercelResponse) {
   if (request.method !== HttpMethods.Post) {
@@ -50,9 +52,18 @@ export default async function handler(request: VercelRequest, response: VercelRe
 
     const userId = unsubscribePayload.data.sub;
 
-    // FriendDev: Delete the user. Deleting them will cascade, and will ensure they won't
-    //            receive more emails. Since accounts are ephemeral anyway,
-    //            and because the service requires emails to work, deleting makes sense.
+    // FriendDev: Explicitly delete the survey response to prevent retaining private
+    //            data against the user's wishes. There is no DB cascade for this.
+    const responseId = hashResponseId(userId);
+
+    try {
+      await deleteResponse(responseId);
+    } catch (dbError) {
+      console.error('API->UNSUBSCRIBE_DB_ERROR:', dbError);
+      return httpInternalServerError(response);
+    }
+
+    // FriendDev: Delete the user account so they don't get emails.
     const { error: authError } = await supabaseAdmin.auth.admin.deleteUser(userId);
 
     if (authError) {

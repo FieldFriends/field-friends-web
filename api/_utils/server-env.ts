@@ -18,6 +18,10 @@ const ServerEnvSchema = z.object({
   TURNSTILE_SECRET_KEY: z.string().min(1),
   ZEPTO_WEBHOOK_SECRET: z.string().min(64),
   ZEPTO_AUTH_KEY: z.string().min(1),
+  // TODO @FriendDev: ADD THIS TO ENV
+  // You can find the Transaction Pooler connection string in your Supabase Dashboard:
+  // Settings -> Database -> Connection string -> Nodejs
+  SUPABASE_DATABASE_URL: z.string().min(1),
 }).strip();
 
 export type ServerEnv = z.infer<typeof ServerEnvSchema>;

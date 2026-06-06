@@ -2,6 +2,7 @@ import { VercelRequest, VercelResponse } from '@vercel/node';
 import { supabaseAdmin } from '../_utils/supabase-admin.js';
 import { extractAuthToken, httpUnauthorized } from '../_utils/http.js';
 import { hashEmail } from '../_utils/hashing.js';
+import { getBannedUserByHash } from '../_shared/db/bannedUsers.js';
 import { User } from '@supabase/supabase-js';
 
 /**
@@ -14,21 +15,20 @@ export async function checkUserBanned(email: string): Promise<boolean> {
   const cleanEmail = email.trim().toLowerCase();
   const hashedEmail = await hashEmail(cleanEmail);
 
-  // FriendDev: Attempt to find the user in the banned table.
-  const { data, error } = await supabaseAdmin
-    .from('banned_users')
-    .select('id')
-    .eq('email_hash', hashedEmail)
-    .limit(1)
-    .maybeSingle();
+  let isBanned = false;
+  try {
+    const userResult = await getBannedUserByHash(hashedEmail);
 
-  if (error) {
+    // FriendDev: The presence of data indicates the user is banned.
+    if (userResult) {
+      isBanned = true;
+    }
+  } catch (error) {
     console.error('API->BANNED_USER_CHECK_ERROR:', error);
     throw new Error('Failed to check if user is banned');
   }
 
-  // FriendDev: The presence of data indicates the user is banned.
-  return !!data;
+  return isBanned;
 }
 
 /**

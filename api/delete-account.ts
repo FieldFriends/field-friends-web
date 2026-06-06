@@ -2,6 +2,7 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { supabaseAdmin } from './_utils/supabase-admin.js';
 import { hashResponseId } from './_utils/hashing.js';
 import { httpInternalServerError, httpMethodNotAllowed, httpOk } from './_utils/http.js';
+import { deleteResponse } from './_shared/db/responses.js';
 import { authenticateUser } from './_utils/auth.js';
 import { HttpMethods } from '.././shared/constants.js';
 
@@ -24,12 +25,9 @@ export default async function handler(request: VercelRequest, response: VercelRe
 
     const responseId = hashResponseId(user.id);
 
-    const { error: dbError } = await supabaseAdmin
-      .from('responses')
-      .delete()
-      .eq('response_id', responseId);
-
-    if (dbError) {
+    try {
+      await deleteResponse(responseId);
+    } catch (dbError) {
       console.error('API->DB_ERROR:', dbError);
 
       return httpInternalServerError(response);
