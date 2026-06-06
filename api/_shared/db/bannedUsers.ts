@@ -1,12 +1,14 @@
 import { db } from './kysely.js';
 import { z } from 'zod';
+import type { Insertable } from 'kysely';
+import type { BannedUsersTable } from './types.js';
 
 /**
  * Bulk upserts banned users by their email hash.
  * @param payloads - Array of objects containing the email hash and reason.
  * @returns Void on success.
  */
-export const upsertBannedUsers = async (payloads: { email_hash: string; reason: string }[]): Promise<void> => {
+export const upsertBannedUsers = async (payloads: Insertable<BannedUsersTable>[]): Promise<void> => {
   if (payloads.length === 0) {
     return;
   }
