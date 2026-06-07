@@ -1,6 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import jwt from 'jsonwebtoken';
-import { supabaseAdmin } from './_utils/supabase-admin.js';
 import { getPublicKey } from './_utils/crypto.js';
 import {
   httpBadRequest,
@@ -11,8 +10,7 @@ import {
 import { HttpMethods, JwtConstants } from '.././shared/constants.js';
 import { UnsubscribeSchema } from '.././shared/schemas/unsubscribeSchema.js';
 import { UnsubscribeRequestSchema } from '.././shared/schemas/unsubscribeRequestSchema.js';
-import { hashResponseId } from './_utils/hashing.js';
-import { deleteResponse } from './_shared/db/responses.js';
+import { deleteUserAccountAndResponse } from './_utils/account.js';
 
 export default async function handler(request: VercelRequest, response: VercelResponse) {
   if (request.method !== HttpMethods.Post) {
@@ -52,24 +50,8 @@ export default async function handler(request: VercelRequest, response: VercelRe
 
     const userId = unsubscribePayload.data.sub;
 
-    // FriendDev: Explicitly delete the survey response to prevent retaining private
-    //            data against the user's wishes. There is no DB cascade for this.
-    const responseId = hashResponseId(userId);
-
-    try {
-      await deleteResponse(responseId);
-    } catch (dbError) {
-      console.error('API->UNSUBSCRIBE_DB_ERROR:', dbError);
-      return httpInternalServerError(response);
-    }
-
-    // FriendDev: Delete the user account so they don't get emails.
-    const { error: authError } = await supabaseAdmin.auth.admin.deleteUser(userId);
-
-    if (authError) {
-      console.error('API->AUTH_DELETE_ERROR:', authError);
-      return httpInternalServerError(response);
-    }
+    // FriendDev: Delete the survey response and user account so they don't get emails.
+    await deleteUserAccountAndResponse(userId);
 
     return httpOk(response);
 
