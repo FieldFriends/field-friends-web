@@ -1,4 +1,4 @@
-import { Kysely, PostgresDialect } from 'kysely';
+import { Kysely, PostgresDialect, WithSchemaPlugin } from 'kysely';
 import pg from 'pg';
 import { SERVER_ENV } from '../../_utils/server-env.js';
 import { KyselyDatabase } from './types.js';
@@ -24,4 +24,5 @@ export const db = new Kysely<KyselyDatabase>({
   dialect: new PostgresDialect({
     pool,
   }),
+  plugins: [new WithSchemaPlugin('private_data')],
 });
