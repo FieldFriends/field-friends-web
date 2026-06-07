@@ -1,6 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import jwt from 'jsonwebtoken';
-import { supabaseAdmin } from './_utils/supabase-admin.js';
 import { getPublicKey } from './_utils/crypto.js';
 import {
   httpBadRequest,
@@ -11,6 +10,7 @@ import {
 import { HttpMethods, JwtConstants } from '.././shared/constants.js';
 import { UnsubscribeSchema } from '.././shared/schemas/unsubscribeSchema.js';
 import { UnsubscribeRequestSchema } from '.././shared/schemas/unsubscribeRequestSchema.js';
+import { deleteUserAccountAndResponse } from './_utils/account.js';
 
 export default async function handler(request: VercelRequest, response: VercelResponse) {
   if (request.method !== HttpMethods.Post) {
@@ -50,15 +50,8 @@ export default async function handler(request: VercelRequest, response: VercelRe
 
     const userId = unsubscribePayload.data.sub;
 
-    // FriendDev: Delete the user. Deleting them will cascade, and will ensure they won't
-    //            receive more emails. Since accounts are ephemeral anyway,
-    //            and because the service requires emails to work, deleting makes sense.
-    const { error: authError } = await supabaseAdmin.auth.admin.deleteUser(userId);
-
-    if (authError) {
-      console.error('API->AUTH_DELETE_ERROR:', authError);
-      return httpInternalServerError(response);
-    }
+    // FriendDev: Delete the survey response and user account so they don't get emails.
+    await deleteUserAccountAndResponse(userId);
 
     return httpOk(response);
 

@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { supabaseAdmin } from './_utils/supabase-admin.js';
 import { hashResponseId } from './_utils/hashing.js';
 import { httpInternalServerError, httpMethodNotAllowed, httpOk } from './_utils/http.js';
+import { countResponses } from './_shared/db/responses.js';
 import { z } from 'zod';
 import { authenticateUser } from './_utils/auth.js';
 import { HttpMethods } from '.././shared/constants.js';
@@ -30,18 +30,9 @@ export default async function handler(request: VercelRequest, response: VercelRe
     // FriendDev: Hash the user's ID to find the de-identified response record.
     const responseId = hashResponseId(user.id);
 
-    const { count, error: dbError } = await supabaseAdmin
-      .from('responses')
-      .select('response_id', { count: 'exact', head: true })
-      .eq('response_id', responseId);
+    const count = await countResponses(responseId);
 
-    if (dbError) {
-      console.error('API->DB_ERROR:', dbError);
-
-      return httpInternalServerError(response);
-    }
-
-    const hasSubmitted = (count !== null) && (count > 0);
+    const hasSubmitted = count > 0;
 
     const data: z.infer<typeof CheckStatusResponse> = {
       submitted: hasSubmitted

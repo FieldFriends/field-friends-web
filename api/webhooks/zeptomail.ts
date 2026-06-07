@@ -6,9 +6,9 @@ import { httpMethodNotAllowed, httpBadRequest, httpOk, httpForbidden, httpIntern
 import { ZeptoMailWebhookSchema, ZeptoMailEvents, ZeptoMailWebhookPayload, BounceDetails, FblDetails, ZeptoMailWebhookHeaders, BounceEventDataSchema, FblEventDataSchema, EventData } from "../../shared/schemas/zeptoMailWebhookSchema.js";
 import { z } from "zod";
 import { hashEmail } from '../_utils/hashing.js';
-import { supabaseAdmin } from '../_utils/supabase-admin.js';
-import { parseProducerSignature, isSignatureExpired, verifyProducerSignature } from '../_utils/webhook-signature.js';
 import { SERVER_ENV } from '../_utils/server-env.js';
+import { upsertBannedUsers } from '../_shared/db/bannedUsers.js';
+import { parseProducerSignature, isSignatureExpired, verifyProducerSignature } from '../_utils/webhook-signature.js';
 
 // FriendDev: Disable automatic body parser so we can access the raw request body.
 export const config = {
@@ -49,12 +49,9 @@ async function banEmails(badEmails: { email: string; reason: string }[]): Promis
   }
 
 
-  const { error } = await supabaseAdmin.from(BANNED_USERS_TABLE).upsert(
-    upsertPayload,
-    { onConflict: EMAIL_HASH_COLUMN }
-  );
-
-  if (error) {
+  try {
+    await upsertBannedUsers(upsertPayload);
+  } catch (error) {
     console.error("Supabase Bulk Upsert Error:", error);
     throw error;
   }

@@ -1,5 +1,4 @@
 import { createClient } from "@supabase/supabase-js";
-import type { Database } from '../types/database.types.js';
 import { SERVER_ENV } from './server-env.js';
 import { PUBLIC_ENV } from './env-public.js';
 
@@ -7,12 +6,9 @@ import { PUBLIC_ENV } from './env-public.js';
 //            We disable persistSession because serverless functions are stateless.
 //            If we didn't, we might get an error, since the serverless Node.js
 //            environment has no local storage to save the session to.
-export const supabaseAdmin = createClient<Database, 'private_data'>(PUBLIC_ENV.VITE_SUPABASE_URL, SERVER_ENV.SUPABASE_SECRET_KEY, {
+export const supabaseAdmin = createClient(PUBLIC_ENV.VITE_SUPABASE_URL, SERVER_ENV.SUPABASE_SECRET_KEY, {
   auth: {
     persistSession: false,
     autoRefreshToken: false,
-  },
-  db: {
-    schema: 'private_data',
   }
 });

@@ -1,5 +1,4 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { supabaseAdmin } from './_utils/supabase-admin.js';
 import { encryptWithAes, startEncryptionSession } from './_utils/crypto.js';
 import { hashResponseId } from './_utils/hashing.js';
 import { createProfileSchema } from '.././shared/schemas/profileSchema.js';
@@ -9,7 +8,8 @@ import { authenticateUser, checkUserBanned } from './_utils/auth.js';
 import { HttpMethods, AppStatusErrors } from '.././shared/constants.js';
 import { EncryptionSession } from './types/EncryptionSession.js';
 import { isAcceptingResponses } from '.././shared/utils/appStateUtils.js';
-import { fetchAndValidateAppStatus } from './_utils/app-state.js';
+import { getAppStatus } from './_shared/db/appStatus.js';
+import { insertResponse } from './_shared/db/responses.js';
 
 /**
  * Handle the incoming HTTP request, validate input, and attempt to insert the data into our DB if valid.
@@ -85,8 +85,13 @@ export default async function handler(request: VercelRequest, response: VercelRe
  * @returns True if the app is open, false otherwise.
  */
 export const ensureAppIsOpen = async (response: VercelResponse): Promise<boolean> => {
-  const statusResult = await fetchAndValidateAppStatus();
+  const statusResult = await getAppStatus();
 
+  // FriendDev: This code kinda sucks. But, we
+  //            need to do these weirdly specific type checks here
+  //            so that TS on the Vercel server understands what
+  //            types we're working with. It throws errors talkin
+  //            about not being able to figure out which type we have if we don't.
   if (statusResult.success === false) {
     if (statusResult.type === AppStatusErrors.NotFound) {
       console.error('API->APP_STATUS_ERROR: Status not configured.');
@@ -108,6 +113,10 @@ export const ensureAppIsOpen = async (response: VercelResponse): Promise<boolean
   return true;
 };
 
+export type SaveSurveyResult = {
+  error: Error | null;
+};
+
 /**
  * Upserts all user responses into the DB using zero-knowledge architecture.
  * @param userId - The ID of the user submitting the survey.
@@ -119,17 +128,29 @@ export const saveSurveyToDatabase = async (
   userId: string,
   encryptionSession: EncryptionSession,
   encryptedPayload: string
-) => {
+): Promise<SaveSurveyResult> => {
   // FriendDev: Use a hash of the user's ID to de-identify them.
   const responseId = hashResponseId(userId);
 
-  return await supabaseAdmin
-    .from('responses')
-    .upsert({
+  try {
+    await insertResponse({
       response_id: responseId,
       rsa_ciphertext: encryptionSession.rsaCiphertext,
       mlkem_ciphertext: encryptionSession.mlkemCiphertext,
       encrypted_payload: encryptedPayload,
       submitted_at: new Date().toISOString(),
     });
+
+    return { error: null };
+  } catch (error) {
+    let mappedError: Error;
+
+    if (error instanceof Error) {
+      mappedError = error;
+    } else {
+      mappedError = new Error(String(error));
+    }
+
+    return { error: mappedError };
+  }
 };

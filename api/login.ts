@@ -6,7 +6,7 @@ import { TurnstileVerifyResponse, TurnstileVerifyResponseSchema } from '.././sha
 import { supabaseAdmin } from './_utils/supabase-admin.js';
 import z from "zod";
 import { checkUserBanned } from './_utils/auth.js';
-import { fetchAndValidateAppStatus } from './_utils/app-state.js';
+import { getAppStatus } from './_shared/db/appStatus.js';
 import { isAcceptingResponses } from '../shared/utils/appStateUtils.js';
 import { SERVER_ENV } from './_utils/server-env.js';
 
@@ -49,7 +49,7 @@ async function verifyTurnstileToken(token: string): Promise<TurnstileVerifyRespo
  * @returns The HTTP response.
  */
 async function handleSignIn(email: string, response: VercelResponse) {
-  const statusResult = await fetchAndValidateAppStatus();
+  const statusResult = await getAppStatus();
 
   if (!statusResult.success) {
     console.error('API->LOGIN->APP_STATUS_ERROR');
