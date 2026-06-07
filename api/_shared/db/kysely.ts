@@ -4,6 +4,13 @@ import { SERVER_ENV } from '../../_utils/server-env.js';
 import { KyselyDatabase } from './types.js';
 
 /**
+ * Configure pg driver to return timestamps as raw strings instead of Date objects.
+ * This aligns the database output with our TypeScript interfaces and Zod schemas.
+ */
+pg.types.setTypeParser(pg.types.builtins.TIMESTAMPTZ, (val) => val);
+pg.types.setTypeParser(pg.types.builtins.TIMESTAMP, (val) => val);
+
+/**
  * Initializes the Postgres connection pool for Kysely.
  */
 const pool = new pg.Pool({
