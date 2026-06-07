@@ -1,4 +1,4 @@
-import { Generated } from 'kysely';
+import { Generated, GeneratedAlways } from 'kysely';
 
 export interface ResponsesTable {
   response_id: string;
@@ -9,10 +9,10 @@ export interface ResponsesTable {
 }
 
 export interface BannedUsersTable {
-  id: Generated<string>;
+  id: GeneratedAlways<string>;
   email_hash: string;
   reason: string;
-  created_at: Generated<string>;
+  created_at: GeneratedAlways<string>;
 }
 
 export interface AppSettingsTable {
