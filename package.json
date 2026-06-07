@@ -10,6 +10,7 @@
     "build": "run-p type-check \"build-only {@}\" test:once --",
     "test:once": "vitest run",
     "test": "vitest",
+    "generate:keys": "openssl genpkey -algorithm ML-KEM-1024 -out mlkem-private.pem && openssl pkey -pubout -in mlkem-private.pem -out mlkem-public.pem && echo 'Keys generated!'",
     "preview": "vite preview",
     "build-only": "vite build",
     "type-check": "vue-tsc --build --force",
