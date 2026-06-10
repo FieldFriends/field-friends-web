@@ -1,5 +1,6 @@
-import { Affiliation, UNDERGRADUATE_AFFILIATIONS } from '@shared/friendConfig';
+import { Affiliation, UNDERGRADUATE_AFFILIATIONS, AGE_LIMITS } from '@shared/friendConfig';
 import type { ProfileSubmission } from '@shared/schemas/profileSchema';
+import type { FriendFormState } from '@/types/friendFormState';
 
 /**
  * The default offset for the number of neighbor affiliations to include.
@@ -124,4 +125,67 @@ export const computeDefaultMaxAge = (targetAge: number, maxLimit: number): numbe
   }
 
   return value;
+};
+
+/**
+ * Ensures derived age limits are populated with their appropriate defaults
+ * only if the root age field exists and the limits themselves are currently missing.
+ * @param state - A partial form state object to normalize.
+ */
+const applyMissingAgeLimits = (state: Partial<FriendFormState>) => {
+  if (state.age == null) {
+    return;
+  }
+
+  if (state.desired_age_min === null) {
+    state.desired_age_min = computeDefaultMinAge(state.age, AGE_LIMITS.min);
+  }
+
+  if (state.desired_age_max === null) {
+    state.desired_age_max = computeDefaultMaxAge(state.age, AGE_LIMITS.max);
+  }
+};
+
+/**
+ * Ensures derived affiliation limits are populated with their appropriate defaults
+ * only if the root affiliation field exists and the limits themselves are currently missing.
+ * @param state - A partial form state object to normalize.
+ */
+const applyMissingAffiliationLimits = (state: Partial<FriendFormState>) => {
+  const { affiliation } = state;
+
+  if (!affiliation) {
+    return;
+  }
+
+  // FriendDev: Limit to grad/pro if they are a grad/pro.
+  if (affiliation === Affiliation.GradsAndPros) {
+    if (state.desired_affiliation_min === null) {
+      state.desired_affiliation_min = Affiliation.GradsAndPros;
+    }
+
+    if (state.desired_affiliation_max === null) {
+      state.desired_affiliation_max = Affiliation.GradsAndPros;
+    }
+
+    return;
+  }
+
+  if (state.desired_affiliation_min === null) {
+    state.desired_affiliation_min = computeDefaultMinAffiliation(affiliation);
+  }
+
+  if (state.desired_affiliation_max === null) {
+    state.desired_affiliation_max = computeDefaultMaxAffiliation(affiliation);
+  }
+};
+
+/**
+ * Ensures derived or dependent form fields are populated with their appropriate defaults
+ * only if their parent fields exist and the dependent fields themselves are currently missing.
+ * @param state - A partial form state object to normalize.
+ */
+export const applyMissingDerivedFields = (state: Partial<FriendFormState>) => {
+  applyMissingAgeLimits(state);
+  applyMissingAffiliationLimits(state);
 };

@@ -326,7 +326,7 @@
 
         <v-snackbar
           v-model="snackbar.isVisible"
-          timeout="3000"
+          timeout="SNACKBAR_TIMEOUT"
           location="bottom center"
           class="mb-16"
           :color="snackbar.color"
@@ -448,10 +448,7 @@ import { AppRoutes } from '@/router/routeConfig';
 import { useAuthStore } from '@/stores/auth';
 import { VForm } from 'vuetify/components';
 import { 
-  computeDefaultMinAffiliation,
-  computeDefaultMaxAffiliation,
-  computeDefaultMinAge, 
-  computeDefaultMaxAge,
+  applyMissingDerivedFields,
   isUndergradAffiliation 
 } from './SignUpFormHelpers';
 
@@ -464,6 +461,8 @@ const snackbar = ref({
   message: '',
   color: 'success'
 });
+
+const SNACKBAR_TIMEOUT = 3000;
 
 const surveyStore = useSurveyStore();
 const authStore = useAuthStore();
@@ -493,35 +492,37 @@ useLeaveGuard();
 
 const router = useRouter();
 
+// FriendDev: Clear limits and apply defaults based on the new affiliation.
 /**
  * Handle affiliation updates from the UI and reset dependent matching fields.
  * @param newAffiliation - The newly selected affiliation.
  */
 const onAffiliationUpdated = (newAffiliation: string) => {
-  if (newAffiliation === Affiliation.GradsAndPros) {
-    form.desired_affiliation_min = Affiliation.GradsAndPros;
-    form.desired_affiliation_max = Affiliation.GradsAndPros;
-  } else if (newAffiliation) {
-    form.desired_affiliation_min = computeDefaultMinAffiliation(newAffiliation);
-    form.desired_affiliation_max = computeDefaultMaxAffiliation(newAffiliation);
-  } else {
-    form.desired_affiliation_min = null;
-    form.desired_affiliation_max = null;
+  form.desired_affiliation_min = null;
+  form.desired_affiliation_max = null;
+  
+  if (!newAffiliation) {
+    return;
   }
+
+  applyMissingDerivedFields(form);
 };
 
+
+// FriendDev: Clear limits and apply defaults based on the new age.
 /**
  * Handle age updates from the UI and reset dependent matching fields.
  * @param newAge - The newly selected age.
  */
 const onAgeUpdated = (newAge: number | null) => {
-  if (newAge !== null && newAge >= AGE_LIMITS.min && newAge <= AGE_LIMITS.max) {
-    form.desired_age_min = computeDefaultMinAge(newAge, AGE_LIMITS.min);
-    form.desired_age_max = computeDefaultMaxAge(newAge, AGE_LIMITS.max);
-  } else {
-    form.desired_age_min = null;
-    form.desired_age_max = null;
+  form.desired_age_min = null;
+  form.desired_age_max = null;
+
+  if (newAge === null || newAge < AGE_LIMITS.min || newAge > AGE_LIMITS.max) {
+    return;
   }
+
+  applyMissingDerivedFields(form);
 };
 
 const isSubmitting = ref(false);
@@ -661,9 +662,9 @@ const handleImport = async (event: Event) => {
     const rawImportedData = await importFromJSON(file, ProfileSchema);
     const safeImportedData = { ...rawImportedData };
     
-    // FriendDev: Construct the proposed state based on a clean slate.
+    // FriendDev: Construct the proposed state based on a cloned clean slate.
     const proposedState = {
-      ...INITIAL_FORM_STATE,
+      ...structuredClone(INITIAL_FORM_STATE),
       ...safeImportedData
     };
     
@@ -683,11 +684,14 @@ const handleImport = async (event: Event) => {
       }
     }
     
-    // FriendDev: Overwrite the form state with the clean slate.
-    Object.assign(form, INITIAL_FORM_STATE);
+    // FriendDev: Overwrite the form state with a cloned clean slate to prevent shared array references.
+    Object.assign(form, structuredClone(INITIAL_FORM_STATE));
     
     // FriendDev: Assign the pruned imported data.
     Object.assign(form, safeImportedData);
+    
+    // FriendDev: Populate any missing derived fields that were omitted or pruned from the import.
+    applyMissingDerivedFields(form);
     
     target.value = '';
     
