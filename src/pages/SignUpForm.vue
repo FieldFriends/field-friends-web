@@ -492,7 +492,6 @@ useLeaveGuard();
 
 const router = useRouter();
 
-// FriendDev: Clear limits and apply defaults based on the new affiliation.
 /**
  * Handle affiliation updates from the UI and reset dependent matching fields.
  * @param newAffiliation - The newly selected affiliation.
@@ -509,7 +508,6 @@ const onAffiliationUpdated = (newAffiliation: string) => {
 };
 
 
-// FriendDev: Clear limits and apply defaults based on the new age.
 /**
  * Handle age updates from the UI and reset dependent matching fields.
  * @param newAge - The newly selected age.
