@@ -1,6 +1,6 @@
 import * as crypto from 'node:crypto';
 import * as fs from 'node:fs';
-import { Algorithms, KeyTypes, KeyFormats, Encodings, CryptoConfig } from '../shared/constants.ts';
+import { Algorithms, KeyTypes, KeyFormats, Encodings, CryptoConfig, ZeptoMailConfig } from '../shared/constants.ts';
 
 const OUTPUT_DIR = 'generated-keys';
 const MLKEM_FILE = 'mlkem-private.txt';
@@ -71,9 +71,10 @@ function generateHashPepper(byteLength: number = CryptoConfig.Scrypt.SaltLength)
  * @param hashPepper - System hash pepper.
  * @param userHashPepper - User-specific hash pepper.
  * @param zeptoWebhookSecret - Zepto webhook secret.
+ * @param zeptoAuthKey - Zepto authentication key.
  * @returns The formatted `.env` template string.
  */
-function createEnvTemplate(rsaPub: string, mlkemPub: string, hashPepper: string, userHashPepper: string, zeptoWebhookSecret: string): string {
+function createEnvTemplate(rsaPub: string, mlkemPub: string, hashPepper: string, userHashPepper: string, zeptoWebhookSecret: string, zeptoAuthKey: string): string {
   return `# Keys
 # ---------------------------------------------
 # 1. Copy these values into field-friends-web/.env.local
@@ -87,6 +88,7 @@ HASH_PEPPER=${hashPepper}
 USER_HASH_PEPPER=${userHashPepper}
 
 ZEPTO_WEBHOOK_SECRET=${zeptoWebhookSecret}
+ZEPTO_AUTH_KEY=${zeptoAuthKey}
 `;
 }
 
@@ -108,10 +110,13 @@ function main() {
     const hashPepper = generateHashPepper();
     const userHashPepper = generateHashPepper();
 
-    console.log('Generating Zepto Webhook Secret (16-byte hex)...');
-    const zeptoWebhookSecret = generateHashPepper(16);
+    console.log('Generating Zepto Webhook Secret (32-byte hex)...');
+    const zeptoWebhookSecret = generateHashPepper(ZeptoMailConfig.WebhookSecretLength);
 
-    const envTemplate = createEnvTemplate(rsaPub, mlkemPub, hashPepper, userHashPepper, zeptoWebhookSecret);
+    console.log('Generating Zepto Auth Key (24-byte hex -> 48 chars)...');
+    const zeptoAuthKey = generateHashPepper(ZeptoMailConfig.AuthKeyLength);
+
+    const envTemplate = createEnvTemplate(rsaPub, mlkemPub, hashPepper, userHashPepper, zeptoWebhookSecret, zeptoAuthKey);
 
     const outPath = `${OUTPUT_DIR}/${ENV_FILE}`;
     fs.writeFileSync(outPath, envTemplate);

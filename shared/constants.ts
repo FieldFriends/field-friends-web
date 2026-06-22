@@ -121,4 +121,6 @@ export const ZeptoMailConfig = {
     Signature: 's',
     SigningAlgorithm: 's-algorithm',
   },
+  AuthKeyLength: 24,
+  WebhookSecretLength: 32,
 } as const;

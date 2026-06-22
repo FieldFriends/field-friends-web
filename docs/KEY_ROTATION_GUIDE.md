@@ -47,5 +47,5 @@ This document catalogs every environment variable used in the project, its purpo
 
 | Variable | Location | Description |
 | :--- | :--- | :--- |
-| `ZEPTO_AUTH_KEY` | API/SMTP > API > Send Mail Token | The Send Mail token used to authenticate API requests. |
+| `ZEPTO_AUTH_KEY` | Webhooks > Authentication key. | Auth key for webhook requests. |
 | `ZEPTO_WEBHOOK_SECRET` | Webhooks > Webhook Secret | Used to verify incoming webhook payloads from ZeptoMail. |
