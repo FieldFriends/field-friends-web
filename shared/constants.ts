@@ -91,6 +91,7 @@ export const CryptoConfig = {
   MlKemSeedLength: 64,
   Scrypt: {
     KeyLength: 32,
+    SaltLength: 32,
     Cost: 16384,
     BlockSize: 8,
     Parallelization: 1,
