@@ -11,8 +11,9 @@
         Last Updated: June 2026
       </p>
 
-      <ol class="legal-page__list pl-8 mb-0">
-        <li class="mb-12" aria-labelledby="tos-heading">
+      <div class="legal-page__sections mb-0">
+        <section class="legal-page__section mb-12" aria-labelledby="tos-heading">
+          <div class="legal-page__section-content">
           <h2 id="tos-heading" class="text-h4 font-weight-bold mb-6 text-primary">Terms of Service</h2>
           
           <h3 class="text-h6 font-weight-bold mb-2 text-primary font-playfair">Eligibility</h3>
@@ -90,9 +91,11 @@
           </p>
 
           <v-divider class="mt-12 mb-0 border-opacity-25" color="secondary" aria-hidden="true" />
-        </li>
+          </div>
+        </section>
 
-        <li class="mb-12" aria-labelledby="privacy-heading">
+        <section class="legal-page__section mb-12" aria-labelledby="privacy-heading">
+          <div class="legal-page__section-content">
           <h2 id="privacy-heading" class="text-h4 font-weight-bold mb-6 text-primary">Privacy Policy</h2>
           
           <h3 class="text-h6 font-weight-bold mb-2 text-primary font-playfair">Data Collection</h3>
@@ -144,9 +147,11 @@
           </p>
 
           <v-divider class="mt-12 mb-0 border-opacity-25" color="secondary" aria-hidden="true" />
-        </li>
+          </div>
+        </section>
 
-        <li class="mb-8" aria-labelledby="liability-heading">
+        <section class="legal-page__section mb-8" aria-labelledby="liability-heading">
+          <div class="legal-page__section-content">
           <h2 id="liability-heading" class="text-h4 font-weight-bold mb-6 text-primary">Liability Disclaimer</h2>
           
           <h3 class="text-h6 font-weight-bold mb-2 text-primary font-playfair">Not Affiliated</h3>
@@ -197,8 +202,9 @@
             incidental, special, consequential, or punitive damages.
             Our total liability for any claims arising from or relating to the service shall not exceed fifty dollars ($50.00).
           </p>
-        </li>
-      </ol>
+          </div>
+        </section>
+      </div>
 
         </v-col>
       </v-row>
@@ -209,15 +215,29 @@
 <style scoped lang="scss">
 @use '@/styles/typography' as typo;
 
-.legal-page__list {
-  list-style-type: decimal;
+.legal-page__sections {
+  counter-reset: legal-section;
+}
 
-  & > li::marker {
+.legal-page__section {
+  counter-increment: legal-section;
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+
+  &::before {
+    content: counter(legal-section) ". ";
     font-size: 2.125rem;
     font-weight: bold;
     font-family: typo.$font-playfair;
     color: rgb(var(--v-theme-primary));
+    line-height: 1.2;
+    flex-shrink: 0;
   }
+}
+
+.legal-page__section-content {
+  width: 100%;
 }
 </style>
 
