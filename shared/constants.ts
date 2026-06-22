@@ -78,14 +78,17 @@ export const Encodings = {
 
 export const KeyFormats = {
   Pem: 'pem',
+  Der: 'der',
 } as const;
 
 export const KeyTypes = {
   Spki: 'spki',
   Pkcs8: 'pkcs8',
+  RawSeed: 'raw-seed',
 } as const;
 
 export const CryptoConfig = {
+  MlKemSeedLength: 64,
   Scrypt: {
     KeyLength: 32,
     Cost: 16384,
