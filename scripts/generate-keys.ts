@@ -4,7 +4,9 @@ import { Algorithms, KeyTypes, KeyFormats, Encodings, CryptoConfig } from '../sh
 
 const OUTPUT_DIR = 'generated-keys';
 const MLKEM_FILE = 'mlkem-private.txt';
+const MLKEM_PUB_FILE = 'mlkem-public.pem';
 const RSA_FILE = 'rsa-private.pem';
+const RSA_PUB_FILE = 'rsa-public.pem';
 const ENV_FILE = '.env.keys.example';
 
 /**
@@ -19,9 +21,13 @@ function generateMlKemKeys(): string {
   const mlkemPrivDer = mlkemKeys.privateKey.export({ type: KeyTypes.Pkcs8, format: KeyFormats.Der }) as Buffer;
   const mlkemSeed = mlkemPrivDer.subarray(-CryptoConfig.MlKemSeedLength);
 
-  const outPath = `${OUTPUT_DIR}/${MLKEM_FILE}`;
-  fs.writeFileSync(outPath, mlkemSeed.toString(Encodings.Hex));
-  console.log(` -> Saved ${outPath}`);
+  const privPath = `${OUTPUT_DIR}/${MLKEM_FILE}`;
+  fs.writeFileSync(privPath, mlkemSeed.toString(Encodings.Hex));
+  console.log(` -> Saved ${privPath}`);
+
+  const pubPath = `${OUTPUT_DIR}/${MLKEM_PUB_FILE}`;
+  fs.writeFileSync(pubPath, mlkemPub);
+  console.log(` -> Saved ${pubPath}`);
 
   return mlkemPub;
 }
@@ -37,9 +43,13 @@ function generateRsaKeys(): string {
   const rsaPub = rsaKeys.publicKey.export({ type: KeyTypes.Spki, format: KeyFormats.Pem }) as string;
   const rsaPriv = rsaKeys.privateKey.export({ type: KeyTypes.Pkcs8, format: KeyFormats.Pem }) as string;
 
-  const outPath = `${OUTPUT_DIR}/${RSA_FILE}`;
-  fs.writeFileSync(outPath, rsaPriv);
-  console.log(` -> Saved ${outPath}`);
+  const privPath = `${OUTPUT_DIR}/${RSA_FILE}`;
+  fs.writeFileSync(privPath, rsaPriv);
+  console.log(` -> Saved ${privPath}`);
+
+  const pubPath = `${OUTPUT_DIR}/${RSA_PUB_FILE}`;
+  fs.writeFileSync(pubPath, rsaPub);
+  console.log(` -> Saved ${pubPath}`);
 
   return rsaPub;
 }
