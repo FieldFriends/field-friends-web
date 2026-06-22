@@ -22,6 +22,7 @@ declare module 'vue' {
     FriendFormCard: typeof import('./components/FriendFormCard.vue')['default']
     FriendNumberInput: typeof import('./components/FriendNumberInput.vue')['default']
     FriendRadioGroup: typeof import('./components/FriendRadioGroup.vue')['default']
+    FriendSaveLoadToolbar: typeof import('./components/FriendSaveLoadToolbar.vue')['default']
     FriendSelect: typeof import('./components/FriendSelect.vue')['default']
     FriendTextarea: typeof import('./components/FriendTextarea.vue')['default']
     FriendTextField: typeof import('./components/FriendTextField.vue')['default']

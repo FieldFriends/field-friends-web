@@ -7,8 +7,8 @@
             Contact Us
           </h1>
 
-          <div class="mb-12 d-flex flex-column ga-8">
-            <div>
+          <ul class="mb-12 d-flex flex-column ga-8 contact-page__list">
+            <li>
               <p class="text-body-1 text-secondary page-text d-flex flex-wrap align-center ga-2">
                 <span>For questions, feedback, or assistance, please reach out to:</span>
                 <a
@@ -28,16 +28,16 @@
                   Copy
                 </v-btn>
               </p>
-            </div>
+            </li>
 
-            <div>
+            <li>
               <p class="text-body-1 text-secondary page-text">
                 Automated messages, such as login codes and match introductions, will be sent from:
                 <strong>noreply@fieldfriends.org</strong>
               </p>
-            </div>
+            </li>
 
-            <div>
+            <li>
               <p class="text-body-1 text-secondary page-text">
                 Our official Reddit account is 
                 <a 
@@ -54,8 +54,8 @@
                   />
                 </a>
               </p>
-            </div>
-          </div>
+            </li>
+          </ul>
 
           <div class="mt-8">
             <p class="text-body-1 text-secondary page-text">
@@ -98,6 +98,13 @@
     </v-snackbar>
   </div>
 </template>
+
+<style scoped lang="scss">
+.contact-page__list {
+  list-style-type: none;
+  padding: 0;
+}
+</style>
 
 <script setup lang="ts">
 import { ref } from 'vue';

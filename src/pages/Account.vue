@@ -48,7 +48,7 @@
                   icon="mdi-shield-lock-outline"
                   :max-width="600"
                 >
-                  Your form submission has been fully encrypted and de-identified.
+                  Your form submission has been encrypted and de-identified.
                   Because of this, we can't display your responses.
                 </v-alert>
               </div>

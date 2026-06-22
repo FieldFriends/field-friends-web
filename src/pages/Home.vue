@@ -63,9 +63,9 @@
         </p>
       </div>
 
-      <v-row>
-        <v-col cols="12" md="4" class="text-center px-6 mb-8 mb-md-0">
-          <div class="text-h2 text-accent mb-4 opacity-80">
+      <v-row tag="ol" class="landing-page__steps-list">
+        <v-col tag="li" cols="12" md="4" class="text-center px-6 mb-8 mb-md-0">
+          <div class="text-h2 text-accent mb-4 opacity-80" aria-hidden="true">
             1
           </div>
           <h3 class="text-h6 font-dm-sans font-weight-bold text-primary mb-2">
@@ -76,8 +76,8 @@
           </p>
         </v-col>
 
-        <v-col cols="12" md="4" class="text-center px-6 mb-8 mb-md-0">
-          <div class="text-h2 text-accent mb-4 opacity-80">
+        <v-col tag="li" cols="12" md="4" class="text-center px-6 mb-8 mb-md-0">
+          <div class="text-h2 text-accent mb-4 opacity-80" aria-hidden="true">
             2
           </div>
           <h3 class="text-h6 font-dm-sans font-weight-bold text-primary mb-2">
@@ -88,8 +88,8 @@
           </p>
         </v-col>
 
-        <v-col cols="12" md="4" class="text-center px-6">
-          <div class="text-h2 text-accent mb-4 opacity-80">
+        <v-col tag="li" cols="12" md="4" class="text-center px-6">
+          <div class="text-h2 text-accent mb-4 opacity-80" aria-hidden="true">
             3
           </div>
           <h3 class="text-h6 font-dm-sans font-weight-bold text-primary mb-2">
@@ -122,7 +122,7 @@
       </v-row>
     </v-container>
 
-    <v-container class="py-8 text-center">
+    <v-container class="py-8 text-center mb-14">
       <v-row justify="center">
         <v-col cols="12" md="10" lg="8">
           <v-divider class="mb-12 border-opacity-25" color="secondary"></v-divider>
@@ -173,7 +173,16 @@
   </div>
 </template>
 
+<style scoped lang="scss">
+.landing-page__goal {
+  max-width: 700px;
+}
 
+.landing-page__steps-list {
+  list-style-type: none;
+  padding: 0;
+}
+</style>
 
 <script lang="ts" setup>
 import { AppRoutes } from '@/router/routeConfig';
@@ -187,9 +196,3 @@ const shouldShowMatchingInfo = computed(() => {
   return configStore.loading || !configStore.isAppStateLoaded || configStore.isAcceptingResponses;
 });
 </script>
-
-<style scoped lang="scss">
-.landing-page__goal {
-  max-width: 700px;
-}
-</style>

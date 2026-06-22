@@ -1,18 +1,20 @@
+@use 'typography' as typo;
+
 /* Global Typography Utilities */
 .font-playfair {
-  font-family: 'Playfair Display', serif !important;
+  font-family: typo.$font-playfair !important;
 }
 
 .font-eb-garamond {
-  font-family: 'EB Garamond', serif !important;
+  font-family: typo.$font-eb-garamond !important;
 }
 
 .font-dm-sans {
-  font-family: 'DM Sans', sans-serif !important;
+  font-family: typo.$font-dm-sans !important;
 }
 
 .font-roboto {
-  font-family: 'Roboto', sans-serif !important;
+  font-family: typo.$font-roboto !important;
 }
 
 /* Global Layout Utilities */

@@ -4,8 +4,10 @@
  * Configures SASS variables and Vuetify overwrites
  */
 
-@use 'vuetify/settings' with ($body-font-family: ('DM Sans', sans-serif),
-    $heading-font-family: ('Playfair Display', serif),
+@use 'typography' as typo;
+@use 'vuetify/settings' with (
+    $body-font-family: typo.$font-dm-sans,
+    $heading-font-family: typo.$font-playfair,
     $font-size-root: 1.125rem,
     $line-height-root: 1.5,
     $snackbar-background: rgb(var(--v-theme-primary)),

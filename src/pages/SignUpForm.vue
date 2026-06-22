@@ -1,14 +1,18 @@
 <template>
   <div class="d-flex flex-column align-center py-10 min-h-screen">
-    <h1 class="text-h3 font-weight-bold text-primary text-center">
+    <h1 class="text-h3 font-weight-bold text-primary text-center" id="signup-heading">
       Sign up for Field Friends
     </h1>
   </div>
 
   <div class="d-flex mt-2 flex-column align-center bg-background">
     <v-container style="max-width: 40rem;" class="px-6">
-      <v-form ref="formRef" @submit.prevent="submitForm" validate-on="invalid-input">
+      <v-form ref="formRef" @submit.prevent="submitForm" validate-on="invalid-input" aria-labelledby="signup-heading">
         
+        <div class="d-flex justify-center justify-sm-end mb-6">
+          <friend-save-load-toolbar @save="handleExport" @load="triggerImport" />
+        </div>
+
         <friend-text-field
           v-model="form.name"
           class="mb-4"
@@ -69,21 +73,6 @@
 
         <v-divider :thickness="2" class="my-8" />
 
-        <friend-affiliation-match
-          v-if="isUndergradAffiliation(form.affiliation)"
-          v-model:min-affiliation="form.desired_affiliation_min"
-          v-model:max-affiliation="form.desired_affiliation_max"
-          label="Matching Class Years"
-          class="mb-4"
-          :target-affiliation="form.affiliation"
-          :min-rules="rule('desired_affiliation_min')"
-          :max-rules="rule('desired_affiliation_max')"
-        >
-          <template #description>
-            Select the class years you're comfortable being matched with
-          </template>
-        </friend-affiliation-match>
-
         <friend-age-range
           v-model:min-age="form.desired_age_min"
           v-model:max-age="form.desired_age_max"
@@ -100,6 +89,21 @@
             Select the minimum and maximum ages you're comfortable being matched with
           </template>
         </friend-age-range>
+
+        <friend-affiliation-match
+          v-if="isUndergradAffiliation(form.affiliation)"
+          v-model:min-affiliation="form.desired_affiliation_min"
+          v-model:max-affiliation="form.desired_affiliation_max"
+          label="Matching Class Years"
+          class="mb-4"
+          :target-affiliation="form.affiliation"
+          :min-rules="rule('desired_affiliation_min')"
+          :max-rules="rule('desired_affiliation_max')"
+        >
+          <template #description>
+            Select the class years you're comfortable being matched with
+          </template>
+        </friend-affiliation-match>
 
         <v-divider :thickness="2" class="my-8" />
 
@@ -165,7 +169,7 @@
           :required="false"
         >
           <template #description>
-            <i>Please wait until after you're matched to share contact info!</i>
+            <i>Please wait until after you've been matched to share contact info!</i>
           </template>
           <div class="d-flex flex-wrap ga-2">
             <v-btn
@@ -321,7 +325,9 @@
         </friend-form-card>
 
         <div class="mt-2 mb-6 d-flex align-center text-caption text-secondary font-italic">
-          <span class="opacity-80">Tip: You can use the <v-icon icon="mdi-content-save" size="small" class="mx-1 pb-1" /> button at the bottom-right to save your responses for next time.</span>
+          <span class="opacity-80">
+            Tip: You can use the <strong>Save</strong> and <strong>Load</strong> buttons to keep your responses for next time.
+          </span>
         </div>
 
         <v-snackbar
@@ -352,13 +358,15 @@
           </template>
         </v-snackbar>
 
-        <div class="d-flex justify-start pt-3 pb-10">
+        <div class="d-flex flex-column-reverse flex-sm-row align-center justify-sm-space-between ga-4 pt-3 pb-10">
           <v-btn
             type="submit"
             text="Submit"
+            color="primary"
             :loading="isSubmitting"
             :disabled="isSubmitting"
           />
+          <friend-save-load-toolbar @save="handleExport" @load="triggerImport" />
         </div>
       </v-form>
 
@@ -374,52 +382,14 @@
 
     </v-container>
   </div>
-  <v-speed-dial
-    location="bottom right"
-    transition="slide-y-reverse-transition"
-  >
-    <template v-slot:activator="{ props: activatorProps }">
-      <v-fab
-        v-bind="activatorProps"
-        size="large"
-        icon="mdi-content-save"
-        color="secondary"
-        elevation="4"
-        location="bottom right"
-        app
-        appear
-        rounded="pill"
-      />
-    </template>
 
-    <v-btn
-      key="1"
-      prepend-icon="mdi-download"
-      color="secondary"
-      size="large"
-      elevation="4"
-      @click="handleExport"
-    >
-      Save Responses
-    </v-btn>
-
-    <v-btn
-      key="2"
-      prepend-icon="mdi-upload"
-      color="secondary"
-      size="large"
-      elevation="4"
-      @click="triggerImport"
-    >
-      Load Responses
-    </v-btn>
-  </v-speed-dial>
 </template>
 
 
 
 <script setup lang="ts">
 import { ref, reactive, computed, useId, nextTick } from 'vue';
+import FriendSaveLoadToolbar from '@/components/FriendSaveLoadToolbar.vue';
 import FriendTextField from '@/components/FriendTextField.vue';
 import FriendAgeRange from '@/components/FriendAgeRange.vue';
 import FriendAffiliationMatch from '@/components/FriendAffiliationMatch.vue';
@@ -430,7 +400,6 @@ import EmailMatchedPreview from '@/components/EmailMatchedPreview.vue';
 
 import FriendFormCard from '@/components/FriendFormCard.vue';
 import { 
-  Affiliation,
   AFFILIATION_OPTIONS,
   GENDER_OPTIONS,
   SOCIAL_ENERGY_OPTIONS,

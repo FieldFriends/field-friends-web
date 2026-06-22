@@ -7,18 +7,20 @@
             Frequently Asked Questions
           </h1>
 
-      <v-expansion-panels multiple class="mb-12">
-        <v-expansion-panel
-          v-for="(faq, index) in faqs"
-          :key="index"
-          :title="faq.question"
-          class="bg-surface"
-        >
-          <template v-slot:text>
-            <div v-html="faq.answerHtml" class="text-body-1 text-secondary page-text"></div>
-          </template>
-        </v-expansion-panel>
-      </v-expansion-panels>
+      <section aria-labelledby="faq-heading">
+        <v-expansion-panels multiple class="mb-12">
+          <v-expansion-panel
+            v-for="(faq, index) in faqs"
+            :key="index"
+            :title="faq.question"
+            class="bg-surface"
+          >
+            <template v-slot:text>
+              <div v-html="faq.answerHtml" class="text-body-1 text-secondary page-text"></div>
+            </template>
+          </v-expansion-panel>
+        </v-expansion-panels>
+      </section>
 
       <div class="text-center mt-8">
         <p class="text-body-1 text-secondary">
@@ -38,6 +40,14 @@
     </v-container>
   </div>
 </template>
+
+<style scoped lang="scss">
+:deep(.v-expansion-panel-title) {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: rgb(var(--v-theme-primary));
+}
+</style>
 
 <script lang="ts" setup>
 import { AppRoutes } from '@/router/routeConfig';
@@ -70,11 +80,3 @@ const faqs = [
   }
 ];
 </script>
-
-<style scoped lang="scss">
-:deep(.v-expansion-panel-title) {
-  font-weight: 600;
-  font-size: 1.1rem;
-  color: rgb(var(--v-theme-primary));
-}
-</style>
