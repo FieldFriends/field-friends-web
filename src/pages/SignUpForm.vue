@@ -332,7 +332,7 @@
 
         <v-snackbar
           v-model="snackbar.isVisible"
-          timeout="SNACKBAR_TIMEOUT"
+          :timeout="SNACKBAR_TIMEOUT"
           location="bottom center"
           class="mb-16"
           :color="snackbar.color"
