@@ -76,6 +76,15 @@ export const Encodings = {
   Utf8: 'utf8',
 } as const;
 
+export const KeyFormats = {
+  Pem: 'pem',
+} as const;
+
+export const KeyTypes = {
+  Spki: 'spki',
+  Pkcs8: 'pkcs8',
+} as const;
+
 export const CryptoConfig = {
   Scrypt: {
     KeyLength: 32,
