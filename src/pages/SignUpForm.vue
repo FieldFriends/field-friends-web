@@ -145,9 +145,7 @@
             <p>
               Tell us why you enjoy it
             </p> 
-            <friend-example>
-              I enjoy bouldering because it's kind of like solving a puzzle while getting a workout.
-            </friend-example>
+            <friend-example>I'm really into bouldering because I like getting active and working out, but bouldering is cool since it also feels like a puzzle!</friend-example>
           </template>
         </friend-textarea>
 
@@ -163,9 +161,7 @@
             <p>
               Feel free to enter a range of activities
             </p>
-            <friend-example>
-              Watching movies at home, going to the bars, and playing basketball.
-            </friend-example>
+            <friend-example>Watching movies at home, going to the bars, and playing basketball.</friend-example>
           </template>
         </friend-textarea>
         
