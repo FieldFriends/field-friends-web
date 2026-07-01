@@ -12,7 +12,7 @@
       <v-select
         v-model="minAffiliation"
         :items="minOptions"
-        :rules="props.minRules"
+        :rules="props.rules"
         :disabled="isDisabled"
         label="Min Class Year"
         variant="underlined"
@@ -24,7 +24,7 @@
       <v-select
         v-model="maxAffiliation"
         :items="maxOptions"
-        :rules="props.maxRules"
+        :rules="props.rules"
         :disabled="isDisabled"
         label="Max Class Year"
         variant="underlined"
@@ -42,8 +42,7 @@ import FriendFormCard from './FriendFormCard.vue';
 import { UNDERGRADUATE_AFFILIATIONS, AFFILIATION_OPTIONS } from '@shared/friendConfig';
 import type { ProfileSubmission } from '@shared/schemas/profileSchema';
 
-const minAffiliation = defineModel<ProfileSubmission['desired_affiliation_min'] | null>('minAffiliation');
-const maxAffiliation = defineModel<ProfileSubmission['desired_affiliation_max'] | null>('maxAffiliation');
+const modelValue = defineModel<string[]>({ required: true, default: () => [] });
 
 type AffiliationSelectOption = {
   title: string;
@@ -56,22 +55,101 @@ type AffiliationSelectOption = {
 type Props = {
   label: string;
   targetAffiliation: ProfileSubmission['affiliation'] | null;
-  minRules?: any[];
-  maxRules?: any[];
+  rules?: any[];
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  minRules: () => [],
-  maxRules: () => []
+  rules: () => []
 });
+
+const getIndex = (val: string) => (UNDERGRADUATE_AFFILIATIONS as readonly string[]).indexOf(val);
+
+const minAffiliation = computed({
+  get: () => {
+    if (!modelValue.value || modelValue.value.length === 0) {
+      return null;
+    }
+
+    const indices = [];
+
+    for (const val of modelValue.value) {
+      const i = getIndex(val);
+
+      if (i !== -1) {
+        indices.push(i);
+      }
+    }
+
+    indices.sort((a, b) => a - b);
+
+    const firstIndex = indices[0];
+
+    if (firstIndex === undefined) {
+      return null;
+    }
+
+    return UNDERGRADUATE_AFFILIATIONS[firstIndex];
+  },
+  set: (newMin) => {
+    if (!newMin || !maxAffiliation.value) {
+      return;
+    }
+
+    updateRange(newMin, maxAffiliation.value);
+  }
+});
+
+const maxAffiliation = computed({
+  get: () => {
+    if (!modelValue.value || modelValue.value.length === 0) {
+      return null;
+    }
+
+    const indices = [];
+    for (const val of modelValue.value) {
+
+      const i = getIndex(val);
+
+      if (i !== -1) {
+        indices.push(i);
+      }
+    }
+
+    indices.sort((a, b) => a - b);
+
+    const lastIndex = indices.at(-1);
+
+    if (lastIndex === undefined) {
+      return null;
+    }
+
+    return UNDERGRADUATE_AFFILIATIONS[lastIndex];
+  },
+  set: (newMax) => {
+    if (!newMax || !minAffiliation.value) {
+      return;
+    }
+
+    updateRange(minAffiliation.value, newMax);
+  }
+});
+
+const updateRange = (minVal: string, maxVal: string) => {
+  const minIdx = getIndex(minVal);
+  const maxIdx = getIndex(maxVal);
+
+  if (minIdx !== -1 && maxIdx !== -1) {
+    const start = Math.min(minIdx, maxIdx);
+    const end = Math.max(minIdx, maxIdx);
+    modelValue.value = UNDERGRADUATE_AFFILIATIONS.slice(start, end + 1) as string[];
+  }
+};
 
 /**
  * The options available for the minimum affiliation dropdown.
- * 
  * Computes an array of items for the select component, assigning the appropriate human-readable
  * label for each class year. Disables options that correspond to class years greater than the
- * user's own class year, as they must be comfortable matching with their own year.
- * 
+ * user's own class year, since they gotta match with their own year.
  * @returns An array of objects containing title, value, and disabled properties.
  */
 const minOptions = computed(() => {
@@ -86,28 +164,28 @@ const minOptions = computed(() => {
     }
   }
   
-  return UNDERGRADUATE_AFFILIATIONS.map((value, index): AffiliationSelectOption => {
-    const option = AFFILIATION_OPTIONS.find((opt) => {
-      return opt.value === value;
-    });
+  const options: AffiliationSelectOption[] = [];
 
-    return {
+  for (const [i, value] of UNDERGRADUATE_AFFILIATIONS.entries()) {
+    const option = AFFILIATION_OPTIONS.find((opt) => opt.value === value);
+
+    options.push({
       title: option ? option.label : value,
       value: value,
       props: {
-        disabled: index > targetIndex
+        disabled: i > targetIndex
       }
-    };
-  });
+    });
+  }
+  
+  return options;
 });
 
 /**
  * The options available for the maximum affiliation dropdown.
- * 
  * Computes an array of items for the select component, assigning the appropriate human-readable
  * label for each class year. Disables options that correspond to class years lesser than the
  * user's own class year, as they must be comfortable matching with their own year.
- * 
  * @returns An array of objects containing title, value, and disabled properties.
  */
 const maxOptions = computed(() => {
@@ -122,24 +200,26 @@ const maxOptions = computed(() => {
     }
   }
   
-  return UNDERGRADUATE_AFFILIATIONS.map((value, index): AffiliationSelectOption => {
-    const option = AFFILIATION_OPTIONS.find((opt) => {
-      return opt.value === value;
-    });
+  const options: AffiliationSelectOption[] = [];
 
-    return {
+  for (const [i, value] of UNDERGRADUATE_AFFILIATIONS.entries()) {
+    const option = AFFILIATION_OPTIONS.find((opt) => opt.value === value);
+
+    options.push({
       title: option ? option.label : value,
       value: value,
       props: {
-        disabled: index < targetIndex
+        disabled: i < targetIndex
       }
-    };
-  });
+    });
+  }
+  
+  return options;
 });
 
 /**
- * Determines if the dropdowns should be completely disabled.
- * The dropdowns are only disabled if the user's target affiliation is null.
+ * Determines if the dropdowns should be disabled.
+ * Dropdowns are only disabled if the user's target affiliation is null.
  * @returns True if the fields should be disabled, false otherwise.
  */
 const isDisabled = computed(() => {

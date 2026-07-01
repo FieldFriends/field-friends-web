@@ -4,7 +4,7 @@ export const useFriendColors = () => {
   const theme = useTheme();
 
   // FriendDev: Get hex code from theme or accept raw hex.
-  const resolveColor = (val: string | undefined) => {
+  const resolveColor = (val: string | undefined): string | undefined => {
     if (!val) {
       return undefined;
     }
@@ -13,7 +13,7 @@ export const useFriendColors = () => {
     const themeColor = theme.current.value.colors[val];
 
     // FriendDev: Either return the hex code for our theme color, or the raw hex the dev entered.
-    return themeColor || val;
+    return (typeof themeColor === 'string' ? themeColor : undefined) || val;
   };
 
   return {

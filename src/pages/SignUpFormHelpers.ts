@@ -1,12 +1,11 @@
 import { Affiliation, UNDERGRADUATE_AFFILIATIONS, AGE_LIMITS } from '@shared/friendConfig';
-import type { ProfileSubmission } from '@shared/schemas/profileSchema';
 import type { FriendFormState } from '@/types/friendFormState';
 
 /**
  * The default offset for the number of neighbor affiliations to include.
  * For example, if the user is a Sophomore, this will include Freshmen and Juniors.
  */
-const DEFAULT_AFFILIATION_NEIGHBOR_OFFSET = 1;
+const DEFAULT_UNDERGRAD_NEIGHBOR_OFFSET = 1;
 
 /**
  * The scaling factor for the penalty for being younger than the cutoff age.
@@ -33,49 +32,21 @@ const DEFAULT_AGE_OFFSET = 3;
 const CUTOFF_AGE = 25;
 
 /**
- * Computes the default minimum matching affiliation based on the target affiliation.
+ * Computes the default matching affiliations for an undergraduate.
  * @param target - The user's target affiliation.
- * @returns The default minimum affiliation value.
+ * @returns An array of default affiliations.
  */
-export const computeDefaultMinAffiliation = (target: string): ProfileSubmission['desired_affiliation_min'] | null => {
-  if (target === Affiliation.GradsAndPros) {
-    return Affiliation.GradsAndPros;
-  }
-
+const computeDefaultUndergradAffiliations = (target: string): string[] => {
   const index = (UNDERGRADUATE_AFFILIATIONS as readonly string[]).indexOf(target);
 
   if (index === -1) {
-    return null;
+    return [];
   }
 
-  if (index - DEFAULT_AFFILIATION_NEIGHBOR_OFFSET >= 0) {
-    return UNDERGRADUATE_AFFILIATIONS[index - DEFAULT_AFFILIATION_NEIGHBOR_OFFSET] as ProfileSubmission['desired_affiliation_min'];
-  }
+  const minIndex = Math.max(0, index - DEFAULT_UNDERGRAD_NEIGHBOR_OFFSET);
+  const maxIndex = Math.min(UNDERGRADUATE_AFFILIATIONS.length - 1, index + DEFAULT_UNDERGRAD_NEIGHBOR_OFFSET);
 
-  return UNDERGRADUATE_AFFILIATIONS[index] as ProfileSubmission['desired_affiliation_min'];
-};
-
-/**
- * Computes the default maximum matching affiliation based on the target affiliation.
- * @param target - The user's target affiliation.
- * @returns The default maximum affiliation value.
- */
-export const computeDefaultMaxAffiliation = (target: string): ProfileSubmission['desired_affiliation_max'] | null => {
-  if (target === Affiliation.GradsAndPros) {
-    return Affiliation.GradsAndPros;
-  }
-
-  const index = (UNDERGRADUATE_AFFILIATIONS as readonly string[]).indexOf(target);
-
-  if (index === -1) {
-    return null;
-  }
-
-  if (index + DEFAULT_AFFILIATION_NEIGHBOR_OFFSET < UNDERGRADUATE_AFFILIATIONS.length) {
-    return UNDERGRADUATE_AFFILIATIONS[index + DEFAULT_AFFILIATION_NEIGHBOR_OFFSET] as ProfileSubmission['desired_affiliation_max'];
-  }
-
-  return UNDERGRADUATE_AFFILIATIONS[index] as ProfileSubmission['desired_affiliation_max'];
+  return UNDERGRADUATE_AFFILIATIONS.slice(minIndex, maxIndex + 1);
 };
 
 /**
@@ -151,32 +122,28 @@ const applyMissingAgeLimits = (state: Partial<FriendFormState>) => {
  * only if the root affiliation field exists and the limits themselves are currently missing.
  * @param state - A partial form state object to normalize.
  */
-const applyMissingAffiliationLimits = (state: Partial<FriendFormState>) => {
+const applyMissingAffiliations = (state: Partial<FriendFormState>) => {
   const { affiliation } = state;
 
   if (!affiliation) {
     return;
   }
 
-  // FriendDev: Limit to grad/pro if they are a grad/pro.
-  if (affiliation === Affiliation.GradsAndPros) {
-    if (state.desired_affiliation_min === null) {
-      state.desired_affiliation_min = Affiliation.GradsAndPros;
-    }
-
-    if (state.desired_affiliation_max === null) {
-      state.desired_affiliation_max = Affiliation.GradsAndPros;
-    }
-
+  if (state.desired_affiliations && state.desired_affiliations.length > 0) {
     return;
   }
 
-  if (state.desired_affiliation_min === null) {
-    state.desired_affiliation_min = computeDefaultMinAffiliation(affiliation);
+  if (isUndergradAffiliation(affiliation)) {
+    state.desired_affiliations = computeDefaultUndergradAffiliations(affiliation);
+    return;
   }
 
-  if (state.desired_affiliation_max === null) {
-    state.desired_affiliation_max = computeDefaultMaxAffiliation(affiliation);
+  if (affiliation === Affiliation.Graduate) {
+    state.desired_affiliations = [Affiliation.Graduate, Affiliation.Staff];
+  } else if (affiliation === Affiliation.Staff) {
+    state.desired_affiliations = [Affiliation.Graduate, Affiliation.Staff, Affiliation.Faculty];
+  } else if (affiliation === Affiliation.Faculty) {
+    state.desired_affiliations = [Affiliation.Faculty, Affiliation.Staff];
   }
 };
 
@@ -187,5 +154,5 @@ const applyMissingAffiliationLimits = (state: Partial<FriendFormState>) => {
  */
 export const applyMissingDerivedFields = (state: Partial<FriendFormState>) => {
   applyMissingAgeLimits(state);
-  applyMissingAffiliationLimits(state);
+  applyMissingAffiliations(state);
 };

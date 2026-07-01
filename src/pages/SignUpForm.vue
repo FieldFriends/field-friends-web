@@ -90,20 +90,30 @@
           </template>
         </friend-age-range>
 
-        <friend-affiliation-match
+        <friend-undergrad-affiliation-match
           v-if="isUndergradAffiliation(form.affiliation)"
-          v-model:min-affiliation="form.desired_affiliation_min"
-          v-model:max-affiliation="form.desired_affiliation_max"
+          v-model="form.desired_affiliations"
           label="Matching Class Years"
           class="mb-4"
           :target-affiliation="form.affiliation"
-          :min-rules="rule('desired_affiliation_min')"
-          :max-rules="rule('desired_affiliation_max')"
+          :rules="rule('desired_affiliations')"
         >
           <template #description>
             Select the class years you're comfortable being matched with
           </template>
-        </friend-affiliation-match>
+        </friend-undergrad-affiliation-match>
+        <friend-non-undergrad-affiliation-match
+          v-else-if="form.affiliation"
+          v-model="form.desired_affiliations"
+          label="Matching Affiliations"
+          class="mb-4"
+          :target-affiliation="form.affiliation"
+          :rules="rule('desired_affiliations')"
+        >
+          <template #description>
+            Select the affiliations you're comfortable being matched with
+          </template>
+        </friend-non-undergrad-affiliation-match>
 
         <v-divider :thickness="2" class="my-8" />
 
@@ -135,9 +145,7 @@
             <p>
               Tell us why you enjoy it
             </p> 
-            <friend-example>
-              I enjoy bouldering because it's kind of like solving a puzzle while getting a workout.
-            </friend-example>
+            <friend-example>I'm really into bouldering because I like getting active and working out, but bouldering is cool since it also feels like a puzzle!</friend-example>
           </template>
         </friend-textarea>
 
@@ -153,9 +161,7 @@
             <p>
               Feel free to enter a range of activities
             </p>
-            <friend-example>
-              Watching movies at home, going to the bars, and playing basketball.
-            </friend-example>
+            <friend-example>Watching movies at home, going to the bars, and playing basketball.</friend-example>
           </template>
         </friend-textarea>
         
@@ -392,7 +398,8 @@ import { ref, reactive, computed, useId, nextTick } from 'vue';
 import FriendSaveLoadToolbar from '@/components/FriendSaveLoadToolbar.vue';
 import FriendTextField from '@/components/FriendTextField.vue';
 import FriendAgeRange from '@/components/FriendAgeRange.vue';
-import FriendAffiliationMatch from '@/components/FriendAffiliationMatch.vue';
+import FriendUndergradAffiliationMatch from '@/components/FriendUndergradAffiliationMatch.vue';
+import FriendNonUndergradAffiliationMatch from '@/components/FriendNonUndergradAffiliationMatch.vue';
 import FriendTextarea from '@/components/FriendTextarea.vue';
 import FriendRadioGroup from '@/components/FriendRadioGroup.vue';
 import FriendExample from '@/components/FriendExample.vue';
@@ -466,8 +473,7 @@ const router = useRouter();
  * @param newAffiliation - The newly selected affiliation.
  */
 const onAffiliationUpdated = (newAffiliation: string) => {
-  form.desired_affiliation_min = null;
-  form.desired_affiliation_max = null;
+  form.desired_affiliations = [];
   
   if (!newAffiliation) {
     return;
