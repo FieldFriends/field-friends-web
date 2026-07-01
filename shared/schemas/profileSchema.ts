@@ -181,7 +181,7 @@ const validateUndergradContinuity = (val: ProfileSubmissionBase, ctx: z.Refineme
 
   if (indices.length > 0) {
     const minIndex = indices[0] ?? 0;
-    const maxIndex = indices.at(-1) ?? 0;
+    const maxIndex = indices[indices.length - 1] ?? 0;
 
     if (maxIndex - minIndex + 1 !== indices.length) {
       ctx.addIssue({

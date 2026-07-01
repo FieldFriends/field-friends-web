@@ -117,7 +117,7 @@ const maxAffiliation = computed({
 
     indices.sort((a, b) => a - b);
 
-    const lastIndex = indices.at(-1);
+    const lastIndex = indices[indices.length - 1];
 
     if (lastIndex === undefined) {
       return null;
