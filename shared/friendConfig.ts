@@ -16,7 +16,9 @@ export const Affiliation = {
   Sophomore: 'Sophomore',
   Junior: 'Junior',
   Senior: 'Senior',
-  GradsAndPros: 'GradsAndPros',
+  Graduate: 'Graduate',
+  Staff: 'Staff',
+  Faculty: 'Faculty',
 } as const;
 
 export type AffiliationValue = typeof Affiliation[keyof typeof Affiliation];
@@ -26,7 +28,9 @@ export const AFFILIATION_OPTIONS = [
   { label: 'Sophomore', value: Affiliation.Sophomore },
   { label: 'Junior', value: Affiliation.Junior },
   { label: 'Senior', value: Affiliation.Senior },
-  { label: 'Graduate & Professional (Masters, Ph.D, Staff)', value: Affiliation.GradsAndPros },
+  { label: 'Graduate Student', value: Affiliation.Graduate },
+  { label: 'Staff', value: Affiliation.Staff },
+  { label: 'Faculty', value: Affiliation.Faculty },
 ] as const;
 
 export const UNDERGRADUATE_AFFILIATIONS = [
@@ -36,14 +40,18 @@ export const UNDERGRADUATE_AFFILIATIONS = [
   Affiliation.Senior,
 ] as const;
 
+export const NON_UNDERGRADUATE_AFFILIATIONS = [
+  Affiliation.Graduate,
+  Affiliation.Staff,
+  Affiliation.Faculty,
+] as const;
+
 export const GENDER_OPTIONS = [
   { label: 'Male', value: 'Male' },
   { label: 'Female', value: 'Female' },
   { label: 'Non-binary', value: 'Nonbinary' },
   { label: 'Other', value: 'Other' },
-
-  // FriendDev: "U" for "Unknown"
-  { label: 'Prefer not to say', value: 'Unknown' },
+  { label: 'Prefer not to say', value: 'Unspecified' },
 ] as const;
 
 export const SOCIAL_ENERGY_OPTIONS = [

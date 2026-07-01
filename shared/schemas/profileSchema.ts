@@ -8,11 +8,13 @@ import {
   MAX_BLOCKED_EMAILS,
   FIELD_MIN_FREETEXT_CHARS,
   FIELD_MAX_FREETEXT_CHARS,
-  Affiliation
+  Affiliation,
+  UNDERGRADUATE_AFFILIATIONS,
+  NON_UNDERGRADUATE_AFFILIATIONS
 } from '../friendConfig.js';
 import { isSelfEmail } from '../utils/emailUtils.js';
 
-export const ProfileSchema = z.object({
+const ProfileSchemaBase = z.object({
   name: z.string()
     .trim()
     .min(1, { message: 'Name is required' })
@@ -73,84 +75,172 @@ export const ProfileSchema = z.object({
     .min(AGE_LIMITS.min, { message: `Must be at least ${AGE_LIMITS.min}` })
     .max(AGE_LIMITS.max, { message: `Must be under ${AGE_LIMITS.max}` }),
 
-  desired_affiliation_min: z.enum(AFFILIATION_VALUES, {
-    error: () => ({ message: 'Minimum class year is required' })
-  }),
+  desired_affiliations: z.array(z.enum(AFFILIATION_VALUES))
+    .min(1, { message: 'You must select at least one match' }),
 
-  desired_affiliation_max: z.enum(AFFILIATION_VALUES, {
-    error: () => ({ message: 'Maximum class year is required' })
-  }),
+}).strict();
 
-}).strict().superRefine((val, ctx) => {
+type ProfileSubmissionBase = z.infer<typeof ProfileSchemaBase>;
+
+export const PROFILE_VALIDATION_MESSAGES = {
+  AGE_MIN_GREATER_THAN_MAX: 'Minimum age must be less than or equal to maximum age.',
+  AGE_MAX_LESS_THAN_MIN: 'Maximum age must be greater than or equal to minimum age.',
+  AGE_MIN_GREATER_THAN_OWN: 'Minimum acceptable age cannot be greater than your own age.',
+  AGE_MAX_LESS_THAN_OWN: 'Maximum acceptable age cannot be less than your own age.',
+  SELF_INCLUSION: 'You must be willing to match with your own affiliation.',
+  UNDERGRAD_EXCLUSION: 'Undergraduates can only match with other undergraduates.',
+  UNDERGRAD_CONTINUITY: 'Undergraduate matches must be a continuous range of class years.',
+  NON_UNDERGRAD_EXCLUSION: 'Graduate students, staff, and faculty cannot match with undergraduates.',
+  GRAD_FACULTY_RESTRICTION: 'Graduate students cannot match with faculty.',
+  FACULTY_GRAD_RESTRICTION: 'Faculty cannot match with graduate students.',
+  BLOCK_OWN_EMAIL: 'You cannot block your own email.'
+} as const;
+
+/**
+ * Validates age limits.
+ * @param val - The form values.
+ * @param ctx - The Zod refinement context.
+ */
+const validateAgeLimits = (val: ProfileSubmissionBase, ctx: z.RefinementCtx) => {
   if (val.desired_age_min > val.desired_age_max) {
     ctx.addIssue({
       code: "custom",
-      message: 'Minimum age must be less than or equal to maximum age',
-      path: ['desired_age_min']
+      message: PROFILE_VALIDATION_MESSAGES.AGE_MIN_GREATER_THAN_MAX,
+      path: ['desired_age_min' satisfies keyof ProfileSubmissionBase]
     });
     ctx.addIssue({
       code: "custom",
-      message: 'Maximum age must be greater than or equal to minimum age',
-      path: ['desired_age_max']
+      message: PROFILE_VALIDATION_MESSAGES.AGE_MAX_LESS_THAN_MIN,
+      path: ['desired_age_max' satisfies keyof ProfileSubmissionBase]
     });
   }
 
   if (val.desired_age_min > val.age) {
     ctx.addIssue({
       code: "custom",
-      message: 'Minimum acceptable age cannot be greater than your own age',
-      path: ['desired_age_min']
+      message: PROFILE_VALIDATION_MESSAGES.AGE_MIN_GREATER_THAN_OWN,
+      path: ['desired_age_min' satisfies keyof ProfileSubmissionBase]
     });
   }
 
   if (val.desired_age_max < val.age) {
     ctx.addIssue({
       code: "custom",
-      message: 'Maximum acceptable age cannot be less than your own age',
-      path: ['desired_age_max']
+      message: PROFILE_VALIDATION_MESSAGES.AGE_MAX_LESS_THAN_OWN,
+      path: ['desired_age_max' satisfies keyof ProfileSubmissionBase]
     });
   }
+};
 
-  const minIndex = AFFILIATION_VALUES.indexOf(val.desired_affiliation_min);
-  const maxIndex = AFFILIATION_VALUES.indexOf(val.desired_affiliation_max);
-  const userIndex = AFFILIATION_VALUES.indexOf(val.affiliation);
-
-  if (minIndex > maxIndex) {
+/**
+ * Validates that the user's own affiliation is included in their desired matches.
+ * @param val - The form values.
+ * @param ctx - The Zod refinement context.
+ */
+const validateSelfInclusion = (val: ProfileSubmissionBase, ctx: z.RefinementCtx) => {
+  if (!val.desired_affiliations.includes(val.affiliation)) {
     ctx.addIssue({
       code: "custom",
-      message: 'Minimum class year must be less than or equal to maximum class year',
-      path: ['desired_affiliation_min']
-    });
-    ctx.addIssue({
-      code: "custom",
-      message: 'Maximum class year must be greater than or equal to minimum class year',
-      path: ['desired_affiliation_max']
+      message: PROFILE_VALIDATION_MESSAGES.SELF_INCLUSION,
+      path: ['desired_affiliations' satisfies keyof ProfileSubmissionBase]
     });
   }
+};
 
-  if (userIndex < minIndex || userIndex > maxIndex) {
-    ctx.addIssue({
-      code: "custom",
-      message: 'You must be willing to match with your own class year',
-      path: ['desired_affiliation_min']
-    });
+/**
+ * Validates that undergraduate matches are continuous and exclusive.
+ * @param val - The form values.
+ * @param ctx - The Zod refinement context.
+ */
+const validateUndergradContinuity = (val: ProfileSubmissionBase, ctx: z.RefinementCtx) => {
+  const isUndergrad = (UNDERGRADUATE_AFFILIATIONS as readonly string[]).includes(val.affiliation);
+
+  if (!isUndergrad) {
+    return;
   }
 
-  if (val.affiliation === Affiliation.GradsAndPros) {
-    if (val.desired_affiliation_min !== Affiliation.GradsAndPros || val.desired_affiliation_max !== Affiliation.GradsAndPros) {
+  // FriendDev: Undergrads can only match with other undergrads.
+  const hasNonUndergrad = val.desired_affiliations.some((affil) =>
+    (NON_UNDERGRADUATE_AFFILIATIONS as readonly string[]).includes(affil)
+  );
+
+  if (hasNonUndergrad) {
+    ctx.addIssue({
+      code: "custom",
+      message: PROFILE_VALIDATION_MESSAGES.UNDERGRAD_EXCLUSION,
+      path: ['desired_affiliations' satisfies keyof ProfileSubmissionBase]
+    });
+    return;
+  }
+
+  // FriendDev: Check continuity using index positions.
+  const indices = val.desired_affiliations
+    .map((affil) => (UNDERGRADUATE_AFFILIATIONS as readonly string[]).indexOf(affil))
+    .filter((index) => index !== -1)
+    .sort((a, b) => a - b);
+
+  if (indices.length > 0) {
+    const minIndex = indices[0] ?? 0;
+    const maxIndex = indices.at(-1) ?? 0;
+
+    if (maxIndex - minIndex + 1 !== indices.length) {
       ctx.addIssue({
         code: "custom",
-        message: 'Graduate and Professional folks can only match with other Graduate and Professional folks',
-        path: ['desired_affiliation_max']
+        message: PROFILE_VALIDATION_MESSAGES.UNDERGRAD_CONTINUITY,
+        path: ['desired_affiliations' satisfies keyof ProfileSubmissionBase]
       });
     }
-  } else if (val.desired_affiliation_min === Affiliation.GradsAndPros || val.desired_affiliation_max === Affiliation.GradsAndPros) {
+  }
+};
+
+/**
+ * Validates that non-undergraduate matches follow exclusive constraints.
+ * @param val - The form values.
+ * @param ctx - The Zod refinement context.
+ */
+const validateNonUndergradExclusions = (val: ProfileSubmissionBase, ctx: z.RefinementCtx) => {
+  const isNonUndergrad = (NON_UNDERGRADUATE_AFFILIATIONS as readonly string[]).includes(val.affiliation);
+
+  if (!isNonUndergrad) {
+    return;
+  }
+
+  // FriendDev: Non-undergrads can't match with undergrads.
+  const hasUndergrad = val.desired_affiliations.some((affil) =>
+    (UNDERGRADUATE_AFFILIATIONS as readonly string[]).includes(affil)
+  );
+
+  if (hasUndergrad) {
     ctx.addIssue({
       code: "custom",
-      message: 'Undergraduates cannot match with Graduate and Professional folks',
-      path: ['desired_affiliation_max']
+      message: PROFILE_VALIDATION_MESSAGES.NON_UNDERGRAD_EXCLUSION,
+      path: ['desired_affiliations' satisfies keyof ProfileSubmissionBase]
     });
   }
+
+  // FriendDev: Role-specific restrictions.
+  if (val.affiliation === Affiliation.Graduate && val.desired_affiliations.includes(Affiliation.Faculty)) {
+    ctx.addIssue({
+      code: "custom",
+      message: PROFILE_VALIDATION_MESSAGES.GRAD_FACULTY_RESTRICTION,
+      path: ['desired_affiliations' satisfies keyof ProfileSubmissionBase]
+    });
+  }
+
+  if (val.affiliation === Affiliation.Faculty && val.desired_affiliations.includes(Affiliation.Graduate)) {
+    ctx.addIssue({
+      code: "custom",
+      message: PROFILE_VALIDATION_MESSAGES.FACULTY_GRAD_RESTRICTION,
+      path: ['desired_affiliations' satisfies keyof ProfileSubmissionBase]
+    });
+  }
+};
+
+export const ProfileSchema = ProfileSchemaBase.superRefine((val, ctx) => {
+  validateAgeLimits(val, ctx);
+  validateSelfInclusion(val, ctx);
+  validateUndergradContinuity(val, ctx);
+  validateNonUndergradExclusions(val, ctx);
 });
 
 export type ProfileSubmission = z.infer<typeof ProfileSchema>;
@@ -172,8 +262,8 @@ export const createProfileSchema = (userEmail?: string | null) => {
       if (isSelfEmail(email, userEmail)) {
         ctx.addIssue({
           code: "custom",
-          message: 'You cannot block your own email',
-          path: ['blocked_emails', index]
+          message: PROFILE_VALIDATION_MESSAGES.BLOCK_OWN_EMAIL,
+          path: ['blocked_emails' satisfies keyof ProfileSubmissionBase, index]
         });
       }
     });

@@ -67,7 +67,7 @@ const routes: RouteRecordRaw[] = [
     path: AppRoutes.Form.path,
     name: AppRoutes.Form.name,
     component: () => import('@/pages/SignUpForm.vue'),
-    beforeEnter: [requireAuth, requireFormOpen, requireNotSubmitted],
+    // beforeEnter: [requireAuth, requireFormOpen, requireNotSubmitted],
   },
   {
     path: AppRoutes.Closed.path,

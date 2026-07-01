@@ -11,6 +11,7 @@
   ],
   "compilerOptions": {
     "composite": true,
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "paths": {
       "@vercel/node": [
