@@ -15,11 +15,32 @@ export interface KemEncapsulationResult {
 }
 
 /**
+ * Cleans and normalizes environment variable key strings for OpenSSL.
+ * @param key - The raw key string from the environment variable.
+ * @returns The normalized, PEM-compliant key string.
+ */
+const formatKeyString = (key: string): string => {
+  // FriendDev: Strip surrounding quotes if present.
+  let cleaned = key.replaceAll(/^["']|["']$/g, '');
+
+  // FriendDev: Normalize Windows literal carriage returns.
+  cleaned = cleaned.replaceAll(String.raw`\r\n`, '\n');
+
+  // FriendDev: Normalize standard literal newlines.
+  cleaned = cleaned.replaceAll(String.raw`\n`, '\n');
+
+  // FriendDev: Strip actual carriage returns.
+  cleaned = cleaned.replaceAll('\r', '');
+
+  return cleaned.trim();
+};
+
+/**
  * Retrieves the RSA public key as a string.
  * @returns The RSA public key string.
  */
 export const getPublicKey = (): string => {
-  return SERVER_ENV.FIELD_FRIENDS_PUBLIC_KEY.replaceAll(String.raw`\n`, '\n').trim();
+  return formatKeyString(SERVER_ENV.FIELD_FRIENDS_PUBLIC_KEY);
 };
 
 /**
@@ -27,7 +48,7 @@ export const getPublicKey = (): string => {
  * @returns The ML-KEM public key string.
  */
 const getMlKemPublicKey = (): string => {
-  return SERVER_ENV.FIELD_FRIENDS_MLKEM_PUBLIC_KEY.replaceAll(String.raw`\n`, '\n').trim();
+  return formatKeyString(SERVER_ENV.FIELD_FRIENDS_MLKEM_PUBLIC_KEY);
 };
 
 // FriendDev: Pre-compute the KeyObjects for our public keys at module load time.
@@ -43,8 +64,7 @@ const MLKEM_PUBLIC_KEY: crypto.KeyObject = crypto.createPublicKey(getMlKemPublic
 export const startEncryptionSession = async (): Promise<EncryptionSession> => {
 
   // FriendDev: Generate random entropy for the classical RSA portion.
-  //            This generates cryptographically strong pseudorandom data
-  //            that will be combined with the post-quantum secret later.
+  //            This generates pseudorandom data that we combine with the post-quantum secret later.
   const rsaSecret = crypto.randomBytes(CryptoConfig.Session.AesKeyLength);
 
   // FriendDev: Configure RSA encryption with optimal asymmetric
