@@ -236,14 +236,27 @@ const validateNonUndergradExclusions = (val: ProfileSubmissionBase, ctx: z.Refin
   }
 };
 
-export const ProfileSchema = ProfileSchemaBase.superRefine((val, ctx) => {
+const applyProfileValidations = <T extends ProfileSubmissionBase>(val: T, ctx: z.RefinementCtx) => {
   validateAgeLimits(val, ctx);
   validateSelfInclusion(val, ctx);
   validateUndergradContinuity(val, ctx);
   validateNonUndergradExclusions(val, ctx);
-});
+};
+
+export const ProfileSchema = ProfileSchemaBase.superRefine(applyProfileValidations);
 
 export type ProfileSubmission = z.infer<typeof ProfileSchema>;
+
+export const EncryptedPayloadSchemaBase = ProfileSchemaBase.extend({
+  email: z.string()
+    .trim()
+    .toLowerCase()
+    .regex(EMAIL_REGEX, { message: 'Must be a valid @illinois.edu email' })
+});
+
+export const EncryptedPayloadSchema = EncryptedPayloadSchemaBase.superRefine(applyProfileValidations);
+
+export type EncryptedPayload = z.infer<typeof EncryptedPayloadSchema>;
 
 /**
  * Creates a context-aware ProfileSchema that prevents users from blocking their own email.

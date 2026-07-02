@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { encryptWithAes, startEncryptionSession } from './_utils/crypto.js';
 import { hashResponseId } from './_utils/hashing.js';
-import { createProfileSchema } from '.././shared/schemas/profileSchema.js';
+import { createProfileSchema, EncryptedPayloadSchema } from '.././shared/schemas/profileSchema.js';
 import { z } from 'zod';
 import { httpBadRequest, httpInternalServerError, httpMethodNotAllowed, httpOk } from './_utils/http.js';
 import { authenticateUser, checkUserBanned } from './_utils/auth.js';
@@ -55,11 +55,24 @@ export default async function handler(request: VercelRequest, response: VercelRe
 
     const formData = parseResult.data;
 
+    // FriendDev: Inject the user's email into the payload and validate it.
+    const payloadParseResult = EncryptedPayloadSchema.safeParse({
+      ...formData,
+      email: user.email,
+    });
+
+    if (!payloadParseResult.success) {
+      console.error('API->PAYLOAD_ERROR:', payloadParseResult.error);
+      return httpInternalServerError(response);
+    }
+
+    const finalPayload = payloadParseResult.data;
+
     // FriendDev: Begin Hybrid KEM session.
     const encryptionSession = await startEncryptionSession();
 
     // FriendDev: Stringify and encrypt the entire payload.
-    const jsonPayload = JSON.stringify(formData);
+    const jsonPayload = JSON.stringify(finalPayload);
     const encryptedPayload = encryptWithAes(jsonPayload, encryptionSession.derivedSessionKey);
 
     const { error: dbError } = await saveSurveyToDatabase(user.id, encryptionSession, encryptedPayload);
