@@ -145,7 +145,7 @@
             <p>
               Tell us why you enjoy it
             </p> 
-            <friend-example>I'm really into bouldering because I like getting active and working out, but bouldering is cool since it also feels like a puzzle</friend-example>
+            <friend-example>I'm really into bouldering because I like getting active and working out, but bouldering is cool since it also feels like a puzzle.</friend-example>
           </template>
         </friend-textarea>
 
