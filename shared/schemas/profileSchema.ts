@@ -251,7 +251,8 @@ export const EncryptedPayloadSchemaBase = ProfileSchemaBase.extend({
   email: z.string()
     .trim()
     .toLowerCase()
-    .regex(EMAIL_REGEX, { message: 'Must be a valid @illinois.edu email' })
+    .regex(EMAIL_REGEX, { message: 'Must be a valid @illinois.edu email' }),
+  user_id: z.uuid()
 });
 
 export const EncryptedPayloadSchema = EncryptedPayloadSchemaBase.superRefine(applyProfileValidations);

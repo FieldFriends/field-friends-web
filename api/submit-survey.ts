@@ -55,10 +55,11 @@ export default async function handler(request: VercelRequest, response: VercelRe
 
     const formData = parseResult.data;
 
-    // FriendDev: Inject the user's email into the payload and validate it.
+    // FriendDev: Inject the user's email and user_id into the payload and validate it.
     const payloadParseResult = EncryptedPayloadSchema.safeParse({
       ...formData,
       email: user.email,
+      user_id: user.id,
     });
 
     if (!payloadParseResult.success) {
