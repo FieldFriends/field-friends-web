@@ -8,30 +8,33 @@
       <slot name="description" />
     </template>
     
-    <div class="d-flex flex-column flex-sm-row ga-4 w-100 mt-2">
-      <v-select
-        v-model="minAffiliation"
-        :items="minOptions"
-        :rules="props.rules"
-        :disabled="isDisabled"
-        label="Min Class Year"
-        variant="underlined"
-        color="primary"
-        hide-details="auto"
-        class="flex-1-1-100"
-      />
-      
-      <v-select
-        v-model="maxAffiliation"
-        :items="maxOptions"
-        :rules="props.rules"
-        :disabled="isDisabled"
-        label="Max Class Year"
-        variant="underlined"
-        color="primary"
-        hide-details="auto"
-        class="flex-1-1-100"
-      />
+    <div class="d-flex flex-column w-100 mt-2">
+      <!-- FriendDev: Use hidden input to attach validation rules to entire group. -->
+      <v-input :rules="props.rules" :model-value="modelValue" hide-details="auto">
+        <div class="d-flex flex-column flex-sm-row ga-4 w-100">
+          <v-select
+            v-model="minAffiliation"
+            :items="minOptions"
+            :disabled="isDisabled"
+            label="Min Class Year"
+            variant="underlined"
+            color="primary"
+            hide-details="auto"
+            class="flex-1-1-100"
+          />
+          
+          <v-select
+            v-model="maxAffiliation"
+            :items="maxOptions"
+            :disabled="isDisabled"
+            label="Max Class Year"
+            variant="underlined"
+            color="primary"
+            hide-details="auto"
+            class="flex-1-1-100"
+          />
+        </div>
+      </v-input>
     </div>
   </friend-form-card>
 </template>
