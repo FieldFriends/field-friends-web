@@ -122,6 +122,28 @@ describe('ProfileSchema', () => {
         expect(result.error.issues.some(issue => issue.message === PROFILE_VALIDATION_MESSAGES.FACULTY_GRAD_RESTRICTION)).toBe(true);
       }
     });
+
+    it('should pass if alum tries to match with grads, staff, and faculty', () => {
+      const data = getValidBaseData();
+      data.affiliation = Affiliation.Alum;
+      data.desired_affiliations = [Affiliation.Alum, Affiliation.Graduate, Affiliation.Staff, Affiliation.Faculty];
+
+      const result = ProfileSchema.safeParse(data);
+      expect(result.success).toBe(true);
+    });
+
+    it('should fail if alum tries to match with undergrads', () => {
+      const data = getValidBaseData();
+      data.affiliation = Affiliation.Alum;
+      data.desired_affiliations = [Affiliation.Alum, Affiliation.Senior];
+
+      const result = ProfileSchema.safeParse(data);
+      expect(result.success).toBe(false);
+
+      if (!result.success) {
+        expect(result.error.issues.some(issue => issue.message === PROFILE_VALIDATION_MESSAGES.NON_UNDERGRAD_EXCLUSION)).toBe(true);
+      }
+    });
   });
 
   describe('createProfileSchema', () => {

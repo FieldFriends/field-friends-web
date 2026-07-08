@@ -55,21 +55,11 @@
           />
         </friend-radio-group>
 
-        <friend-radio-group
+        <friend-affiliation-select
           v-model="form.affiliation"
           @update:model-value="onAffiliationUpdated"
-          class="mb-4"
-          label="University Affiliation"
-          :shared="false"
           :rules="rule('affiliation')"
-        >
-          <v-radio 
-            v-for="opt in AFFILIATION_OPTIONS" 
-            :key="opt.value" 
-            :label="opt.label" 
-            :value="opt.value"
-          />
-        </friend-radio-group>
+        />
 
         <v-divider :thickness="2" class="my-8" />
 
@@ -398,6 +388,7 @@ import { ref, reactive, computed, useId, nextTick } from 'vue';
 import FriendSaveLoadToolbar from '@/components/FriendSaveLoadToolbar.vue';
 import FriendTextField from '@/components/FriendTextField.vue';
 import FriendAgeRange from '@/components/FriendAgeRange.vue';
+import FriendAffiliationSelect from '@/components/FriendAffiliationSelect.vue';
 import FriendUndergradAffiliationMatch from '@/components/FriendUndergradAffiliationMatch.vue';
 import FriendNonUndergradAffiliationMatch from '@/components/FriendNonUndergradAffiliationMatch.vue';
 import FriendTextarea from '@/components/FriendTextarea.vue';
@@ -425,7 +416,7 @@ import { useAuthStore } from '@/stores/auth';
 import { VForm } from 'vuetify/components';
 import { 
   applyMissingDerivedFields,
-  isUndergradAffiliation 
+  isUndergradAffiliation
 } from './SignUpFormHelpers';
 
 const { exportToJSON, importFromJSON } = useFormIO();
@@ -472,7 +463,11 @@ const router = useRouter();
  * Handle affiliation updates from the UI and reset dependent matching fields.
  * @param newAffiliation - The newly selected affiliation.
  */
-const onAffiliationUpdated = (newAffiliation: string) => {
+const onAffiliationUpdated = (newAffiliation?: string | null) => {
+  if (!newAffiliation) {
+     return;
+  }
+  
   form.desired_affiliations = [];
   
   if (!newAffiliation) {

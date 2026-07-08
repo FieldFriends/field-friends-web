@@ -19,7 +19,11 @@
         bg-color="card"
         hide-details="auto"
         :aria-describedby="descriptionId"
-      />
+      >
+        <template v-if="$slots.item" #item="slotData">
+          <slot name="item" v-bind="slotData" />
+        </template>
+      </v-select>
 
       <slot />
     </template>

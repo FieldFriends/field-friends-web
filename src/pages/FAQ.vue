@@ -56,7 +56,7 @@ import { AGE_LIMITS } from '@shared/friendConfig';
 const faqs = [
   {
     question: "Who can use Field Friends?",
-    answerHtml: `Anyone in the UIUC community with a valid <strong>@illinois.edu</strong> email address, including undergraduates, graduate students, staff, and faculty. Field Friends is currently limited to ages ${AGE_LIMITS.min}&ndash;${AGE_LIMITS.max}.`
+    answerHtml: `Anyone in the UIUC community with a valid <strong>@illinois.edu</strong> email address, including undergraduates, graduate students, staff, faculty, and alums. Field Friends is currently limited to ages ${AGE_LIMITS.min}&ndash;${AGE_LIMITS.max}.`
   },
   {
     question: "How does the matching algorithm work?",

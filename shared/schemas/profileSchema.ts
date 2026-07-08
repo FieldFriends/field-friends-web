@@ -90,7 +90,7 @@ export const PROFILE_VALIDATION_MESSAGES = {
   SELF_INCLUSION: 'You must be willing to match with your own affiliation.',
   UNDERGRAD_EXCLUSION: 'Undergraduates can only match with other undergraduates.',
   UNDERGRAD_CONTINUITY: 'Undergraduate matches must be a continuous range of class years.',
-  NON_UNDERGRAD_EXCLUSION: 'Graduate students, staff, and faculty cannot match with undergraduates.',
+  NON_UNDERGRAD_EXCLUSION: 'Non-undergraduates cannot match with undergraduates.',
   GRAD_FACULTY_RESTRICTION: 'Graduate students cannot match with faculty.',
   FACULTY_GRAD_RESTRICTION: 'Faculty cannot match with graduate students.',
   BLOCK_OWN_EMAIL: 'You cannot block your own email.'

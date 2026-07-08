@@ -1,5 +1,11 @@
-import { Affiliation, UNDERGRADUATE_AFFILIATIONS, AGE_LIMITS } from '@shared/friendConfig';
+import { Affiliation, UNDERGRADUATE_AFFILIATIONS, NON_UNDERGRADUATE_AFFILIATIONS, AFFILIATION_OPTIONS, AGE_LIMITS } from '@shared/friendConfig';
 import type { FriendFormState } from '@/types/friendFormState';
+import {
+  type SelectMenuElement,
+  createSelectHeader,
+  createSelectDivider,
+  createSelectOption
+} from '@/types/ui';
 
 /**
  * The default offset for the number of neighbor affiliations to include.
@@ -139,11 +145,13 @@ const applyMissingAffiliations = (state: Partial<FriendFormState>) => {
   }
 
   if (affiliation === Affiliation.Graduate) {
-    state.desired_affiliations = [Affiliation.Graduate, Affiliation.Staff];
+    state.desired_affiliations = [Affiliation.Graduate, Affiliation.Staff, Affiliation.Alum];
   } else if (affiliation === Affiliation.Staff) {
-    state.desired_affiliations = [Affiliation.Graduate, Affiliation.Staff, Affiliation.Faculty];
+    state.desired_affiliations = [Affiliation.Graduate, Affiliation.Staff, Affiliation.Faculty, Affiliation.Alum];
   } else if (affiliation === Affiliation.Faculty) {
-    state.desired_affiliations = [Affiliation.Faculty, Affiliation.Staff];
+    state.desired_affiliations = [Affiliation.Faculty, Affiliation.Staff, Affiliation.Alum];
+  } else if (affiliation === Affiliation.Alum) {
+    state.desired_affiliations = [Affiliation.Graduate, Affiliation.Staff, Affiliation.Faculty, Affiliation.Alum];
   }
 };
 
@@ -155,4 +163,33 @@ const applyMissingAffiliations = (state: Partial<FriendFormState>) => {
 export const applyMissingDerivedFields = (state: Partial<FriendFormState>) => {
   applyMissingAgeLimits(state);
   applyMissingAffiliations(state);
+};
+
+/**
+ * Dynamically generates a grouped list of affiliation options for a Select component.
+ * It uses strict typing to avoid magic strings for separators.
+ */
+export const generateAffiliationSelectItems = (): SelectMenuElement[] => {
+  const items: SelectMenuElement[] = [];
+
+  items.push(createSelectHeader('Undergraduates'));
+
+  for (const affil of UNDERGRADUATE_AFFILIATIONS) {
+    const option = AFFILIATION_OPTIONS.find(opt => opt.value === affil);
+    if (option) {
+      items.push(createSelectOption(option.label, option.value));
+    }
+  }
+
+  items.push(createSelectDivider());
+  items.push(createSelectHeader('Non-undergraduates'));
+
+  for (const affil of NON_UNDERGRADUATE_AFFILIATIONS) {
+    const option = AFFILIATION_OPTIONS.find(opt => opt.value === affil);
+    if (option) {
+      items.push(createSelectOption(option.label, option.value));
+    }
+  }
+
+  return items;
 };

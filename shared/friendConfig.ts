@@ -19,6 +19,7 @@ export const Affiliation = {
   Graduate: 'Graduate',
   Staff: 'Staff',
   Faculty: 'Faculty',
+  Alum: 'Alum',
 } as const;
 
 export type AffiliationValue = typeof Affiliation[keyof typeof Affiliation];
@@ -31,6 +32,7 @@ export const AFFILIATION_OPTIONS = [
   { label: 'Graduate Student', value: Affiliation.Graduate },
   { label: 'Staff', value: Affiliation.Staff },
   { label: 'Faculty', value: Affiliation.Faculty },
+  { label: 'Alum', value: Affiliation.Alum },
 ] as const;
 
 export const UNDERGRADUATE_AFFILIATIONS = [
@@ -44,6 +46,7 @@ export const NON_UNDERGRADUATE_AFFILIATIONS = [
   Affiliation.Graduate,
   Affiliation.Staff,
   Affiliation.Faculty,
+  Affiliation.Alum,
 ] as const;
 
 export const GENDER_OPTIONS = [

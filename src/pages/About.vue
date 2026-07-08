@@ -70,7 +70,7 @@
             </p>
             <p class="mb-0">
               Our algorithm enforces strict rules to ensure safe and balanced gender representation within every group.
-              Undergrads get granular control over which class years they're comfortable being matched with, while graduate students, staff, and faculty match within their own interconnected pools (though grad students and faculty can't be matched together).
+              Undergrads get granular control over which class years they're comfortable being matched with, while graduate students, staff, faculty, and alums match within their own interconnected pools (though grad students and faculty can't be matched together).
               Additionally, you can select which age ranges you're comfortable being matched with.
             </p>
           </li>
