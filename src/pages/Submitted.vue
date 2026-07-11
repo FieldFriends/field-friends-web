@@ -31,7 +31,7 @@
       <match-delivery-notice
         :is-loading="configStore.loading || !configStore.isAppStateLoaded"
         :user-email="userEmail"
-        :deletion-date-string="getDeletionDateString"
+        :match-date-string="getMatchDateString"
       />
     </div>
   </v-container>
@@ -48,7 +48,7 @@ import MatchDeliveryNotice from '@/components/MatchDeliveryNotice.vue';
 const authStore = useAuthStore();
 const userEmail = computed(() => authStore.session?.user?.email || '');
 const configStore = useConfigStore();
-const { getDeletionDateString, getMatchDateString } = useWindowDates();
+const { getMatchDateString } = useWindowDates();
 </script>
 
 <style scoped lang="scss">

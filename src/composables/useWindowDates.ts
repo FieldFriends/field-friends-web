@@ -48,24 +48,10 @@ export function useWindowDates() {
     return getLongDateString(dayAfter);
   });
 
-  const getDeletionDateString = computed(() => {
-    const windowEndDate = configStore.windowEndDate;
-
-    if (windowEndDate === null) {
-      return null;
-    }
-
-    const dayAfter: Date = new Date(windowEndDate);
-    dayAfter.setDate(dayAfter.getDate() + 1);
-
-    return getLongDateString(dayAfter);
-  });
-
   return {
     getWindowStartDateTimeString,
     getWindowEndDateTimeString,
     getWindowEndDateString,
-    getMatchDateString,
-    getDeletionDateString
+    getMatchDateString
   };
 }

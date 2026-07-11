@@ -55,7 +55,7 @@
               <match-delivery-notice
                 :is-loading="configStore.loading || !configStore.isAppStateLoaded"
                 :user-email="userEmail"
-                :deletion-date-string="getDeletionDateString"
+                :match-date-string="getMatchDateString"
               />
             </div>
 
@@ -191,7 +191,7 @@ import { useWindowDates } from '@/composables/useWindowDates';
 import MatchDeliveryNotice from '@/components/MatchDeliveryNotice.vue';
 
 const { mobile } = useDisplay();
-const { getDeletionDateString } = useWindowDates();
+const { getMatchDateString } = useWindowDates();
 const store = useAuthStore();
 const configStore = useConfigStore();
 const surveyStore = useSurveyStore();
