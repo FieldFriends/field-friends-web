@@ -14,6 +14,9 @@
         <p class="text-body-1 text-secondary">
           Sign-ups will close on <span class="font-weight-bold">{{ getWindowEndDateString }}</span>.
         </p>
+        <p class="text-body-1 text-secondary mt-2">
+          Matches will be sent out on <span class="font-weight-bold">{{ getMatchDateString }}</span>.
+        </p>
       </template>
 
       <!-- App State: Scheduled -->
@@ -39,5 +42,5 @@ const configStore = useConfigStore();
 
 const appState = computed(() => configStore.appState);
 
-const { getWindowStartDateTimeString: getWindowStartDateString, getWindowEndDateTimeString: getWindowEndDateString } = useWindowDates();
+const { getWindowStartDateTimeString: getWindowStartDateString, getWindowEndDateTimeString: getWindowEndDateString, getMatchDateString } = useWindowDates();
 </script>

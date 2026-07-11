@@ -24,7 +24,7 @@
           </v-col>
         </v-row>
         
-        <MatchingInfo />
+        <matching-info />
       </template>
 
       <v-row justify="center" class="w-100 mb-12">
