@@ -14,7 +14,7 @@
         <p class="text-body-1 text-secondary">
           Sign-ups will close on <span class="font-weight-bold">{{ getWindowEndDateString }}</span>.
         </p>
-        <p class="text-body-1 text-secondary mt-2">
+        <p class="text-body-1 text-secondary">
           Matches will be sent out on {{ getMatchDateString }}.
         </p>
       </template>
