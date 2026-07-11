@@ -1,5 +1,5 @@
 <template>
-  <p class="text-body-2 text-secondary font-italic mt-4 text-center">
+  <p class="text-body-2 text-secondary mt-4 text-center">
     <template v-if="props.isLoading">
       <v-skeleton-loader type="text" class="mx-auto" width="300" />
     </template>
