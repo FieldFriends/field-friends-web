@@ -28,25 +28,27 @@
         />
       </router-link>
 
-      <p class="text-body-2 text-secondary font-italic mt-4">
-        <template v-if="configStore.loading || !configStore.isAppStateLoaded">
-          <v-skeleton-loader type="paragraph" class="mx-auto" width="300" />
-        </template>
-        <template v-else>
-          Your Field Friends account will automatically be deleted on <strong>{{ getWindowEndDateString }}</strong>.
-        </template>
-      </p>
+      <match-delivery-notice
+        :is-loading="configStore.loading || !configStore.isAppStateLoaded"
+        :user-email="userEmail"
+        :deletion-date-string="getDeletionDateString"
+      />
     </div>
   </v-container>
 </template>
 
 <script lang="ts" setup>
+import { computed } from 'vue';
 import { AppRoutes } from '@/router/routeConfig';
 import { useWindowDates } from '@/composables/useWindowDates';
 import { useConfigStore } from '@/stores/config';
+import { useAuthStore } from '@/stores/auth';
+import MatchDeliveryNotice from '@/components/MatchDeliveryNotice.vue';
 
+const authStore = useAuthStore();
+const userEmail = computed(() => authStore.session?.user?.email || '');
 const configStore = useConfigStore();
-const { getWindowEndDateString, getMatchDateString } = useWindowDates();
+const { getDeletionDateString, getMatchDateString } = useWindowDates();
 </script>
 
 <style scoped lang="scss">

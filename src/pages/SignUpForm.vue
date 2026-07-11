@@ -158,7 +158,7 @@
         <friend-textarea
           v-model="form.introduction"
           class="mb-4"
-          label="How do you want to be introduced to your group?"
+          label="How do you want to introduce yourself to your group?"
           shared
           :rules="rule('introduction')"
           :max-rows="10"

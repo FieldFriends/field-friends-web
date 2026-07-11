@@ -52,17 +52,13 @@
                   Because of this, we can't display your responses.
                 </v-alert>
               </div>
-              <p class="text-body-2 text-secondary font-italic mt-4 text-center">
-                <template v-if="configStore.loading || !configStore.isAppStateLoaded">
-                  <v-skeleton-loader type="text" class="mx-auto" width="300" />
-                </template>
-                <template v-else>
-                  Your Field Friends account will automatically be deleted on <strong>{{ getWindowEndDateString }}</strong>.
-                </template>
-              </p>
+              <match-delivery-notice
+                :is-loading="configStore.loading || !configStore.isAppStateLoaded"
+                :user-email="userEmail"
+                :deletion-date-string="getDeletionDateString"
+              />
             </div>
 
-            <!-- <v-divider class="border-opacity-25" color="secondary" /> -->
             <div class="text-center mt-0 pt-0">
               <template v-if="configStore.isAcceptingResponses">
                 <template v-if="hasSubmitted">
@@ -192,9 +188,10 @@ import { AppRoutes } from '@/router/routeConfig';
 import { useSurveyStore } from '@/stores/survey';
 import { hasUserSubmitted } from '@/utils/storeUtils';
 import { useWindowDates } from '@/composables/useWindowDates';
+import MatchDeliveryNotice from '@/components/MatchDeliveryNotice.vue';
 
 const { mobile } = useDisplay();
-const { getWindowEndDateString } = useWindowDates();
+const { getDeletionDateString } = useWindowDates();
 const store = useAuthStore();
 const configStore = useConfigStore();
 const surveyStore = useSurveyStore();
