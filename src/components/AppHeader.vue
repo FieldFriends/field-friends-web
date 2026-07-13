@@ -103,7 +103,7 @@
       @click.stop="drawer = !drawer"
     />
 
-    <router-link :to="AppRoutes.Home.path" class="text-none text-h5 font-weight-bold font-playfair px-0 text-decoration-none text-primary">
+    <router-link :to="AppRoutes.Home.path" class="text-none text-h6 font-weight-bold font-playfair px-0 text-decoration-none text-primary">
       Field Friends
     </router-link>
 
