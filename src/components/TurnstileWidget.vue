@@ -1,12 +1,21 @@
 <template>
-  <div class="turnstile-widget d-flex justify-center my-0">
-    <div ref="widgetContainer" />
+  <div class="turnstile-wrapper d-flex justify-center my-0">
+    <div 
+      class="turnstile-widget"
+      :class="{ 'turnstile-widget--hidden': !isInteractive }"
+    >
+      <div ref="widgetContainer" />
+    </div>
   </div>
 </template>
 
 <style scoped>
-.turnstile-widget {
+.turnstile-wrapper {
   min-height: 65px;
+}
+
+.turnstile-widget--hidden {
+  display: none !important;
 }
 </style>
 
@@ -33,6 +42,7 @@ const emit = defineEmits<{
 
 const widgetContainer = ref<HTMLElement | null>(null);
 const widgetId = ref<string | null>(null);
+const isInteractive = ref(false);
 
 const renderWidget = () => {
   if (!widgetContainer.value || !props.siteKey || !getTurnstile()) {
@@ -45,6 +55,13 @@ const renderWidget = () => {
       callback: (token: string) => emit('token', token),
       'expired-callback': () => emit('expired'),
       'error-callback': (err: any) => emit('error', err),
+      // FriendDev: Hide container when non-interactive to prevent capturing keyboard focus.
+      'before-interactive-callback': () => {
+        isInteractive.value = true;
+      },
+      // 'after-interactive-callback': () => {
+      //   isInteractive.value = false;
+      // },
       theme: 'light',
       appearance: 'interaction-only'
     });
@@ -59,6 +76,7 @@ const renderWidget = () => {
 
 const reset = () => {
   if (widgetId.value !== null && getTurnstile()) {
+    isInteractive.value = false;
     getTurnstile().reset(widgetId.value);
   }
 };

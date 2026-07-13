@@ -31,6 +31,7 @@ declare module 'vue' {
     FriendUndergradAffiliationMatch: typeof import('./components/FriendUndergradAffiliationMatch.vue')['default']
     LoginStepEmail: typeof import('./components/login/LoginStepEmail.vue')['default']
     LoginStepOtp: typeof import('./components/login/LoginStepOtp.vue')['default']
+    MatchDeliveryNotice: typeof import('./components/MatchDeliveryNotice.vue')['default']
     MatchingInfo: typeof import('./components/MatchingInfo.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
