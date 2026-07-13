@@ -40,23 +40,20 @@
                 We have your submission.
               </h2>
 
-              <div class="d-flex justify-center">
-                <v-alert
-                  class="mt-6"
-                  variant="tonal"
-                  color="primary"
-                  icon="mdi-shield-lock-outline"
-                  :max-width="600"
-                >
-                  Your form submission has been encrypted and de-identified.
-                  Because of this, we can't display your responses.
-                </v-alert>
+              <div class="text-center mx-auto mt-1 max-width-650">
+                Your form submission has been encrypted and de-identified.
+                Because of this, we can't display your responses.
               </div>
-              <match-delivery-notice
-                :is-loading="configStore.loading || !configStore.isAppStateLoaded"
-                :user-email="userEmail"
-                :match-date-string="getMatchDateString"
-              />
+
+              <v-divider class="my-6 max-width-500 mx-auto" color="secondary" /> 
+
+              <div class="max-width-500 mt-4 mx-auto">
+                <match-delivery-notice
+                  :is-loading="configStore.loading || !configStore.isAppStateLoaded"
+                  :user-email="userEmail"
+                  :match-date-string="getMatchDateString"
+                />
+              </div>
             </div>
 
             <div class="text-center mt-0 pt-0">
@@ -177,6 +174,16 @@
     </v-snackbar>
   </div>
 </template>
+
+<style scoped lang="scss">
+.max-width-650 {
+  max-width: 650px;
+}
+
+.max-width-500 {
+  max-width: 500px;
+}
+</style>
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
