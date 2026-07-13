@@ -103,29 +103,23 @@
       @click.stop="drawer = !drawer"
     />
 
-    <v-btn
-      variant="text"
-      :ripple="false"
-      class="text-none font-weight-bold font-playfair px-0"
-      color="primary"
-      @click="router.push(AppRoutes.Home.path)"
-    >
+    <router-link :to="AppRoutes.Home.path" class="text-none text-h5 font-weight-bold font-playfair px-0 text-decoration-none text-primary">
       Field Friends
-    </v-btn>
+    </router-link>
 
     <v-spacer />
 
     <div class="d-none d-sm-flex align-center">
-      <v-btn variant="text" :to="AppRoutes.Home.path" class="text-none">Home</v-btn>
-      <v-btn variant="text" :to="AppRoutes.About.path" class="text-none">About</v-btn>
-      <v-btn variant="text" :to="AppRoutes.FAQ.path" class="text-none">FAQ</v-btn>
+      <v-btn variant="text" :to="AppRoutes.Home.path" class="text-none mx-2 px-3">Home</v-btn>
+      <v-btn variant="text" :to="AppRoutes.About.path" class="text-none mx-2 px-3">About</v-btn>
+      <v-btn variant="text" :to="AppRoutes.FAQ.path" class="text-none mx-2 px-3">FAQ</v-btn>
       <v-divider
         vertical
         inset
         class="mx-2 d-none d-sm-flex"
       />
-      <v-btn variant="text" :to="AppRoutes.Contact.path" class="text-none">Contact</v-btn>
-      <v-btn variant="text" :to="AppRoutes.Legal.path" class="text-none">Legal</v-btn>
+      <v-btn variant="text" :to="AppRoutes.Contact.path" class="text-none mx-2 px-3">Contact</v-btn>
+      <v-btn variant="text" :to="AppRoutes.Legal.path" class="text-none mx-2 px-3">Legal</v-btn>
     </div>
 
     <v-divider
@@ -189,13 +183,12 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { AppRoutes } from '@/router/routeConfig';
 
 
 const router = useRouter();
-const route = useRoute();
 const store = useAuthStore();
 
 const drawer = ref(false);

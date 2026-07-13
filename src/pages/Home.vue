@@ -2,11 +2,11 @@
   <div class="bg-background text-primary d-flex flex-column min-vh-100">
     
     <v-container class="flex-grow-1 d-flex flex-column justify-center align-center text-center pt-16 pb-16">
-      <h1 class="text-h3 text-md-h2 text-lg-h1 font-weight-bold mb-6 text-primary">
+      <h1 class="text-h3 text-md-h2 text-lg-h1 font-weight-bold mt-8 mb-6 text-primary">
         Field Friends
       </h1>
       
-      <p class="text-h6 text-sm-h5 text-md-h4 text-secondary mb-12 font-dm-sans font-weight-regular" style="max-width: 690px;">
+      <p class="text-h6 text-sm-h5 text-md-h4 text-secondary mb-8 font-dm-sans font-weight-regular" style="max-width: 690px;">
         Friends by choice.
       </p>
 
