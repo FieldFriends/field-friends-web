@@ -74,7 +74,7 @@ export default async function handler(request: VercelRequest, response: VercelRe
 
     // FriendDev: Stringify and encrypt the entire payload.
     const jsonPayload = JSON.stringify(finalPayload);
-    const encryptedPayload = encryptWithAes(jsonPayload, encryptionSession.derivedSessionKey);
+    const encryptedPayload = encryptWithAes(jsonPayload, encryptionSession.derivedSessionKey, encryptionSession.salt);
 
     const { error: dbError } = await saveSurveyToDatabase(user.id, encryptionSession, encryptedPayload);
 

@@ -16,7 +16,7 @@ describe('Cryptography Utils', () => {
     const originalText = 'Super secret user data: Social Security Number, DOB, etc.';
 
     // FriendDev: Encrypt all data.
-    const encryptedTextFormat = encryptWithAes(originalText, session.derivedSessionKey);
+    const encryptedTextFormat = encryptWithAes(originalText, session.derivedSessionKey, session.salt);
 
     // FriendDev: Test decrypting: recover RSA entropy.
     const rsaSecret = crypto.privateDecrypt(
@@ -37,17 +37,17 @@ describe('Cryptography Utils', () => {
 
     // FriendDev: Re-derive AES session key using HKDF-SHA512.
     const ikm = Buffer.concat([Buffer.from(mlkemSecret), rsaSecret]);
-    const emptyBuffer = Buffer.alloc(CryptoConfig.Session.HashLength, 0);
+    const saltBuffer = Buffer.from(session.salt, Encodings.Hex);
     const infoBuffer = Buffer.from(CryptoConfig.Session.HkdfInfo, Encodings.Utf8);
-    const derivedSessionKey = Buffer.from(crypto.hkdfSync(Algorithms.SHA512, ikm, emptyBuffer, infoBuffer, CryptoConfig.Session.AesKeyLength));
+    const derivedSessionKey = Buffer.from(crypto.hkdfSync(Algorithms.SHA512, ikm, saltBuffer, infoBuffer, CryptoConfig.Session.AesKeyLength));
 
     // FriendDev: Assert backend derived same AES key as frontend.
     expect(derivedSessionKey).toEqual(session.derivedSessionKey);
 
     // FriendDev: Parse AES payload.
     const parts = encryptedTextFormat.split(CryptoConfig.Session.EncryptionDelimiter);
-    expect(parts.length).toBe(3);
-    const [ivHex, authTagHex, cipherHex] = parts;
+    expect(parts).toHaveLength(4);
+    const [saltHex, ivHex, authTagHex, cipherHex] = parts;
 
     const iv = Buffer.from(ivHex, Encodings.Hex);
     const authTag = Buffer.from(authTagHex, Encodings.Hex);
@@ -68,8 +68,8 @@ describe('Cryptography Utils', () => {
     const session = await startEncryptionSession();
     const originalText = 'Super secret user data';
 
-    const encrypted1 = encryptWithAes(originalText, session.derivedSessionKey);
-    const encrypted2 = encryptWithAes(originalText, session.derivedSessionKey);
+    const encrypted1 = encryptWithAes(originalText, session.derivedSessionKey, session.salt);
+    const encrypted2 = encryptWithAes(originalText, session.derivedSessionKey, session.salt);
 
     expect(typeof encrypted1).toBe('string');
     expect(encrypted1.length).toBeGreaterThan(0);

@@ -1,5 +1,5 @@
 import * as crypto from 'node:crypto';
-import type { EncryptionSession } from '../types/EncryptionSession.js';
+import type { EncryptionSession, AesGcmEncryptedPayload } from '../types/EncryptionSession.js';
 import { Algorithms, Encodings, CryptoConfig } from '../../shared/constants.js';
 import { SERVER_ENV } from './server-env.js';
 
@@ -13,6 +13,20 @@ export interface KemEncapsulationResult {
   sharedKey: Buffer;
   ciphertext: Buffer;
 }
+
+/**
+ * Formats the encrypted payload parts into a single transport string.
+ * @param salt - The random hex salt.
+ * @param ivHex - The hex-encoded initialization vector.
+ * @param authTag - The hex-encoded authentication tag.
+ * @param encryptedText - The hex-encoded ciphertext.
+ * @returns The structured and typed payload string.
+ */
+const formatAesPayload = (salt: string, ivHex: string, authTag: string, encryptedText: string): AesGcmEncryptedPayload => {
+  const d = CryptoConfig.Session.EncryptionDelimiter;
+
+  return `${salt}${d}${ivHex}${d}${authTag}${d}${encryptedText}`;
+};
 
 /**
  * Cleans and normalizes environment variable key strings for OpenSSL.
@@ -90,7 +104,8 @@ export const startEncryptionSession = async (): Promise<EncryptionSession> => {
   //            We use HKDF-SHA512 (NIST SP 800-56C compliant) to extract a single, 
   //            uniformly distributed session key from the concatenated secrets.
   const ikm = Buffer.concat([Buffer.from(mlkemSecret), rsaSecret]);
-  const saltBuffer = Buffer.alloc(CryptoConfig.Session.HashLength, 0);
+  // FriendDev: HKDF salt is most secure when matching the hash output length.
+  const saltBuffer = crypto.randomBytes(CryptoConfig.Session.HashLength);
   const infoBuffer = Buffer.from(CryptoConfig.Session.HkdfInfo, Encodings.Utf8);
 
   // FriendDev: Extract and expand the final AES session key.
@@ -117,6 +132,7 @@ export const startEncryptionSession = async (): Promise<EncryptionSession> => {
   const derivedSessionKey = Buffer.from(derivedKeyArrayBuffer);
 
   return {
+    salt: saltBuffer.toString(Encodings.Hex),
     derivedSessionKey,
     rsaCiphertext,
     mlkemCiphertext,
@@ -127,9 +143,10 @@ export const startEncryptionSession = async (): Promise<EncryptionSession> => {
  * Encrypts cleartext using AES-256-GCM and the provided session key.
  * @param text - The cleartext to encrypt.
  * @param sessionKey - The derived AES session key.
- * @returns The formatted encrypted string (iv:authTag:ciphertext).
+ * @param salt - The random hex salt used in HKDF.
+ * @returns The formatted encrypted string (salt:iv:authTag:ciphertext).
  */
-export const encryptWithAes = (text: string, sessionKey: Buffer): string => {
+export const encryptWithAes = (text: string, sessionKey: Buffer, salt: string): AesGcmEncryptedPayload => {
   // FriendDev: Generate unique initialization vector.
   //            This allows the same text to result in different encrypted outputs
   //            in different iterations.
@@ -156,6 +173,5 @@ export const encryptWithAes = (text: string, sessionKey: Buffer): string => {
   // FriendDev: Extract the security signature so we know the data is unaltered.
   const authTag = cipher.getAuthTag().toString(Encodings.Hex);
 
-  // FriendDev: Concatenate with our delimiter (":").
-  return `${iv.toString(Encodings.Hex)}${CryptoConfig.Session.EncryptionDelimiter}${authTag}${CryptoConfig.Session.EncryptionDelimiter}${encryptedText}`;
+  return formatAesPayload(salt, iv.toString(Encodings.Hex), authTag, encryptedText);
 };
