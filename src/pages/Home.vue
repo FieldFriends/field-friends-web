@@ -131,8 +131,8 @@
           </h3>
           
           <p class="text-body-1 font-weight-regular text-secondary">
-            Your data is encrypted before it's ever stored in our database.
-            All of your information, including the connection to your email, is <strong>permanently deleted</strong> after you're matched.
+            Your data is encrypted before it's saved to our database.
+            All of your information is <strong>permanently deleted</strong> after you're matched.
           </p>
           <p class="landing-page__privacy-details text-body-1 mt-8 font-weight-regular text-secondary">
             Field Friends is a free service. Our algorithm is run locally, and your data is never processed online for matching.
