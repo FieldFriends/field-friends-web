@@ -76,7 +76,7 @@ const faqs = [
   },
   {
     question: "I didn't get matched this round. Why?",
-    answerHtml: "The algorithm can't always find matches for everyone, mainly due to compatibility issues or smaller matching pools. However, you're always welcome to sign up again for the next round!"
+    answerHtml: "The algorithm can't always find matches for everyone, mainly due to compatibility issues or smaller matching rounds. However, you're always welcome to sign up again for the next round!"
   }
 ];
 </script>
