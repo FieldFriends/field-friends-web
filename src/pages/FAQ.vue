@@ -56,19 +56,19 @@ import { AGE_LIMITS } from '@shared/friendConfig';
 const faqs = [
   {
     question: "Who can use Field Friends?",
-    answerHtml: `Anyone in the UIUC community with a valid <strong>@illinois.edu</strong> email address, including undergraduates, graduate students, staff, faculty, and alums. Field Friends is currently limited to ages ${AGE_LIMITS.min}&ndash;${AGE_LIMITS.max}.`
+    answerHtml: `Anyone in the UIUC community with a valid <strong>@illinois.edu</strong> email address, including undergraduates, graduate students, staff, faculty, and alumni. Field Friends is currently limited to ages ${AGE_LIMITS.min}&ndash;${AGE_LIMITS.max}.`
   },
   {
     question: "How does the matching algorithm work?",
-    answerHtml: "We use natural language processing to understand your survey responses and group you with 2-3 other people who share similar interests and social preferences. Undergraduates get to choose which class years they're comfortable being matched with, while graduate students, staff, and faculty match within interconnected pools (with specific role-based restrictions). Additionally, you can choose which age ranges you're comfortable being matched with. For more details, check out the <a href='/about#process-heading' class='text-link font-weight-bold text-decoration-none'>How it Works</a> section on our <a href='/about' class='text-link font-weight-bold text-decoration-none'>About page</a>."
+    answerHtml: "We use natural language processing to understand your survey responses and group you with 2-3 other people who share similar interests and social preferences. Undergraduates get to choose which class years they're comfortable being matched with, while graduate students, staff, faculty, and alumni match within interconnected pools. You can also choose which age ranges you're comfortable being matched with. For more details, check out the <a href='/about#process-heading' class='text-link font-weight-bold text-decoration-none'>How it Works</a> section on our <a href='/about' class='text-link font-weight-bold text-decoration-none'>About page</a>."
   },
   {
     question: "How is my data handled?",
-    answerHtml: "Your data is secured using strong application-level encryption the moment you submit your survey. Your profile and survey responses are permanently deleted after matches are confirmed to have been delivered. You can read more about our <a href='/about#security-heading' class='text-link font-weight-bold text-decoration-none'>Security Architecture</a> on the <a href='/about' class='text-link font-weight-bold text-decoration-none'>About page</a>, or review our full <a href='/legal#privacy-heading' class='text-link font-weight-bold text-decoration-none'>Privacy Policy</a>."
+    answerHtml: "Your data is encrypted with post-quantum encryption after submission. Your profile and survey responses are deleted after matches have been sent out. You can read more about our <a href='/about#security-heading' class='text-link font-weight-bold text-decoration-none'>Security Architecture</a> on the <a href='/about' class='text-link font-weight-bold text-decoration-none'>About page</a>, or review our full <a href='/legal#privacy-heading' class='text-link font-weight-bold text-decoration-none'>Privacy Policy</a>."
   },
   {
     question: "How will I be contacted?",
-    answerHtml: "Once a round closes and matches are finalized, you will receive an automated introduction email from <strong>noreply@fieldfriends.org</strong> connecting you with your group."
+    answerHtml: "Once a round closes and matches have been formed, you'll receive an email from <strong>noreply@fieldfriends.org</strong> introducing you to your group."
   },
   {
     question: "What if I don't want to get matched with someone?",
@@ -76,7 +76,7 @@ const faqs = [
   },
   {
     question: "I didn't get matched this round. Why?",
-    answerHtml: "Sometimes the matching algorithm leaves a few people out to avoid awkwardly sized groups or matches without genuine overlapping interests. You're always welcome to try again by signing up for the next round!"
+    answerHtml: "The algorithm can't always find matches for everyone, mainly due to compatibility issues or smaller matching pools. However, you're always welcome to sign up again for the next round!"
   }
 ];
 </script>

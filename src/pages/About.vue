@@ -26,7 +26,7 @@
             </h2>
 
             <p class="text-body-1 text-secondary mb-4 page-text">
-              Field Friends runs in  <strong>rounds every two weeks</strong>.
+              Field Friends runs in <strong>rounds every two weeks</strong>.
               Rounds work as follows:
             </p>
 
@@ -66,7 +66,7 @@
                 </p>
                 <p class="mb-0">
                   Our algorithm enforces rules to ensure safe and balanced gender representation within every group.
-                  Undergrads get granular control over which class years they're comfortable being matched with, while graduate students, staff, faculty, and alums match within their own interconnected pools (though grad students and faculty can't be matched together).
+                  Undergrads get granular control over which class years they're comfortable being matched with, while graduate students, staff, faculty, and alumni match within their own interconnected pools (though grad students and faculty can't be matched together).
                   Additionally, you can select which age ranges you're comfortable being matched with.
                 </p>
               </li>
@@ -74,7 +74,7 @@
               <li class="text-body-1 text-secondary mb-6 page-text">
                 <strong>Delivery & Deletion:</strong>
                 Once groups of 3-4 are formed, introduction emails will be sent out.
-                When all emails have been delivered, your profile, survey responses, and all local matching data are permanently deleted.
+                When all emails have been delivered, your profile, survey responses, and all local matching data are deleted.
                 From there, it's up to you to reach out to your group!
               </li>
             </ol>
