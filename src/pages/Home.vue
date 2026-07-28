@@ -138,7 +138,7 @@
             Field Friends is a free service. Our algorithm is run locally, and your data is never processed online for matching.
             The
             <a
-              href="https://github.com/FieldFriends/field-friends-web"
+              :href="ContactConfig.GitHub.WebRepoUrl"
               target="_blank"
               rel="noopener noreferrer"
               class="text-decoration-none font-weight-bold text-link d-inline-flex align-center"
@@ -186,6 +186,7 @@
 
 <script lang="ts" setup>
 import { AppRoutes } from '@/router/routeConfig';
+import { ContactConfig } from '@shared/contactConfig';
 import { useConfigStore } from '@/stores/config';
 import MatchingInfo from '@/components/MatchingInfo.vue';
 import { computed } from 'vue';

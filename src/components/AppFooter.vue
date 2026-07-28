@@ -17,7 +17,7 @@
       </div>
       
       <a
-        href="https://github.com/FieldFriends/field-friends-web"
+        :href="ContactConfig.GitHub.WebRepoUrl"
         target="_blank"
         rel="noopener noreferrer"
         class="d-inline-flex align-center text-decoration-none text-secondary mt-1"
@@ -29,6 +29,10 @@
     </div>
   </v-footer>
 </template>
+
+<script setup lang="ts">
+import { ContactConfig } from '@shared/contactConfig';
+</script>
 
 <style scoped>
 .app-footer {

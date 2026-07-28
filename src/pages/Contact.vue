@@ -12,10 +12,10 @@
               <p class="text-body-1 text-secondary page-text d-flex flex-wrap align-center ga-2">
                 <span>For questions, feedback, or assistance, please reach out to:</span>
                 <a
-                  href="mailto:support@fieldfriends.org"
+                  :href="`mailto:${ContactConfig.SupportEmail}`"
                   class="text-primary font-weight-bold text-decoration-none"
                 >
-                  support@fieldfriends.org
+                  {{ ContactConfig.SupportEmail }}
                 </a>
                 <v-btn
                   prepend-icon="mdi-content-copy"
@@ -33,7 +33,7 @@
             <li>
               <p class="text-body-1 text-secondary page-text">
                 Automated messages, such as login codes and match introductions, will be sent from:
-                <strong>noreply@fieldfriends.org</strong>
+                <strong>{{ ContactConfig.NoReplyEmail }}</strong>
               </p>
             </li>
 
@@ -41,12 +41,12 @@
               <p class="text-body-1 text-secondary page-text">
                 Our official Reddit account is 
                 <a 
-                  href="https://www.reddit.com/user/FieldFriendsTeam/" 
+                  :href="ContactConfig.Reddit.Url" 
                   target="_blank" 
                   rel="noopener noreferrer" 
                   class="text-decoration-none font-weight-bold text-link d-inline-flex align-center"
                 >
-                  u/FieldFriendsTeam
+                  {{ ContactConfig.Reddit.Handle }}
                   <v-icon
                     icon="mdi-open-in-new"
                     size="x-small"
@@ -108,6 +108,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { ContactConfig } from '@shared/contactConfig';
 
 type Snackbar = {
   isVisible: boolean;
@@ -123,7 +124,7 @@ const snackbar = ref<Snackbar>({
 
 const copyEmail = async () => {
   try {
-    await navigator.clipboard.writeText('support@fieldfriends.org');
+    await navigator.clipboard.writeText(ContactConfig.SupportEmail);
 
     snackbar.value = {
       isVisible: true,

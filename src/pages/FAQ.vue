@@ -52,6 +52,7 @@
 <script lang="ts" setup>
 import { AppRoutes } from '@/router/routeConfig';
 import { AGE_LIMITS } from '@shared/friendConfig';
+import { ContactConfig } from '@shared/contactConfig';
 
 const faqs = [
   {
@@ -68,7 +69,7 @@ const faqs = [
   },
   {
     question: "How will I be contacted?",
-    answerHtml: "Once a round closes and matches have been formed, you'll receive an email from <strong>noreply@fieldfriends.org</strong> introducing you to your group."
+    answerHtml: `Once a round closes and matches have been formed, you'll receive an email from <strong>${ContactConfig.NoReplyEmail}</strong> introducing you to your group.`
   },
   {
     question: "What if I don't want to get matched with someone?",

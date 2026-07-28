@@ -183,7 +183,7 @@
           <p class="text-body-1 text-secondary mb-4 page-text">
             Because we do not have an investigative capacity, we ask that users report any serious
             incidents or immediate threats directly to local authorities or the university's
-            Title IX office. You may inform us at <strong>support@fieldfriends.org</strong>
+            Title IX office. You may inform us at <strong>{{ ContactConfig.SupportEmail }}</strong>
             so we can take immediate action to ban the offending individual from future use of the service.
           </p>
 
@@ -243,4 +243,5 @@
 
 <script setup lang="ts">
 import { AGE_LIMITS } from '@shared/friendConfig';
+import { ContactConfig } from '@shared/contactConfig';
 </script>

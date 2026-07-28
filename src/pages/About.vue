@@ -110,7 +110,7 @@
             <p class="text-body-1 text-secondary page-text">
               Feel free to read the source code for our security architecture
               <a
-                href="https://github.com/FieldFriends/field-friends-web/tree/main/api"
+                :href="ContactConfig.GitHub.ApiRepoUrl"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="text-decoration-none font-weight-bold text-link d-inline-flex align-center"
@@ -126,3 +126,7 @@
     </v-container>
   </div>
 </template>
+
+<script setup lang="ts">
+import { ContactConfig } from '@shared/contactConfig';
+</script>
