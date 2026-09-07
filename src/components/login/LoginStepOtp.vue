@@ -6,6 +6,9 @@
     <p class="text-subtitle-1 text-secondary text-medium-emphasis mt-2">
       Enter the code sent to <strong>{{ email }}</strong>
     </p>
+    <p class="text-subtitle-2 text-secondary mx-2 mt-5">
+      Check your junk folder if you don't see the code.
+    </p>
   </div>
 
   <v-form @submit.prevent="handleVerify">
@@ -13,7 +16,7 @@
       v-model="code"
       placeholder="Your verification code"
       label="Verification"
-      class="mb-12 mx-8 pt-6"
+      class="mb-12 mx-8 pt-2"
       :rules="[(v: any) => !!v || 'Code is required']"
       :disabled="loading"
       :show-card="false"
