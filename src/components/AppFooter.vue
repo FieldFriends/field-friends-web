@@ -13,7 +13,7 @@
       </div>
       
       <div class="font-italic font-weight-black">
-        Not affiliated with the University of Illinois at Urbana-Champaign
+        Not affiliated with the University of Illinois Urbana-Champaign
       </div>
       
       <a
