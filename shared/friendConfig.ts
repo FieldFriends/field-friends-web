@@ -3,6 +3,10 @@ export const FIELD_MAX_FREETEXT_CHARS = 1200;
 
 export const MAX_BLOCKED_EMAILS = 10;
 
+export const MAX_DEALBREAKERS = 12;
+export const DEALBREAKER_MIN_CHARS = 2;
+export const DEALBREAKER_MAX_CHARS = 64;
+
 export const AGE_LIMITS = {
   min: 18,
   max: 65,

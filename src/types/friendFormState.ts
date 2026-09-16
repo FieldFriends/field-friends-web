@@ -12,6 +12,7 @@ export interface FriendFormState {
   interests: string;
   activities: string;
   introduction: string;
+  dealbreakers: string[];
   blocked_emails: string[];
 }
 
@@ -30,5 +31,6 @@ export const INITIAL_FORM_STATE: Readonly<FriendFormState> = Object.freeze({
   interests: '',
   activities: '',
   introduction: '',
+  dealbreakers: [],
   blocked_emails: [],
 });

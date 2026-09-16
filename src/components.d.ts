@@ -18,6 +18,7 @@ declare module 'vue' {
     FriendAffiliationSelect: typeof import('./components/FriendAffiliationSelect.vue')['default']
     FriendAgeRange: typeof import('./components/FriendAgeRange.vue')['default']
     FriendCheckbox: typeof import('./components/FriendCheckbox.vue')['default']
+    FriendChipInput: typeof import('./components/FriendChipInput.vue')['default']
     FriendEmailList: typeof import('./components/FriendEmailList.vue')['default']
     FriendExample: typeof import('./components/FriendExample.vue')['default']
     FriendFormCard: typeof import('./components/FriendFormCard.vue')['default']

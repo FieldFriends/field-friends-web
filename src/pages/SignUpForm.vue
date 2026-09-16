@@ -178,7 +178,7 @@
               :disabled="isTextInIntro(form.interests)"
               @click="handleAppendToIntro(form.interests)"
             >
-              Append Your Interests
+              Append Interests
             </v-btn>
 
             <v-btn
@@ -196,6 +196,22 @@
           </div>
         </friend-textarea>
 
+        <friend-chip-input
+          v-model="form.dealbreakers"
+          class="mb-4"
+          label="Deal-breakers"
+          :shared="false"
+          :required="false"
+          :rules="rule('dealbreakers')"
+          :max-items="MAX_DEALBREAKERS"
+          :item-schema="DealbreakerItemSchema"
+          button-text="Add deal-breaker"
+        >
+          <template #description>
+            Traits you'd rather not see in your matches
+          </template>
+        </friend-chip-input>
+
         <friend-email-list
           v-model="form.blocked_emails"
           class="mb-4"
@@ -205,7 +221,7 @@
           :user-email="userEmail"
         >
           <template #description>
-            You won't be placed in a group with anyone using these email addresses.
+            You won't be placed in a group with anyone using these email addresses
           </template>
         </friend-email-list>
 
@@ -392,20 +408,21 @@ import FriendAffiliationSelect from '@/components/FriendAffiliationSelect.vue';
 import FriendUndergradAffiliationMatch from '@/components/FriendUndergradAffiliationMatch.vue';
 import FriendNonUndergradAffiliationMatch from '@/components/FriendNonUndergradAffiliationMatch.vue';
 import FriendTextarea from '@/components/FriendTextarea.vue';
+import FriendChipInput from '@/components/FriendChipInput.vue';
 import FriendRadioGroup from '@/components/FriendRadioGroup.vue';
 import FriendExample from '@/components/FriendExample.vue';
 import EmailMatchedPreview from '@/components/EmailMatchedPreview.vue';
 
 import FriendFormCard from '@/components/FriendFormCard.vue';
 import { 
-  AFFILIATION_OPTIONS,
   GENDER_OPTIONS,
   SOCIAL_ENERGY_OPTIONS,
   AGE_LIMITS, 
-  MAX_BLOCKED_EMAILS
+  MAX_BLOCKED_EMAILS,
+  MAX_DEALBREAKERS
 } from '@shared/friendConfig';
 import { useSurveyStore } from '@/stores/survey';
-import { ProfileSchema, createProfileSchema } from '@shared/schemas/profileSchema';
+import { ProfileSchema, createProfileSchema, DealbreakerItemSchema } from '@shared/schemas/profileSchema';
 import { useZodRules } from '@/composables/useZodRules';
 import FriendEmailList from '@/components/FriendEmailList.vue';
 import { useFormIO } from '@/composables/useFormIO';
@@ -646,7 +663,7 @@ const handleImport = async (event: Event) => {
         const path = issue.path[0];
         
         // FriendDev: Safely remove the invalid field if it exists in the import payload.
-        if (typeof path === 'string' && Object.prototype.hasOwnProperty.call(safeImportedData, path)) {
+        if (typeof path === 'string' && Object.hasOwn(safeImportedData, path)) {
           Reflect.deleteProperty(safeImportedData, path);
         }
       }
