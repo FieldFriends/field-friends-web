@@ -154,6 +154,22 @@
             <friend-example>Movie nights, going to the bars, and playing basketball!!</friend-example>
           </template>
         </friend-textarea>
+
+        <friend-chip-input
+          v-model="form.dealbreakers"
+          class="mb-4"
+          label="Deal-breakers"
+          :shared="false"
+          :required="false"
+          :rules="rule('dealbreakers')"
+          :max-items="MAX_DEALBREAKERS"
+          :item-schema="DealbreakerItemSchema"
+          button-text="Add deal-breaker"
+        >
+          <template #description>
+            Traits you'd rather not see in your matches
+          </template>
+        </friend-chip-input>
         
         <friend-textarea
           v-model="form.introduction"
@@ -195,22 +211,6 @@
             </v-btn>
           </div>
         </friend-textarea>
-
-        <friend-chip-input
-          v-model="form.dealbreakers"
-          class="mb-4"
-          label="Deal-breakers"
-          :shared="false"
-          :required="false"
-          :rules="rule('dealbreakers')"
-          :max-items="MAX_DEALBREAKERS"
-          :item-schema="DealbreakerItemSchema"
-          button-text="Add deal-breaker"
-        >
-          <template #description>
-            Traits you'd rather not see in your matches
-          </template>
-        </friend-chip-input>
 
         <friend-email-list
           v-model="form.blocked_emails"
