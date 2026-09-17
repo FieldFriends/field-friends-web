@@ -6,6 +6,9 @@ import {
   SOCIAL_ENERGY_VALUES,
   EMAIL_REGEX,
   MAX_BLOCKED_EMAILS,
+  MAX_DEALBREAKERS,
+  DEALBREAKER_MIN_CHARS,
+  DEALBREAKER_MAX_CHARS,
   FIELD_MIN_FREETEXT_CHARS,
   FIELD_MAX_FREETEXT_CHARS,
   Affiliation,
@@ -13,6 +16,11 @@ import {
   NON_UNDERGRADUATE_AFFILIATIONS
 } from '../friendConfig.js';
 import { isSelfEmail } from '../utils/emailUtils.js';
+
+export const DealbreakerItemSchema = z.string()
+  .trim()
+  .min(DEALBREAKER_MIN_CHARS, { message: `Dealbreaker must be at least ${DEALBREAKER_MIN_CHARS} characters` })
+  .max(DEALBREAKER_MAX_CHARS, { message: `Dealbreaker must be ${DEALBREAKER_MAX_CHARS} characters or fewer` });
 
 const ProfileSchemaBase = z.object({
   name: z.string()
@@ -55,6 +63,10 @@ const ProfileSchemaBase = z.object({
     .refine((val) => !val || val.length >= FIELD_MIN_FREETEXT_CHARS, {
       message: `Must be at least ${FIELD_MIN_FREETEXT_CHARS} characters if provided`
     }),
+
+  dealbreakers: z.array(DealbreakerItemSchema)
+    .max(MAX_DEALBREAKERS, { message: `You can only add up to ${MAX_DEALBREAKERS} dealbreakers` })
+    .default([]),
 
   blocked_emails: z.array(
     z.string()
