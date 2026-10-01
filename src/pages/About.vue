@@ -91,7 +91,7 @@
               <strong class="text-primary">
                 not affiliated
               </strong>
-              with, endorsed by, or sponsored by the University of Illinois at Urbana-Champaign (UIUC).
+              with, endorsed by, or sponsored by the University of Illinois Urbana-Champaign (UIUC).
             </p>
           </section>
 
