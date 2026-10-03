@@ -3,7 +3,7 @@ import { Algorithms, Encodings, CryptoConfig } from '../../shared/constants.js';
 import { SERVER_ENV } from './server-env.js';
 
 /**
- * Derives a strong hash from a value and a pepper using scrypt.
+ * Derives a hash from a value and a pepper using scrypt.
  * @param value - The cleartext value to hash.
  * @param pepper - The secret pepper to use for the KDF.
  * @returns The resulting derived key hash as a hex string.
@@ -39,7 +39,7 @@ const hashString = async (value: string, pepper: string): Promise<string> => {
 };
 
 /**
- * Hashes an email address to prevent dictionary attacks on low-entropy strings.
+ * Hashes an email address to prevent dictionary attacks.
  * @param email - The cleartext email address.
  * @returns The scrypt-derived hash of the email.
  */
@@ -54,7 +54,7 @@ export const hashEmail = async (email: string): Promise<string> => {
 };
 
 /**
- * Hashes a user ID to generate a mathematically un-linkable response ID.
+ * Hashes a user ID to generate a response ID.
  * @param userId - The cleartext user ID.
  * @returns The HMAC-SHA512 derived response ID.
  */
